@@ -21,7 +21,7 @@ body{
 header{
   background:linear-gradient(135deg,#6c2cff,#9b4dff);
   color:white;
-  padding:22px;
+  padding:25px 15px;
   text-align:center;
 }
 
@@ -30,22 +30,37 @@ header h1{
   margin-bottom:8px;
 }
 
+header p{
+  opacity:.9;
+}
+
 nav{
-  margin-top:15px;
+  background:#fff;
+  padding:14px;
+  text-align:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
 nav button{
   width:auto;
   margin:4px;
-  padding:9px 14px;
-  background:white;
-  color:#6c2cff;
+  padding:10px 16px;
+  background:#6c2cff;
+  border:0;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+nav button:hover{
+  background:#5520d8;
 }
 
 .container{
-  max-width:950px;
+  max-width:1100px;
   margin:25px auto;
-  padding:15px;
+  padding:0 15px;
 }
 
 .card{
@@ -64,16 +79,20 @@ h2{
 input,select{
   width:100%;
   padding:13px;
-  margin:7px 0 14px;
+  margin:8px 0 14px;
   border:1px solid #ddd;
   border-radius:9px;
+  outline:none;
 }
 
-button{
+input:focus,select:focus{
+  border-color:#6c2cff;
+}
+
+.main-btn{
   width:100%;
-  padding:13px;
-  margin-top:8px;
-  border:none;
+  padding:14px;
+  border:0;
   border-radius:9px;
   background:#6c2cff;
   color:white;
@@ -82,71 +101,82 @@ button{
   cursor:pointer;
 }
 
-button:hover{
+.main-btn:hover{
   background:#5520d8;
 }
 
-.small-btn{
-  background:none;
+.balance{
+  font-size:30px;
+  font-weight:bold;
   color:#6c2cff;
-  margin-top:10px;
+}
+
+.services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
 }
 
 .service{
-  padding:15px;
-  border:1px solid #eee;
-  border-radius:10px;
-  margin-bottom:10px;
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,.07);
 }
 
-.price{
-  background:#f0eaff;
+.service h3{
+  color:#6c2cff;
+  margin-bottom:8px;
+}
+
+.service p{
+  color:#666;
+  font-size:14px;
+}
+
+.total{
+  background:#f1ebff;
   padding:15px;
   border-radius:10px;
-  margin:10px 0;
+  margin:10px 0 15px;
+  font-size:20px;
   font-weight:bold;
-  font-size:18px;
+  color:#6c2cff;
 }
 
 .order{
-  border-left:5px solid #6c2cff;
+  border:1px solid #ddd;
   padding:15px;
+  border-radius:10px;
   margin-bottom:12px;
   background:#fafafa;
-  border-radius:8px;
 }
 
-.status{
-  display:inline-block;
-  margin-top:8px;
-  padding:5px 10px;
-  border-radius:15px;
-  background:#fff3cd;
-  color:#856404;
-  font-size:13px;
-}
-
-.message{
-  display:none;
-  margin-top:12px;
+.success{
+  background:#e8f7e8;
+  color:#168321;
   padding:12px;
   border-radius:8px;
+  margin-top:12px;
 }
 
-footer{
-  text-align:center;
-  padding:25px;
-  color:#777;
+.error{
+  background:#ffecec;
+  color:#c62828;
+  padding:12px;
+  border-radius:8px;
+  margin-top:12px;
 }
 
 .hidden{
   display:none;
 }
 
-.empty{
+footer{
   text-align:center;
+  padding:25px;
   color:#777;
-  padding:20px;
+  margin-top:30px;
 }
 </style>
 </head>
@@ -154,607 +184,556 @@ footer{
 <body>
 
 <header>
-
-<h1>🚀 Mr SMM Pannels</h1>
-<p>Social Media Marketing Services</p>
-
-<nav id="navigation" class="hidden">
-<button onclick="showPage('dashboard')">🏠 Dashboard</button>
-<button onclick="showPage('order')">🛒 New Order</button>
-<button onclick="showPage('orders')">📋 My Orders</button>
-<button onclick="logout()">🚪 Logout</button>
-</nav>
-
+  <h1>🚀 Mr SMM Pannels</h1>
+  <p>Social Media Marketing Services</p>
 </header>
 
+<nav id="navbar" class="hidden">
+  <button onclick="showPage('dashboard')">🏠 Dashboard</button>
+  <button onclick="showPage('neworder')">🛒 New Order</button>
+  <button onclick="showPage('orders')">📋 My Orders</button>
+  <button onclick="logout()">🚪 Logout</button>
+</nav>
 
 <div class="container">
 
-
 <!-- LOGIN -->
-
 <div id="loginPage" class="card">
+  <h2>🔐 Customer Login</h2>
 
-<h2>🔐 Customer Login</h2>
+  <input type="email" id="loginEmail" placeholder="Email">
 
-<label>Email</label>
-<input type="email" id="loginEmail" placeholder="Enter your email">
+  <input type="password" id="loginPassword" placeholder="Password">
 
-<label>Password</label>
-<input type="password" id="loginPassword" placeholder="Enter your password">
+  <button class="main-btn" onclick="login()">Login</button>
 
-<button onclick="login()">Login</button>
+  <p style="margin-top:15px;text-align:center;">
+    Don't have an account?
+    <b style="color:#6c2cff;cursor:pointer" onclick="showSignup()">
+      Create Account
+    </b>
+  </p>
 
-<button class="small-btn" onclick="showPage('register')">
-Don't have an account? Create Account
-</button>
-
-<div id="loginMessage" class="message"></div>
-
+  <div id="loginMessage"></div>
 </div>
 
 
-<!-- REGISTER -->
+<!-- SIGNUP -->
+<div id="signupPage" class="card hidden">
+  <h2>📝 Create Account</h2>
 
-<div id="registerPage" class="card hidden">
+  <input type="text" id="signupName" placeholder="Full Name">
 
-<h2>📝 Create Account</h2>
+  <input type="email" id="signupEmail" placeholder="Email">
 
-<label>Full Name</label>
-<input type="text" id="registerName" placeholder="Enter your full name">
+  <input type="password" id="signupPassword" placeholder="Password">
 
-<label>Email</label>
-<input type="email" id="registerEmail" placeholder="Enter your email">
+  <button class="main-btn" onclick="signup()">Create Account</button>
 
-<label>Password</label>
-<input type="password" id="registerPassword" placeholder="Create password">
+  <p style="margin-top:15px;text-align:center;">
+    Already have an account?
+    <b style="color:#6c2cff;cursor:pointer" onclick="showLogin()">
+      Login
+    </b>
+  </p>
 
-<button onclick="register()">Create Account</button>
-
-<button class="small-btn" onclick="showPage('login')">
-Already have an account? Login
-</button>
-
-<div id="registerMessage" class="message"></div>
-
+  <div id="signupMessage"></div>
 </div>
 
 
 <!-- DASHBOARD -->
-
 <div id="dashboardPage" class="hidden">
 
-<div class="card">
+  <div class="card">
+    <h2>💰 Your Balance</h2>
 
-<h2>💰 Your Balance</h2>
+    <div class="balance">
+      Rs <span id="balance">0.00</span>
+    </div>
 
-<h1 id="balance">Rs 0.00</h1>
+    <p style="margin-top:10px">
+      Welcome, <b id="welcomeName"></b>!
+    </p>
+  </div>
 
-<p id="welcome" style="margin-top:8px"></p>
+  <div class="card">
+    <h2>🔥 All Services</h2>
 
-</div>
+    <div class="services">
 
+      <div class="service">
+        <h3>📸 Instagram</h3>
+        <p>Likes • Followers • Views • Comments</p>
+      </div>
 
-<div class="card">
+      <div class="service">
+        <h3>🎵 TikTok</h3>
+        <p>Likes • Followers • Views • Shares</p>
+      </div>
 
-<h2>🔥 All Services</h2>
+      <div class="service">
+        <h3>▶️ YouTube</h3>
+        <p>Views • Likes • Subscribers • Comments</p>
+      </div>
 
-<div class="service">
-📸 <b>Instagram</b><br>
-Likes • Followers • Views • Comments
-</div>
+      <div class="service">
+        <h3>📘 Facebook</h3>
+        <p>Likes • Followers • Page Likes • Comments</p>
+      </div>
 
-<div class="service">
-🎵 <b>TikTok</b><br>
-Likes • Followers • Views • Shares
-</div>
+      <div class="service">
+        <h3>✈️ Telegram</h3>
+        <p>Members • Views • Reactions</p>
+      </div>
 
-<div class="service">
-▶️ <b>YouTube</b><br>
-Views • Likes • Subscribers • Comments
-</div>
+      <div class="service">
+        <h3>💬 Comments</h3>
+        <p>Social Media Comments Services</p>
+      </div>
 
-<div class="service">
-📘 <b>Facebook</b><br>
-Likes • Followers • Page Likes • Comments
-</div>
-
-<div class="service">
-✈️ <b>Telegram</b><br>
-Members • Views • Reactions
-</div>
-
-<div class="service">
-💬 <b>Comments</b><br>
-Social Media Comments Services
-</div>
-
-</div>
+    </div>
+  </div>
 
 </div>
 
 
 <!-- NEW ORDER -->
+<div id="neworderPage" class="card hidden">
 
-<div id="orderPage" class="card hidden">
+  <h2>🛒 New Order</h2>
 
-<h2>🛒 New Order</h2>
+  <label>📱 Select Service</label>
 
-<label>📱 Select Service</label>
+  <select id="service" onchange="calculatePrice()">
 
-<select id="service" onchange="calculatePrice()">
+    <option value="Instagram Likes" data-price="200">
+      Instagram Likes — Rs 200 / 1,000
+    </option>
 
-<option value="Instagram Likes">Instagram Likes — Rs 200 / 1,000</option>
-<option value="Instagram Followers">Instagram Followers — Rs 500 / 1,000</option>
-<option value="Instagram Views">Instagram Views — Rs 100 / 1,000</option>
-<option value="Instagram Comments">Instagram Comments — Rs 300 / 1,000</option>
+    <option value="Instagram Followers" data-price="500">
+      Instagram Followers — Rs 500 / 1,000
+    </option>
 
-<option value="TikTok Likes">TikTok Likes — Rs 200 / 1,000</option>
-<option value="TikTok Followers">TikTok Followers — Rs 500 / 1,000</option>
-<option value="TikTok Views">TikTok Views — Rs 100 / 1,000</option>
-<option value="TikTok Shares">TikTok Shares — Rs 150 / 1,000</option>
+    <option value="Instagram Views" data-price="100">
+      Instagram Views — Rs 100 / 1,000
+    </option>
 
-<option value="YouTube Views">YouTube Views — Rs 300 / 1,000</option>
-<option value="YouTube Likes">YouTube Likes — Rs 400 / 1,000</option>
-<option value="YouTube Subscribers">YouTube Subscribers — Rs 800 / 1,000</option>
-<option value="YouTube Comments">YouTube Comments — Rs 500 / 1,000</option>
+    <option value="Instagram Comments" data-price="300">
+      Instagram Comments — Rs 300 / 1,000
+    </option>
 
-<option value="Facebook Likes">Facebook Likes — Rs 200 / 1,000</option>
-<option value="Facebook Followers">Facebook Followers — Rs 500 / 1,000</option>
-<option value="Facebook Page Likes">Facebook Page Likes — Rs 500 / 1,000</option>
-<option value="Facebook Comments">Facebook Comments — Rs 300 / 1,000</option>
+    <option value="TikTok Likes" data-price="200">
+      TikTok Likes — Rs 200 / 1,000
+    </option>
 
-<option value="Telegram Members">Telegram Members — Rs 600 / 1,000</option>
-<option value="Telegram Views">Telegram Views — Rs 100 / 1,000</option>
-<option value="Telegram Reactions">Telegram Reactions — Rs 200 / 1,000</option>
+    <option value="TikTok Followers" data-price="500">
+      TikTok Followers — Rs 500 / 1,000
+    </option>
 
-<option value="Comments">Comments — Rs 300 / 1,000</option>
+    <option value="TikTok Views" data-price="100">
+      TikTok Views — Rs 100 / 1,000
+    </option>
 
-</select>
+    <option value="TikTok Shares" data-price="150">
+      TikTok Shares — Rs 150 / 1,000
+    </option>
 
+    <option value="YouTube Views" data-price="300">
+      YouTube Views — Rs 300 / 1,000
+    </option>
 
-<label>🔗 Post / Profile Link</label>
+    <option value="YouTube Likes" data-price="400">
+      YouTube Likes — Rs 400 / 1,000
+    </option>
 
-<input
-type="url"
-id="link"
-placeholder="https://..."
->
+    <option value="YouTube Subscribers" data-price="800">
+      YouTube Subscribers — Rs 800 / 1,000
+    </option>
 
+    <option value="YouTube Comments" data-price="500">
+      YouTube Comments — Rs 500 / 1,000
+    </option>
 
-<label>📊 Quantity</label>
+    <option value="Facebook Likes" data-price="200">
+      Facebook Likes — Rs 200 / 1,000
+    </option>
 
-<input
-type="number"
-id="quantity"
-min="1"
-placeholder="Example: 1000"
-oninput="calculatePrice()"
->
+    <option value="Facebook Followers" data-price="500">
+      Facebook Followers — Rs 500 / 1,000
+    </option>
 
+    <option value="Facebook Page Likes" data-price="500">
+      Facebook Page Likes — Rs 500 / 1,000
+    </option>
 
-<div class="price">
-💵 Total Price:
-<span id="total">Rs 0.00</span>
-</div>
+    <option value="Facebook Comments" data-price="300">
+      Facebook Comments — Rs 300 / 1,000
+    </option>
 
+    <option value="Telegram Members" data-price="600">
+      Telegram Members — Rs 600 / 1,000
+    </option>
 
-<button onclick="placeOrder()">🚀 Place Order</button>
+    <option value="Telegram Views" data-price="100">
+      Telegram Views — Rs 100 / 1,000
+    </option>
 
-<div id="orderMessage" class="message"></div>
+    <option value="Telegram Reactions" data-price="200">
+      Telegram Reactions — Rs 200 / 1,000
+    </option>
+
+    <option value="Comments" data-price="300">
+      Comments — Rs 300 / 1,000
+    </option>
+
+  </select>
+
+  <label>🔗 Post / Profile Link</label>
+
+  <input
+    type="url"
+    id="orderLink"
+    placeholder="https://..."
+  >
+
+  <label>📊 Quantity</label>
+
+  <input
+    type="number"
+    id="quantity"
+    placeholder="Example: 1000"
+    min="1"
+    oninput="calculatePrice()"
+  >
+
+  <div class="total">
+    💵 Total Price: Rs <span id="totalPrice">0.00</span>
+  </div>
+
+  <button class="main-btn" onclick="placeOrder()">
+    🚀 Place Order
+  </button>
+
+  <div id="orderMessage"></div>
 
 </div>
 
 
 <!-- MY ORDERS -->
-
 <div id="ordersPage" class="card hidden">
 
-<h2>📋 My Orders</h2>
+  <h2>📋 My Orders</h2>
 
-<div id="ordersList"></div>
-
-</div>
-
+  <div id="ordersList"></div>
 
 </div>
 
+</div>
 
 <footer>
-© 2026 Mr SMM Pannels — All Rights Reserved
+  © 2026 Mr SMM Pannels — All Rights Reserved
 </footer>
 
 
 <script>
 
-const prices={
+function getUser(){
+  return JSON.parse(localStorage.getItem("smmUser"));
+}
 
-"Instagram Likes":200,
-"Instagram Followers":500,
-"Instagram Views":100,
-"Instagram Comments":300,
-
-"TikTok Likes":200,
-"TikTok Followers":500,
-"TikTok Views":100,
-"TikTok Shares":150,
-
-"YouTube Views":300,
-"YouTube Likes":400,
-"YouTube Subscribers":800,
-"YouTube Comments":500,
-
-"Facebook Likes":200,
-"Facebook Followers":500,
-"Facebook Page Likes":500,
-"Facebook Comments":300,
-
-"Telegram Members":600,
-"Telegram Views":100,
-"Telegram Reactions":200,
-
-"Comments":300
-
-};
+function getOrders(){
+  return JSON.parse(localStorage.getItem("smmOrders") || "[]");
+}
 
 
-function getUsers(){
+function showLogin(){
 
-return JSON.parse(localStorage.getItem("smmUsers")||"{}");
+  document.getElementById("loginPage").classList.remove("hidden");
+  document.getElementById("signupPage").classList.add("hidden");
 
 }
 
 
-function getCurrentUser(){
+function showSignup(){
 
-return localStorage.getItem("smmCurrentUser");
-
-}
-
-
-function register(){
-
-const name=document.getElementById("registerName").value.trim();
-const email=document.getElementById("registerEmail").value.trim();
-const password=document.getElementById("registerPassword").value;
-
-if(!name||!email||!password){
-
-showMessage(
-"registerMessage",
-"⚠️ Please fill all fields.",
-"error"
-);
-
-return;
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("signupPage").classList.remove("hidden");
 
 }
 
-const users=getUsers();
 
-if(users[email]){
+function signup(){
 
-showMessage(
-"registerMessage",
-"⚠️ This email is already registered.",
-"error"
-);
+  const name=document.getElementById("signupName").value.trim();
+  const email=document.getElementById("signupEmail").value.trim();
+  const password=document.getElementById("signupPassword").value;
 
-return;
+  const msg=document.getElementById("signupMessage");
 
-}
+  if(!name || !email || !password){
 
-users[email]={
-name:name,
-password:password,
-balance:0
-};
+    msg.className="error";
+    msg.innerHTML="⚠️ Please fill all fields.";
+    return;
+  }
 
-localStorage.setItem("smmUsers",JSON.stringify(users));
+  localStorage.setItem("smmUser",JSON.stringify({
+    name:name,
+    email:email,
+    password:password,
+    balance:0
+  }));
 
-showMessage(
-"registerMessage",
-"✅ Account created successfully! Please login.",
-"success"
-);
+  msg.className="success";
+  msg.innerHTML="✅ Account created successfully! Please login.";
 
+  setTimeout(showLogin,1000);
 }
 
 
 function login(){
 
-const email=document.getElementById("loginEmail").value.trim();
-const password=document.getElementById("loginPassword").value;
+  const email=document.getElementById("loginEmail").value.trim();
+  const password=document.getElementById("loginPassword").value;
 
-const users=getUsers();
+  const user=getUser();
 
-if(!users[email]||users[email].password!==password){
+  const msg=document.getElementById("loginMessage");
 
-showMessage(
-"loginMessage",
-"❌ Invalid email or password.",
-"error"
-);
+  if(!user){
 
-return;
+    msg.className="error";
+    msg.innerHTML="⚠️ Account not found. Please create an account first.";
+    return;
+  }
 
-}
+  if(email===user.email && password===user.password){
 
-localStorage.setItem("smmCurrentUser",email);
+    msg.className="success";
+    msg.innerHTML="✅ Login successful!";
 
-document.getElementById("loginEmail").value="";
-document.getElementById("loginPassword").value="";
+    setTimeout(function(){
 
-loadDashboard();
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("signupPage").classList.add("hidden");
 
-}
+      document.getElementById("navbar").classList.remove("hidden");
 
+      showPage("dashboard");
 
-function logout(){
+    },500);
 
-localStorage.removeItem("smmCurrentUser");
+  }else{
 
-showPage("login");
+    msg.className="error";
+    msg.innerHTML="❌ Wrong email or password.";
 
-document.getElementById("navigation").classList.add("hidden");
-
-}
-
-
-function loadDashboard(){
-
-const email=getCurrentUser();
-const users=getUsers();
-
-if(!email||!users[email]){
-
-showPage("login");
-
-return;
-
-}
-
-document.getElementById("navigation").classList.remove("hidden");
-
-document.getElementById("welcome").innerText=
-"Welcome, "+users[email].name+"!";
-
-document.getElementById("balance").innerText=
-"Rs "+Number(users[email].balance).toFixed(2);
-
-showPage("dashboard");
-
+  }
 }
 
 
 function showPage(page){
 
-document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("registerPage").classList.add("hidden");
-document.getElementById("dashboardPage").classList.add("hidden");
-document.getElementById("orderPage").classList.add("hidden");
-document.getElementById("ordersPage").classList.add("hidden");
+  document.getElementById("dashboardPage").classList.add("hidden");
+  document.getElementById("neworderPage").classList.add("hidden");
+  document.getElementById("ordersPage").classList.add("hidden");
 
-if(page==="login"){
+  if(page==="dashboard"){
 
-document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
 
-}
+    const user=getUser();
 
-if(page==="register"){
+    if(user){
 
-document.getElementById("registerPage").classList.remove("hidden");
+      document.getElementById("welcomeName").innerText=user.name;
+      document.getElementById("balance").innerText=
+        Number(user.balance || 0).toFixed(2);
 
-}
+    }
 
-if(page==="dashboard"){
+  }
 
-document.getElementById("dashboardPage").classList.remove("hidden");
+  if(page==="neworder"){
 
-}
+    document.getElementById("neworderPage").classList.remove("hidden");
 
-if(page==="order"){
+    calculatePrice();
 
-document.getElementById("orderPage").classList.remove("hidden");
+  }
 
-calculatePrice();
+  if(page==="orders"){
 
-}
+    document.getElementById("ordersPage").classList.remove("hidden");
 
-if(page==="orders"){
+    displayOrders();
 
-document.getElementById("ordersPage").classList.remove("hidden");
-
-displayOrders();
-
-}
-
+  }
 }
 
 
 function calculatePrice(){
 
-const service=document.getElementById("service").value;
+  const service=document.getElementById("service");
 
-const quantity=
-Number(document.getElementById("quantity").value)||0;
+  const selected=service.options[service.selectedIndex];
 
-const total=
-(quantity/1000)*prices[service];
+  const price=Number(selected.dataset.price);
 
-document.getElementById("total").innerText=
-"Rs "+total.toFixed(2);
+  const quantity=Number(document.getElementById("quantity").value);
 
+  const total=(price/1000)*quantity;
+
+  document.getElementById("totalPrice").innerText=
+    total.toFixed(2);
 }
 
 
 function placeOrder(){
 
-const email=getCurrentUser();
+  const serviceElement=document.getElementById("service");
 
-if(!email){
+  const selected=serviceElement.options[
+    serviceElement.selectedIndex
+  ];
 
-alert("Please login first.");
+  const service=selected.value;
 
-return;
+  const price=Number(selected.dataset.price);
 
-}
+  const link=document.getElementById("orderLink").value.trim();
 
-const service=document.getElementById("service").value;
+  const quantity=Number(document.getElementById("quantity").value);
 
-const link=document.getElementById("link").value.trim();
+  const total=(price/1000)*quantity;
 
-const quantity=
-Number(document.getElementById("quantity").value);
+  const msg=document.getElementById("orderMessage");
 
-if(!link||!quantity||quantity<1){
+  if(!link || !quantity || quantity<1){
 
-showMessage(
-"orderMessage",
-"⚠️ Please enter link and quantity.",
-"error"
-);
+    msg.className="error";
+    msg.innerHTML="⚠️ Please enter Post/Profile Link and Quantity.";
+    return;
 
-return;
+  }
 
-}
+  const user=getUser();
 
-const total=
-(quantity/1000)*prices[service];
+  const orders=getOrders();
 
-const orders=
-JSON.parse(localStorage.getItem("smmOrders")||"[]");
+  const order={
 
-const order={
+    id:Date.now(),
 
-id:"ORD-"+Date.now(),
+    customer:user.email,
 
-email:email,
+    service:service,
 
-service:service,
+    link:link,
 
-link:link,
+    quantity:quantity,
 
-quantity:quantity,
+    total:total,
 
-total:total,
+    status:"Pending",
 
-status:"Pending",
+    date:new Date().toLocaleString()
 
-date:new Date().toLocaleString()
+  };
 
-};
+  orders.push(order);
 
-orders.push(order);
+  localStorage.setItem(
+    "smmOrders",
+    JSON.stringify(orders)
+  );
 
-localStorage.setItem("smmOrders",JSON.stringify(orders));
+  msg.className="success";
 
-showMessage(
-"orderMessage",
-"✅ Order placed successfully! Order ID: "+order.id,
-"success"
-);
+  msg.innerHTML=
+    "✅ Order placed successfully!<br><br>"+
+    "Service: "+service+"<br>"+
+    "Quantity: "+quantity+"<br>"+
+    "Total: Rs "+total.toFixed(2);
 
-document.getElementById("link").value="";
-document.getElementById("quantity").value="";
+  document.getElementById("orderLink").value="";
+  document.getElementById("quantity").value="";
 
-document.getElementById("total").innerText="Rs 0.00";
+  document.getElementById("totalPrice").innerText="0.00";
 
 }
 
 
 function displayOrders(){
 
-const email=getCurrentUser();
+  const user=getUser();
 
-const orders=
-JSON.parse(localStorage.getItem("smmOrders")||"[]");
+  const orders=getOrders().filter(
+    order=>order.customer===user.email
+  );
 
-const myOrders=
-orders.filter(order=>order.email===email);
+  const list=document.getElementById("ordersList");
 
-const list=document.getElementById("ordersList");
+  if(orders.length===0){
 
-if(myOrders.length===0){
+    list.innerHTML=
+      "<p>📋 No orders found yet.</p>";
 
-list.innerHTML=
-'<div class="empty">📋 No orders found yet.</div>';
+    return;
+  }
 
-return;
+  list.innerHTML="";
 
-}
+  orders.reverse().forEach(function(order){
 
-list.innerHTML="";
+    const div=document.createElement("div");
 
-myOrders.reverse().forEach(order=>{
+    div.className="order";
 
-const div=document.createElement("div");
+    div.innerHTML=
+      "<b>🆔 Order ID:</b> "+order.id+"<br><br>"+
+      "<b>📱 Service:</b> "+order.service+"<br>"+
+      "<b>🔗 Link:</b> "+order.link+"<br>"+
+      "<b>📊 Quantity:</b> "+order.quantity+"<br>"+
+      "<b>💵 Price:</b> Rs "+order.total.toFixed(2)+"<br>"+
+      "<b>📌 Status:</b> "+order.status+"<br>"+
+      "<b>🕒 Date:</b> "+order.date;
 
-div.className="order";
+    list.appendChild(div);
 
-div.innerHTML=
-
-"<b>🆔 Order ID:</b> "+order.id+
-"<br><br>"+
-
-"<b>📱 Service:</b> "+order.service+
-"<br>"+
-
-"<b>📊 Quantity:</b> "+order.quantity+
-"<br>"+
-
-"<b>💵 Price:</b> Rs "+Number(order.total).toFixed(2)+
-"<br>"+
-
-"<b>🔗 Link:</b> "+order.link+
-"<br>"+
-
-"<b>📅 Date:</b> "+order.date+
-"<br>"+
-
-'<span class="status">🟡 '+order.status+"</span>";
-
-list.appendChild(div);
-
-});
+  });
 
 }
 
 
-function showMessage(id,text,type){
+function logout(){
 
-const box=document.getElementById(id);
+  document.getElementById("navbar").classList.add("hidden");
 
-box.style.display="block";
+  document.getElementById("dashboardPage").classList.add("hidden");
+  document.getElementById("neworderPage").classList.add("hidden");
+  document.getElementById("ordersPage").classList.add("hidden");
 
-if(type==="error"){
-
-box.style.background="#ffecec";
-box.style.color="#c62828";
-
-}else{
-
-box.style.background="#e8f7e8";
-box.style.color="#168321";
-
-}
-
-box.innerHTML=text;
+  showLogin();
 
 }
 
 
 window.onload=function(){
 
-if(getCurrentUser()){
+  const user=getUser();
 
-loadDashboard();
+  if(user){
 
-}else{
+    document.getElementById("navbar").classList.remove("hidden");
 
-showPage("login");
+    showPage("dashboard");
 
-}
+  }else{
+
+    showLogin();
+
+  }
 
 };
 
