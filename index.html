@@ -131,6 +131,7 @@
 
     .order p {
       margin: 7px 0;
+      word-break: break-word;
     }
 
     .success {
@@ -165,6 +166,11 @@
       font-weight: bold;
       color: #6c2cff;
     }
+
+    .price-box {
+      font-size: 18px;
+      margin: 15px 0;
+    }
   </style>
 </head>
 
@@ -177,93 +183,190 @@
 
 <!-- LOGIN -->
 <div id="loginPage" class="container">
+
   <div class="box">
+
     <h2>🔐 Customer Login</h2>
 
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Password">
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Email"
+    >
 
-    <button class="main-btn" onclick="loginUser()">Login</button>
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Password"
+    >
+
+    <button class="main-btn" onclick="loginUser()">
+      Login
+    </button>
 
     <button class="link-btn" onclick="showSignup()">
       Don't have an account? Create Account
     </button>
 
     <div id="loginMessage"></div>
+
   </div>
+
 </div>
+
 
 <!-- SIGNUP -->
 <div id="signupPage" class="container hidden">
+
   <div class="box">
+
     <h2>📝 Create Account</h2>
 
-    <input type="text" id="signupName" placeholder="Full Name">
-    <input type="email" id="signupEmail" placeholder="Email">
-    <input type="password" id="signupPassword" placeholder="Password">
+    <input
+      type="text"
+      id="signupName"
+      placeholder="Full Name"
+    >
 
-    <button class="main-btn" onclick="signupUser()">Create Account</button>
+    <input
+      type="email"
+      id="signupEmail"
+      placeholder="Email"
+    >
+
+    <input
+      type="password"
+      id="signupPassword"
+      placeholder="Password"
+    >
+
+    <button class="main-btn" onclick="signupUser()">
+      Create Account
+    </button>
 
     <button class="link-btn" onclick="showLogin()">
       Already have an account? Login
     </button>
 
     <div id="signupMessage"></div>
+
   </div>
+
 </div>
 
-<!-- APP -->
+
+<!-- MAIN APP -->
 <div id="app" class="hidden">
 
   <nav>
-    <button onclick="showSection('dashboard')">🏠 Dashboard</button>
-    <button onclick="showSection('order')">🛒 New Order</button>
-    <button onclick="showSection('orders')">📋 My Orders</button>
-    <button onclick="logoutUser()">🚪 Logout</button>
+
+    <button onclick="showSection('dashboard')">
+      🏠 Dashboard
+    </button>
+
+    <button onclick="showSection('order')">
+      🛒 New Order
+    </button>
+
+    <button onclick="showSection('orders')">
+      📋 My Orders
+    </button>
+
+    <button onclick="logoutUser()">
+      🚪 Logout
+    </button>
+
   </nav>
+
 
   <!-- DASHBOARD -->
   <section id="dashboard" class="container">
 
     <div class="box">
+
       <h2>💰 Your Balance</h2>
-      <div class="balance">Rs 0.00</div>
+
+      <div class="balance">
+        Rs 0.00
+      </div>
+
       <p id="welcomeText" style="margin-top:10px;"></p>
+
     </div>
 
-    <h2 style="margin-bottom:15px;">🔥 All Services</h2>
 
-    <div class="service" onclick="openOrder('Instagram Likes')">
+    <h2 style="margin-bottom:15px;">
+      🔥 All Services
+    </h2>
+
+
+    <div
+      class="service"
+      onclick="openOrder('Instagram Likes')"
+    >
       <h3>📸 Instagram</h3>
-      <p>Likes • Followers • Views • Comments</p>
+      <p>
+        Likes • Followers • Views • Comments
+      </p>
     </div>
 
-    <div class="service" onclick="openOrder('TikTok Likes')">
+
+    <div
+      class="service"
+      onclick="openOrder('TikTok Likes')"
+    >
       <h3>🎵 TikTok</h3>
-      <p>Likes • Followers • Views • Shares</p>
+      <p>
+        Likes • Followers • Views • Shares
+      </p>
     </div>
 
-    <div class="service" onclick="openOrder('YouTube Views')">
+
+    <div
+      class="service"
+      onclick="openOrder('YouTube Views')"
+    >
       <h3>▶️ YouTube</h3>
-      <p>Views • Likes • Subscribers • Comments</p>
+      <p>
+        Views • Likes • Subscribers • Comments
+      </p>
     </div>
 
-    <div class="service" onclick="openOrder('Facebook Likes')">
+
+    <div
+      class="service"
+      onclick="openOrder('Facebook Likes')"
+    >
       <h3>📘 Facebook</h3>
-      <p>Likes • Followers • Page Likes • Comments</p>
+      <p>
+        Likes • Followers • Page Likes • Comments
+      </p>
     </div>
 
-    <div class="service" onclick="openOrder('Telegram Members')">
+
+    <div
+      class="service"
+      onclick="openOrder('Telegram Members')"
+    >
       <h3>✈️ Telegram</h3>
-      <p>Members • Views • Reactions</p>
+      <p>
+        Members • Views • Reactions
+      </p>
     </div>
 
-    <div class="service" onclick="openOrder('Comments')">
+
+    <div
+      class="service"
+      onclick="openOrder('Comments')"
+    >
       <h3>💬 Comments</h3>
-      <p>Social Media Comments Services</p>
+      <p>
+        Social Media Comments Services
+      </p>
     </div>
 
   </section>
+
 
   <!-- NEW ORDER -->
   <section id="order" class="container hidden">
@@ -272,49 +375,140 @@
 
       <h2>🛒 New Order</h2>
 
-      <label>📱 Select Service</label>
+      <label>
+        📱 Select Service
+      </label>
 
-      <select id="service" onchange="calculatePrice()">
+      <select
+        id="service"
+        onchange="calculatePrice()"
+      >
 
-        <option value="Instagram Likes" data-price="200">Instagram Likes — Rs 200 / 1,000</option>
-        <option value="Instagram Followers" data-price="500">Instagram Followers — Rs 500 / 1,000</option>
-        <option value="Instagram Views" data-price="100">Instagram Views — Rs 100 / 1,000</option>
-        <option value="Instagram Comments" data-price="300">Instagram Comments — Rs 300 / 1,000</option>
+        <option value="Instagram Likes" data-price="200">
+          Instagram Likes — Rs 200 / 1,000
+        </option>
 
-        <option value="TikTok Likes" data-price="200">TikTok Likes — Rs 200 / 1,000</option>
-        <option value="TikTok Followers" data-price="500">TikTok Followers — Rs 500 / 1,000</option>
-        <option value="TikTok Views" data-price="100">TikTok Views — Rs 100 / 1,000</option>
-        <option value="TikTok Shares" data-price="150">TikTok Shares — Rs 150 / 1,000</option>
+        <option value="Instagram Followers" data-price="500">
+          Instagram Followers — Rs 500 / 1,000
+        </option>
 
-        <option value="YouTube Views" data-price="300">YouTube Views — Rs 300 / 1,000</option>
-        <option value="YouTube Likes" data-price="400">YouTube Likes — Rs 400 / 1,000</option>
-        <option value="YouTube Subscribers" data-price="800">YouTube Subscribers — Rs 800 / 1,000</option>
-        <option value="YouTube Comments" data-price="500">YouTube Comments — Rs 500 / 1,000</option>
+        <option value="Instagram Views" data-price="100">
+          Instagram Views — Rs 100 / 1,000
+        </option>
 
-        <option value="Facebook Likes" data-price="200">Facebook Likes — Rs 200 / 1,000</option>
-        <option value="Facebook Followers" data-price="500">Facebook Followers — Rs 500 / 1,000</option>
-        <option value="Facebook Page Likes" data-price="500">Facebook Page Likes — Rs 500 / 1,000</option>
-        <option value="Facebook Comments" data-price="300">Facebook Comments — Rs 300 / 1,000</option>
+        <option value="Instagram Comments" data-price="300">
+          Instagram Comments — Rs 300 / 1,000
+        </option>
 
-        <option value="Telegram Members" data-price="600">Telegram Members — Rs 600 / 1,000</option>
-        <option value="Telegram Views" data-price="100">Telegram Views — Rs 100 / 1,000</option>
-        <option value="Telegram Reactions" data-price="200">Telegram Reactions — Rs 200 / 1,000</option>
 
-        <option value="Comments" data-price="300">Comments — Rs 300 / 1,000</option>
+        <option value="TikTok Likes" data-price="200">
+          TikTok Likes — Rs 200 / 1,000
+        </option>
+
+        <option value="TikTok Followers" data-price="500">
+          TikTok Followers — Rs 500 / 1,000
+        </option>
+
+        <option value="TikTok Views" data-price="100">
+          TikTok Views — Rs 100 / 1,000
+        </option>
+
+        <option value="TikTok Shares" data-price="150">
+          TikTok Shares — Rs 150 / 1,000
+        </option>
+
+
+        <option value="YouTube Views" data-price="300">
+          YouTube Views — Rs 300 / 1,000
+        </option>
+
+        <option value="YouTube Likes" data-price="400">
+          YouTube Likes — Rs 400 / 1,000
+        </option>
+
+        <option value="YouTube Subscribers" data-price="800">
+          YouTube Subscribers — Rs 800 / 1,000
+        </option>
+
+        <option value="YouTube Comments" data-price="500">
+          YouTube Comments — Rs 500 / 1,000
+        </option>
+
+
+        <option value="Facebook Likes" data-price="200">
+          Facebook Likes — Rs 200 / 1,000
+        </option>
+
+        <option value="Facebook Followers" data-price="500">
+          Facebook Followers — Rs 500 / 1,000
+        </option>
+
+        <option value="Facebook Page Likes" data-price="500">
+          Facebook Page Likes — Rs 500 / 1,000
+        </option>
+
+        <option value="Facebook Comments" data-price="300">
+          Facebook Comments — Rs 300 / 1,000
+        </option>
+
+
+        <option value="Telegram Members" data-price="600">
+          Telegram Members — Rs 600 / 1,000
+        </option>
+
+        <option value="Telegram Views" data-price="100">
+          Telegram Views — Rs 100 / 1,000
+        </option>
+
+        <option value="Telegram Reactions" data-price="200">
+          Telegram Reactions — Rs 200 / 1,000
+        </option>
+
+
+        <option value="Comments" data-price="300">
+          Comments — Rs 300 / 1,000
+        </option>
 
       </select>
 
-      <label>🔗 Post / Profile Link</label>
-      <input type="url" id="link" placeholder="https://...">
 
-      <label>📊 Quantity</label>
-      <input type="number" id="quantity" placeholder="Example: 1000" min="1" oninput="calculatePrice()">
+      <label>
+        🔗 Post / Profile Link
+      </label>
 
-      <h3 style="margin:15px 0;">
-        💵 Total Price: <span id="totalPrice">Rs 0.00</span>
-      </h3>
+      <input
+        type="url"
+        id="link"
+        placeholder="https://..."
+      >
 
-      <button class="main-btn" onclick="placeOrder()">🚀 Place Order</button>
+
+      <label>
+        📊 Quantity
+      </label>
+
+      <input
+        type="number"
+        id="quantity"
+        placeholder="Example: 1000"
+        min="1"
+        oninput="calculatePrice()"
+      >
+
+
+      <div class="price-box">
+        💵 Total Price:
+        <b id="totalPrice">Rs 0.00</b>
+      </div>
+
+
+      <button
+        class="main-btn"
+        onclick="placeOrder()"
+      >
+        🚀 Place Order
+      </button>
+
 
       <div id="orderMessage"></div>
 
@@ -322,192 +516,284 @@
 
   </section>
 
+
   <!-- MY ORDERS -->
   <section id="orders" class="container hidden">
 
     <div class="box">
+
       <h2>📋 My Orders</h2>
-      <div id="ordersList">Loading orders...</div>
+
+      <div id="ordersList">
+        Loading orders...
+      </div>
+
     </div>
 
   </section>
 
 </div>
 
+
 <footer>
   © 2026 Mr SMM Pannels — All Rights Reserved
 </footer>
 
 
-<!-- FIREBASE -->
+<!-- SUPABASE -->
 <script type="module">
 
-  import { initializeApp } 
-    from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
   import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    addDoc,
-    collection,
-    query,
-    where,
-    getDocs,
-    orderBy
-  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    createClient
+  } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAvusfJE0q1lNc9phHRJGY9Jrj0xUZD9Os",
-    authDomain: "mr-smm-pannels.firebaseapp.com",
-    projectId: "mr-smm-pannels",
-    storageBucket: "mr-smm-pannels.firebasestorage.app",
-    messagingSenderId: "456809334850",
-    appId: "1:456809334850:web:df2728a1fafe99c1dd05db",
-    measurementId: "G-6QB3L9RS4L"
-  };
+  /* SUPABASE CONNECTION */
+
+  const SUPABASE_URL =
+    "https://lgrdxyjbmzwhhnkfmups.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
 
 
-  const app = initializeApp(firebaseConfig);
+  const supabase =
+    createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-  const auth = getAuth(app);
 
-  const db = getFirestore(app);
-
+  /* SHOW SIGNUP */
 
   window.showSignup = function() {
 
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("signupPage").classList.remove("hidden");
+    document
+      .getElementById("loginPage")
+      .classList.add("hidden");
+
+    document
+      .getElementById("signupPage")
+      .classList.remove("hidden");
 
   };
 
+
+  /* SHOW LOGIN */
 
   window.showLogin = function() {
 
-    document.getElementById("signupPage").classList.add("hidden");
-    document.getElementById("loginPage").classList.remove("hidden");
+    document
+      .getElementById("signupPage")
+      .classList.add("hidden");
+
+    document
+      .getElementById("loginPage")
+      .classList.remove("hidden");
 
   };
 
 
+  /* SIGNUP */
+
   window.signupUser = async function() {
 
-    const name = document.getElementById("signupName").value.trim();
-    const email = document.getElementById("signupEmail").value.trim();
-    const password = document.getElementById("signupPassword").value;
+    const name =
+      document
+        .getElementById("signupName")
+        .value
+        .trim();
 
-    const message = document.getElementById("signupMessage");
+    const email =
+      document
+        .getElementById("signupEmail")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("signupPassword")
+        .value;
+
+    const message =
+      document.getElementById("signupMessage");
+
 
     if (!name || !email || !password) {
 
       message.className = "error";
-      message.innerText = "⚠️ Please fill all fields.";
+
+      message.innerText =
+        "⚠️ Please fill all fields.";
 
       return;
     }
+
 
     if (password.length < 6) {
 
       message.className = "error";
-      message.innerText = "⚠️ Password must be at least 6 characters.";
+
+      message.innerText =
+        "⚠️ Password must be at least 6 characters.";
 
       return;
     }
 
+
     try {
 
-      const userCredential =
-        await createUserWithEmailAndPassword(auth, email, password);
+      const {
+        data,
+        error
+      } =
+        await supabase.auth.signUp({
 
-      const user = userCredential.user;
+          email: email,
 
-      await setDoc(doc(db, "users", user.uid), {
+          password: password,
 
-        name: name,
-        email: email,
-        balance: 0,
-        createdAt: new Date().toISOString()
+          options: {
 
-      });
+            data: {
+              full_name: name
+            }
 
-      message.className = "success";
-      message.innerText = "✅ Account created successfully!";
+          }
+
+        });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      message.className =
+        "success";
+
+      message.innerText =
+        "✅ Account created successfully!";
+
+
+      document
+        .getElementById("signupPassword")
+        .value = "";
+
 
     } catch (error) {
 
-      message.className = "error";
+      message.className =
+        "error";
 
-      if (error.code === "auth/email-already-in-use") {
-
-        message.innerText = "⚠️ This email already has an account. Please login.";
-
-      } else {
-
-        message.innerText = "❌ " + error.message;
-
-      }
+      message.innerText =
+        "❌ " + error.message;
 
     }
 
   };
 
+
+  /* LOGIN */
 
   window.loginUser = async function() {
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+    const email =
+      document
+        .getElementById("loginEmail")
+        .value
+        .trim();
 
-    const message = document.getElementById("loginMessage");
+    const password =
+      document
+        .getElementById("loginPassword")
+        .value;
+
+    const message =
+      document.getElementById("loginMessage");
+
 
     if (!email || !password) {
 
-      message.className = "error";
-      message.innerText = "⚠️ Please enter email and password.";
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Please enter email and password.";
 
       return;
     }
 
+
     try {
 
-      await signInWithEmailAndPassword(auth, email, password);
+      const {
+        error
+      } =
+        await supabase.auth.signInWithPassword({
 
-      message.className = "success";
-      message.innerText = "✅ Login successful!";
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      message.className =
+        "success";
+
+      message.innerText =
+        "✅ Login successful!";
+
 
     } catch (error) {
 
-      message.className = "error";
-      message.innerText = "❌ Invalid email or password.";
+      message.className =
+        "error";
+
+      message.innerText =
+        "❌ " + error.message;
 
     }
 
   };
 
 
+  /* LOGOUT */
+
   window.logoutUser = async function() {
 
-    await signOut(auth);
+    await supabase.auth.signOut();
 
   };
 
 
+  /* SHOW SECTION */
+
   window.showSection = function(section) {
 
-    document.getElementById("dashboard").classList.add("hidden");
-    document.getElementById("order").classList.add("hidden");
-    document.getElementById("orders").classList.add("hidden");
+    document
+      .getElementById("dashboard")
+      .classList.add("hidden");
 
-    document.getElementById(section).classList.remove("hidden");
+    document
+      .getElementById("order")
+      .classList.add("hidden");
+
+    document
+      .getElementById("orders")
+      .classList.add("hidden");
+
+
+    document
+      .getElementById(section)
+      .classList.remove("hidden");
+
 
     if (section === "orders") {
 
@@ -518,9 +804,13 @@
   };
 
 
+  /* OPEN ORDER */
+
   window.openOrder = function(serviceName) {
 
-    document.getElementById("service").value = serviceName;
+    document
+      .getElementById("service")
+      .value = serviceName;
 
     calculatePrice();
 
@@ -529,62 +819,110 @@
   };
 
 
+  /* CALCULATE PRICE */
+
   window.calculatePrice = function() {
 
-    const select = document.getElementById("service");
+    const select =
+      document.getElementById("service");
 
-    const selectedOption = select.options[select.selectedIndex];
+    const selectedOption =
+      select.options[
+        select.selectedIndex
+      ];
+
 
     const pricePerThousand =
-      Number(selectedOption.dataset.price);
+      Number(
+        selectedOption.dataset.price
+      );
+
 
     const quantity =
-      Number(document.getElementById("quantity").value);
+      Number(
+        document
+          .getElementById("quantity")
+          .value
+      );
+
 
     if (!quantity) {
 
-      document.getElementById("totalPrice").innerText =
-        "Rs 0.00";
+      document
+        .getElementById("totalPrice")
+        .innerText = "Rs 0.00";
 
       return;
 
     }
 
-    const total =
-      (quantity / 1000) * pricePerThousand;
 
-    document.getElementById("totalPrice").innerText =
-      "Rs " + total.toFixed(2);
+    const total =
+      (quantity / 1000)
+      * pricePerThousand;
+
+
+    document
+      .getElementById("totalPrice")
+      .innerText =
+        "Rs " + total.toFixed(2);
 
   };
 
 
+  /* PLACE ORDER */
+
   window.placeOrder = async function() {
 
-    const user = auth.currentUser;
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabase.auth.getUser();
+
 
     if (!user) {
 
       alert("Please login first.");
+
       return;
 
     }
 
+
     const service =
-      document.getElementById("service").value;
+      document
+        .getElementById("service")
+        .value;
+
 
     const link =
-      document.getElementById("link").value.trim();
+      document
+        .getElementById("link")
+        .value
+        .trim();
+
 
     const quantity =
-      Number(document.getElementById("quantity").value);
+      Number(
+        document
+          .getElementById("quantity")
+          .value
+      );
+
 
     const message =
-      document.getElementById("orderMessage");
+      document.getElementById(
+        "orderMessage"
+      );
+
 
     if (!link || !quantity) {
 
-      message.className = "error";
+      message.className =
+        "error";
+
       message.innerText =
         "⚠️ Please enter the link and quantity.";
 
@@ -592,63 +930,121 @@
 
     }
 
+
     const select =
-      document.getElementById("service");
+      document.getElementById(
+        "service"
+      );
+
 
     const selectedOption =
-      select.options[select.selectedIndex];
+      select.options[
+        select.selectedIndex
+      ];
+
 
     const pricePerThousand =
-      Number(selectedOption.dataset.price);
+      Number(
+        selectedOption.dataset.price
+      );
+
 
     const price =
-      (quantity / 1000) * pricePerThousand;
+      (quantity / 1000)
+      * pricePerThousand;
+
 
     try {
 
-      const order = {
+      const {
+        error
+      } =
+        await supabase
+          .from("orders")
+          .insert({
 
-        userId: user.uid,
-        service: service,
-        link: link,
-        quantity: quantity,
-        price: Number(price.toFixed(2)),
-        status: "Pending",
-        createdAt: new Date().toISOString()
+            user_email:
+              user.email,
 
-      };
+            service:
+              service,
 
-      await addDoc(collection(db, "orders"), order);
+            link:
+              link,
 
-      message.className = "success";
+            quantity:
+              quantity,
+
+            price:
+              Number(
+                price.toFixed(2)
+              ),
+
+            status:
+              "Pending"
+
+          });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      message.className =
+        "success";
 
       message.innerText =
         "✅ Order placed successfully!";
 
-      document.getElementById("link").value = "";
-      document.getElementById("quantity").value = "";
 
-      document.getElementById("totalPrice").innerText =
-        "Rs 0.00";
+      document
+        .getElementById("link")
+        .value = "";
+
+
+      document
+        .getElementById("quantity")
+        .value = "";
+
+
+      document
+        .getElementById("totalPrice")
+        .innerText =
+          "Rs 0.00";
+
 
     } catch (error) {
 
-      message.className = "error";
+      message.className =
+        "error";
 
       message.innerText =
-        "❌ Order could not be saved: " + error.message;
+        "❌ Order could not be saved: "
+        + error.message;
 
     }
 
   };
 
 
+  /* LOAD MY ORDERS */
+
   async function loadOrders() {
 
-    const user = auth.currentUser;
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabase.auth.getUser();
+
 
     const list =
-      document.getElementById("ordersList");
+      document.getElementById(
+        "ordersList"
+      );
+
 
     if (!user) {
 
@@ -659,16 +1055,34 @@
 
     }
 
+
     try {
 
-      const q = query(
-        collection(db, "orders"),
-        where("userId", "==", user.uid)
-      );
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("orders")
+          .select("*")
+          .eq(
+            "user_email",
+            user.email
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
 
-      const snapshot = await getDocs(q);
 
-      if (snapshot.empty) {
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data || data.length === 0) {
 
         list.innerHTML =
           "📋 No orders found yet.";
@@ -677,36 +1091,63 @@
 
       }
 
+
       let html = "";
 
-      snapshot.forEach((docSnap) => {
 
-        const order = docSnap.data();
+      data.forEach((order) => {
 
         const date =
-          new Date(order.createdAt).toLocaleString();
+          order.created_at
+            ? new Date(
+                order.created_at
+              ).toLocaleString()
+            : "N/A";
+
 
         html += `
 
           <div class="order">
 
-            <p><b>🆔 Order ID:</b> ${docSnap.id}</p>
+            <p>
+              <b>🆔 Order ID:</b>
+              ${order.id}
+            </p>
 
-            <p><b>📱 Service:</b> ${order.service}</p>
+            <p>
+              <b>📱 Service:</b>
+              ${escapeHtml(order.service)}
+            </p>
 
-            <p><b>🔗 Link:</b>
-              <a href="${order.link}" target="_blank">
-                ${order.link}
+            <p>
+              <b>🔗 Link:</b>
+              <a
+                href="${escapeAttribute(order.link)}"
+                target="_blank"
+              >
+                ${escapeHtml(order.link)}
               </a>
             </p>
 
-            <p><b>📊 Quantity:</b> ${order.quantity}</p>
+            <p>
+              <b>📊 Quantity:</b>
+              ${order.quantity}
+            </p>
 
-            <p><b>💵 Price:</b> Rs ${Number(order.price).toFixed(2)}</p>
+            <p>
+              <b>💵 Price:</b>
+              Rs ${Number(order.price).toFixed(2)}
+            </p>
 
-            <p><b>📌 Status:</b> ${order.status}</p>
+            <p>
+              <b>📌 Status:</b>
+              ${escapeHtml(order.status)}
+            </p>
 
-            <p><b>🕒 Date:</b> ${date}</p>
+            <p>
+              <b>🕒 Date:</b>
+              ${date}
+            </p>
 
           </div>
 
@@ -714,49 +1155,100 @@
 
       });
 
-      list.innerHTML = html;
+
+      list.innerHTML =
+        html;
+
 
     } catch (error) {
 
       list.innerHTML =
-        "❌ Could not load orders: " + error.message;
+        "❌ Could not load orders: "
+        + error.message;
 
     }
 
   }
 
 
-  onAuthStateChanged(auth, async (user) => {
+  /* SECURITY HELPERS */
 
-    if (user) {
+  function escapeHtml(value) {
 
-      document.getElementById("loginPage")
-        .classList.add("hidden");
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
 
-      document.getElementById("signupPage")
-        .classList.add("hidden");
+  }
 
-      document.getElementById("app")
-        .classList.remove("hidden");
 
-      document.getElementById("welcomeText")
-        .innerText =
-        "Welcome to Mr SMM Pannels!";
+  function escapeAttribute(value) {
 
-    } else {
+    return String(value ?? "")
+      .replaceAll('"', "%22")
+      .replaceAll("'", "%27");
 
-      document.getElementById("app")
-        .classList.add("hidden");
+  }
 
-      document.getElementById("signupPage")
-        .classList.add("hidden");
 
-      document.getElementById("loginPage")
-        .classList.remove("hidden");
+  /* AUTH STATE */
+
+  supabase.auth.onAuthStateChange(
+    async (event, session) => {
+
+      const user =
+        session?.user || null;
+
+
+      if (user) {
+
+        document
+          .getElementById("loginPage")
+          .classList.add("hidden");
+
+        document
+          .getElementById("signupPage")
+          .classList.add("hidden");
+
+        document
+          .getElementById("app")
+          .classList.remove("hidden");
+
+
+        const name =
+          user.user_metadata?.full_name
+          || user.email
+          || "Customer";
+
+
+        document
+          .getElementById("welcomeText")
+          .innerText =
+            "Welcome, " + name + "!";
+
+
+      } else {
+
+        document
+          .getElementById("app")
+          .classList.add("hidden");
+
+        document
+          .getElementById("signupPage")
+          .classList.add("hidden");
+
+        document
+          .getElementById("loginPage")
+          .classList.remove("hidden");
+
+      }
 
     }
+  );
 
-  });
 
 </script>
 
