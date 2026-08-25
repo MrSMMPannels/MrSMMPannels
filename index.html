@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr SMM Pannels</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(135deg, #6c2cff, #9b4dff);
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .balance {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .balance h2 {
+      color: #6c2cff;
+      margin-bottom: 8px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .service {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .service:hover {
+      transform: translateY(-3px);
+    }
+
+    .service h3 {
+      margin-bottom: 8px;
+      color: #6c2cff;
+    }
+
+    .service p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .order-box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .order-box h2 {
+      margin-bottom: 20px;
+      color: #6c2cff;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: #6c2cff;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 9px;
+      background: #6c2cff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #5520d8;
+    }
+
+    #message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+      background: #e8f7e8;
+      color: #168321;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      margin-top: 30px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🚀 Mr SMM Pannels</h1>
+  <p>Social Media Marketing Services</p>
+</header>
+
+<div class="container">
+
+  <div class="balance">
+    <h2>💰 Your Balance</h2>
+    <p>Rs 0.00</p>
+  </div>
+
+  <h2 style="margin-bottom:15px;">🔥 All Services</h2>
+
+  <div class="services">
+
+    <div class="service" onclick="selectService('Instagram Likes')">
+      <h3>📸 Instagram</h3>
+      <p>Likes • Followers • Views • Comments</p>
+    </div>
+
+    <div class="service" onclick="selectService('TikTok Likes')">
+      <h3>🎵 TikTok</h3>
+      <p>Likes • Followers • Views • Shares</p>
+    </div>
+
+    <div class="service" onclick="selectService('YouTube Views')">
+      <h3>▶️ YouTube</h3>
+      <p>Views • Likes • Subscribers • Comments</p>
+    </div>
+
+    <div class="service" onclick="selectService('Facebook Likes')">
+      <h3>📘 Facebook</h3>
+      <p>Likes • Followers • Page Likes • Comments</p>
+    </div>
+
+    <div class="service" onclick="selectService('Telegram Members')">
+      <h3>✈️ Telegram</h3>
+      <p>Members • Views • Reactions</p>
+    </div>
+
+    <div class="service" onclick="selectService('Comments')">
+      <h3>💬 Comments</h3>
+      <p>Social Media Comments Services</p>
+    </div>
+
+  </div>
+
+  <div class="order-box">
+
+    <h2>🛒 New Order</h2>
+
+    <label for="service">Select Service</label>
+
+    <select id="service">
+      <option>Instagram Likes</option>
+      <option>Instagram Followers</option>
+      <option>Instagram Views</option>
+      <option>Instagram Comments</option>
+
+      <option>TikTok Likes</option>
+      <option>TikTok Followers</option>
+      <option>TikTok Views</option>
+      <option>TikTok Shares</option>
+
+      <option>YouTube Views</option>
+      <option>YouTube Likes</option>
+      <option>YouTube Subscribers</option>
+      <option>YouTube Comments</option>
+
+      <option>Facebook Likes</option>
+      <option>Facebook Followers</option>
+      <option>Facebook Page Likes</option>
+      <option>Facebook Comments</option>
+
+      <option>Telegram Members</option>
+      <option>Telegram Views</option>
+      <option>Telegram Reactions</option>
+
+      <option>Comments</option>
+    </select>
+
+    <label for="link">🔗 Post / Profile Link</label>
+    <input
+      type="url"
+      id="link"
+      placeholder="https://..."
+    >
+
+    <label for="quantity">📊 Quantity</label>
+    <input
+      type="number"
+      id="quantity"
+      placeholder="Example: 1000"
+      min="1"
+    >
+
+    <button onclick="placeOrder()">🚀 Place Order</button>
+
+    <div id="message"></div>
+
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Mr SMM Pannels — All Rights Reserved
+</footer>
+
+<script>
+
+function selectService(serviceName) {
+  document.getElementById("service").value = serviceName;
+  document.querySelector(".order-box").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function placeOrder() {
+
+  const service = document.getElementById("service").value;
+  const link = document.getElementById("link").value;
+  const quantity = document.getElementById("quantity").value;
+  const message = document.getElementById("message");
+
+  if (link === "" || quantity === "") {
+
+    message.style.display = "block";
+    message.style.background = "#ffecec";
+    message.style.color = "#c62828";
+    message.innerHTML = "⚠️ Please enter the link and quantity.";
+
+    return;
+  }
+
+  message.style.display = "block";
+  message.style.background = "#e8f7e8";
+  message.style.color = "#168321";
+
+  message.innerHTML =
+    "✅ Order received!<br><br>" +
+    "Service: " + service + "<br>" +
+    "Quantity: " + quantity + "<br>" +
+    "Your order is currently a demo order.";
+
+}
+
+</script>
+
+</body>
+</html>
