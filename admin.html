@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mr SMM Pannels - Admin</title>
+
+  <title>Mr SMM Pannels - Admin Panel</title>
 
   <style>
     * {
@@ -26,84 +27,94 @@
     }
 
     header h1 {
-      margin-bottom: 8px;
+      font-size: 28px;
+      margin-bottom: 6px;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 25px auto;
       padding: 0 15px;
     }
 
-    .card {
+    .box {
       background: white;
-      padding: 20px;
-      border-radius: 15px;
+      padding: 25px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.08);
     }
 
-    .card h2 {
+    h2 {
       color: #6c2cff;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
+    input {
       width: 100%;
-      border-collapse: collapse;
-      min-width: 900px;
-    }
-
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-    }
-
-    th {
-      background: #f5f1ff;
-      color: #6c2cff;
-    }
-
-    .status {
-      font-weight: bold;
-    }
-
-    .pending {
-      color: #e67e22;
-    }
-
-    .success {
-      color: #168321;
-    }
-
-    .failed {
-      color: #c62828;
+      padding: 13px;
+      margin: 8px 0 15px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 15px;
     }
 
     button {
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
+      width: 100%;
+      padding: 13px;
       background: #6c2cff;
       color: white;
-      cursor: pointer;
+      border: none;
+      border-radius: 9px;
+      font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
 
     button:hover {
       background: #5520d8;
     }
 
-    #message {
-      margin-top: 15px;
+    .logout {
+      background: #d32f2f;
+      margin-bottom: 20px;
+    }
+
+    .order {
+      background: #f8f9ff;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border-left: 5px solid #6c2cff;
+    }
+
+    .order p {
+      margin: 8px 0;
+      word-break: break-word;
+    }
+
+    .status {
+      font-weight: bold;
+      color: #d97706;
+    }
+
+    .success {
+      background: #e8f7e8;
+      color: #168321;
       padding: 12px;
       border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .error {
+      background: #ffecec;
+      color: #c62828;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .hidden {
       display: none;
     }
 
@@ -122,151 +133,371 @@
   <p>Admin Panel</p>
 </header>
 
-<div class="container">
 
-  <div class="card">
-    <h2>📊 Orders Management</h2>
+<!-- ADMIN LOGIN -->
 
-    <button onclick="loadOrders()">🔄 Refresh Orders</button>
+<div id="loginPage" class="container">
 
-    <div id="message"></div>
-  </div>
+  <div class="box">
 
-  <div class="card">
-    <div class="table-wrap">
+    <h2>🔐 Admin Login</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Email</th>
-            <th>Service</th>
-            <th>Link</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
-        </thead>
+    <input
+      type="email"
+      id="adminEmail"
+      placeholder="Admin Email"
+    >
 
-        <tbody id="ordersTable">
-          <tr>
-            <td colspan="8">Loading orders...</td>
-          </tr>
-        </tbody>
-      </table>
+    <input
+      type="password"
+      id="adminPassword"
+      placeholder="Admin Password"
+    >
 
-    </div>
+    <button onclick="adminLogin()">
+      🔐 Login as Admin
+    </button>
+
+    <div id="loginMessage"></div>
+
   </div>
 
 </div>
+
+
+<!-- ADMIN DASHBOARD -->
+
+<div id="adminPanel" class="container hidden">
+
+  <div class="box">
+
+    <h2>📊 Admin Dashboard</h2>
+
+    <p>
+      Welcome to Mr SMM Pannels Admin Panel.
+    </p>
+
+    <br>
+
+    <button onclick="loadOrders()">
+      🔄 Refresh Orders
+    </button>
+
+    <br><br>
+
+    <button class="logout" onclick="adminLogout()">
+      🚪 Logout
+    </button>
+
+  </div>
+
+
+  <div class="box">
+
+    <h2>📋 All Orders</h2>
+
+    <div id="ordersList">
+      Loading orders...
+    </div>
+
+  </div>
+
+</div>
+
 
 <footer>
   © 2026 Mr SMM Pannels — Admin Panel
 </footer>
 
-<script>
 
-const SUPABASE_URL =
-  "https://lgrdxyjbmzwhhnkfmups.supabase.co";
+<script type="module">
 
-const SUPABASE_ANON_KEY =
-  "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+  import {
+    createClient
+  } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
-async function loadOrders() {
+  /* ================================
+     SUPABASE CONFIG
+  ================================= */
 
-  const table = document.getElementById("ordersTable");
-  const message = document.getElementById("message");
+  const SUPABASE_URL =
+    "https://lgrdxyjbmzwhhnkfmups.supabase.co";
 
-  table.innerHTML =
-    '<tr><td colspan="8">Loading orders...</td></tr>';
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
 
-  try {
 
-    const response = await fetch(
-      SUPABASE_URL +
-      "/rest/v1/orders?select=*&order=created_at.desc",
-      {
-        method: "GET",
-
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization":
-            "Bearer " + SUPABASE_ANON_KEY
-        }
-      }
+  const supabase =
+    createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
     );
 
-    if (!response.ok) {
-      throw new Error("Unable to load orders");
-    }
 
-    const orders = await response.json();
+  /* ================================
+     ADMIN LOGIN
+  ================================= */
 
-    if (orders.length === 0) {
+  window.adminLogin = async function() {
 
-      table.innerHTML =
-        '<tr><td colspan="8">📋 No orders found.</td></tr>';
+    const email =
+      document.getElementById("adminEmail").value.trim();
+
+    const password =
+      document.getElementById("adminPassword").value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+
+    if (!email || !password) {
+
+      message.className = "error";
+
+      message.innerText =
+        "⚠️ Please enter email and password.";
 
       return;
     }
 
-    table.innerHTML = "";
 
-    orders.forEach(order => {
+    try {
 
-      const row = document.createElement("tr");
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
 
-      let statusClass = "pending";
+          email: email,
 
-      if (order.status === "Completed") {
-        statusClass = "success";
+          password: password
+
+        });
+
+
+      if (error) {
+
+        throw error;
+
       }
 
-      if (order.status === "Failed") {
-        statusClass = "failed";
+
+      message.className = "success";
+
+      message.innerText =
+        "✅ Admin login successful!";
+
+
+      document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+
+      document
+        .getElementById("adminPanel")
+        .classList.remove("hidden");
+
+
+      loadOrders();
+
+
+    } catch (error) {
+
+      message.className = "error";
+
+      message.innerText =
+        "❌ Login failed: " + error.message;
+
+    }
+
+  };
+
+
+  /* ================================
+     LOAD ORDERS
+  ================================= */
+
+  window.loadOrders = async function() {
+
+    const list =
+      document.getElementById("ordersList");
+
+
+    list.innerHTML =
+      "⏳ Loading orders...";
+
+
+    try {
+
+      const {
+        data,
+        error
+      } = await supabase
+
+        .from("orders")
+
+        .select("*")
+
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+      if (error) {
+
+        throw error;
+
       }
 
-      row.innerHTML = `
-        <td>${order.id ?? ""}</td>
-        <td>${order.user_email ?? ""}</td>
-        <td>${order.service ?? ""}</td>
-        <td>
-          <a href="${order.link ?? "#"}" target="_blank">
-            Open Link
-          </a>
-        </td>
-        <td>${order.quantity ?? ""}</td>
-        <td>Rs ${order.price ?? "0"}</td>
-        <td class="status ${statusClass}">
-          ${order.status ?? "Pending"}
-        </td>
-        <td>
-          ${order.created_at
-            ? new Date(order.created_at).toLocaleString()
-            : ""}
-        </td>
-      `;
 
-      table.appendChild(row);
+      if (!data || data.length === 0) {
 
-    });
+        list.innerHTML =
+          "📋 No orders found.";
 
-  } catch (error) {
+        return;
 
-    table.innerHTML =
-      '<tr><td colspan="8">❌ Could not load orders.</td></tr>';
+      }
 
-    message.style.display = "block";
-    message.style.background = "#ffecec";
-    message.style.color = "#c62828";
-    message.innerHTML =
-      "⚠️ " + error.message;
+
+      let html = "";
+
+
+      data.forEach(order => {
+
+        const date =
+          order.created_at
+          ? new Date(order.created_at)
+              .toLocaleString()
+          : "N/A";
+
+
+        html += `
+
+          <div class="order">
+
+            <p>
+              <b>🆔 Order ID:</b>
+              ${order.id}
+            </p>
+
+            <p>
+              <b>📧 Customer:</b>
+              ${order.user_email || order.user_id || "N/A"}
+            </p>
+
+            <p>
+              <b>📱 Service:</b>
+              ${order.service || "N/A"}
+            </p>
+
+            <p>
+              <b>🔗 Link:</b>
+              <a
+                href="${order.link || "#"}"
+                target="_blank"
+              >
+                ${order.link || "N/A"}
+              </a>
+            </p>
+
+            <p>
+              <b>📊 Quantity:</b>
+              ${order.quantity || 0}
+            </p>
+
+            <p>
+              <b>💵 Price:</b>
+              Rs ${Number(order.price || 0).toFixed(2)}
+            </p>
+
+            <p>
+              <b>📌 Status:</b>
+              <span class="status">
+                ${order.status || "Pending"}
+              </span>
+            </p>
+
+            <p>
+              <b>🕒 Date:</b>
+              ${date}
+            </p>
+
+          </div>
+
+        `;
+
+      });
+
+
+      list.innerHTML = html;
+
+
+    } catch (error) {
+
+      list.innerHTML =
+        "❌ Could not load orders: "
+        + error.message;
+
+    }
+
+  };
+
+
+  /* ================================
+     LOGOUT
+  ================================= */
+
+  window.adminLogout = async function() {
+
+    await supabase.auth.signOut();
+
+
+    document
+      .getElementById("adminPanel")
+      .classList.add("hidden");
+
+
+    document
+      .getElementById("loginPage")
+      .classList.remove("hidden");
+
+
+    document
+      .getElementById("loginMessage")
+      .innerText = "";
+
+  };
+
+
+  /* ================================
+     CHECK EXISTING SESSION
+  ================================= */
+
+  const {
+    data: {
+      session
+    }
+  } = await supabase.auth.getSession();
+
+
+  if (session) {
+
+    document
+      .getElementById("loginPage")
+      .classList.add("hidden");
+
+
+    document
+      .getElementById("adminPanel")
+      .classList.remove("hidden");
+
+
+    loadOrders();
+
   }
-}
-
-loadOrders();
 
 </script>
 
