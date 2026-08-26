@@ -48,6 +48,10 @@
       cursor: pointer;
     }
 
+    nav button:hover {
+      background: #5520d8;
+    }
+
     .container {
       max-width: 1000px;
       margin: 25px auto;
@@ -67,7 +71,8 @@
       margin-bottom: 18px;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 13px;
       margin: 8px 0 15px;
@@ -150,6 +155,14 @@
       margin-top: 15px;
     }
 
+    .info {
+      background: #eef3ff;
+      color: #4b45a8;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
     .hidden {
       display: none;
     }
@@ -171,6 +184,27 @@
       font-size: 18px;
       margin: 15px 0;
     }
+
+    .payment-card {
+      background: #f8f9ff;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border-left: 5px solid #168321;
+    }
+
+    .payment-card p {
+      margin: 7px 0;
+      word-break: break-word;
+    }
+
+    .method-box {
+      background: #f1edff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      line-height: 1.7;
+    }
   </style>
 </head>
 
@@ -181,7 +215,9 @@
   <p>Social Media Marketing Services</p>
 </header>
 
+
 <!-- LOGIN -->
+
 <div id="loginPage" class="container">
 
   <div class="box">
@@ -216,6 +252,7 @@
 
 
 <!-- SIGNUP -->
+
 <div id="signupPage" class="container hidden">
 
   <div class="box">
@@ -256,6 +293,7 @@
 
 
 <!-- MAIN APP -->
+
 <div id="app" class="hidden">
 
   <nav>
@@ -272,6 +310,10 @@
       📋 My Orders
     </button>
 
+    <button onclick="showSection('payment')">
+      💳 Add Balance
+    </button>
+
     <button onclick="logoutUser()">
       🚪 Logout
     </button>
@@ -280,6 +322,7 @@
 
 
   <!-- DASHBOARD -->
+
   <section id="dashboard" class="container">
 
     <div class="box">
@@ -291,6 +334,14 @@
       </div>
 
       <p id="welcomeText" style="margin-top:10px;"></p>
+
+      <button
+        class="main-btn"
+        onclick="showSection('payment')"
+        style="margin-top:20px;"
+      >
+        💳 Add Balance
+      </button>
 
     </div>
 
@@ -369,6 +420,7 @@
 
 
   <!-- NEW ORDER -->
+
   <section id="order" class="container hidden">
 
     <div class="box">
@@ -400,7 +452,6 @@
           Instagram Comments — Rs 300 / 1,000
         </option>
 
-
         <option value="TikTok Likes" data-price="200">
           TikTok Likes — Rs 200 / 1,000
         </option>
@@ -416,7 +467,6 @@
         <option value="TikTok Shares" data-price="150">
           TikTok Shares — Rs 150 / 1,000
         </option>
-
 
         <option value="YouTube Views" data-price="300">
           YouTube Views — Rs 300 / 1,000
@@ -434,7 +484,6 @@
           YouTube Comments — Rs 500 / 1,000
         </option>
 
-
         <option value="Facebook Likes" data-price="200">
           Facebook Likes — Rs 200 / 1,000
         </option>
@@ -451,7 +500,6 @@
           Facebook Comments — Rs 300 / 1,000
         </option>
 
-
         <option value="Telegram Members" data-price="600">
           Telegram Members — Rs 600 / 1,000
         </option>
@@ -463,7 +511,6 @@
         <option value="Telegram Reactions" data-price="200">
           Telegram Reactions — Rs 200 / 1,000
         </option>
-
 
         <option value="Comments" data-price="300">
           Comments — Rs 300 / 1,000
@@ -518,6 +565,7 @@
 
 
   <!-- MY ORDERS -->
+
   <section id="orders" class="container hidden">
 
     <div class="box">
@@ -526,6 +574,124 @@
 
       <div id="ordersList">
         Loading orders...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ADD BALANCE / PAYMENT -->
+
+  <section id="payment" class="container hidden">
+
+    <div class="box">
+
+      <h2>💳 Add Balance</h2>
+
+      <div class="info">
+        💡 Payment send karne ke baad neeche transaction details submit karein.
+        Admin payment verify karne ke baad request approve karega.
+      </div>
+
+
+      <div class="method-box">
+
+        <b>🏦 Payment Methods</b>
+
+        <br><br>
+
+        <b>Method:</b> Apna payment method yahan customer ko bata sakte hain.
+
+        <br>
+
+        <b>Account:</b> Apna account number / Easypaisa / JazzCash details yahan add karein.
+
+      </div>
+
+
+      <label>
+        💵 Amount (Rs)
+      </label>
+
+      <input
+        type="number"
+        id="paymentAmount"
+        placeholder="Example: 1000"
+        min="1"
+      >
+
+
+      <label>
+        💳 Payment Method
+      </label>
+
+      <select id="paymentMethod">
+
+        <option value="">
+          Select Payment Method
+        </option>
+
+        <option value="Easypaisa">
+          Easypaisa
+        </option>
+
+        <option value="JazzCash">
+          JazzCash
+        </option>
+
+        <option value="Bank Transfer">
+          Bank Transfer
+        </option>
+
+        <option value="Other">
+          Other
+        </option>
+
+      </select>
+
+
+      <label>
+        🔢 Transaction ID
+      </label>
+
+      <input
+        type="text"
+        id="transactionId"
+        placeholder="Enter transaction ID"
+      >
+
+
+      <label>
+        🧾 Proof
+      </label>
+
+      <input
+        type="text"
+        id="paymentProof"
+        placeholder="Proof image link / screenshot link"
+      >
+
+
+      <button
+        class="main-btn"
+        onclick="submitPayment()"
+      >
+        🚀 Submit Payment Request
+      </button>
+
+
+      <div id="paymentMessage"></div>
+
+    </div>
+
+
+    <div class="box">
+
+      <h2>📋 My Payment Requests</h2>
+
+      <div id="paymentRequestsList">
+        Loading payment requests...
       </div>
 
     </div>
@@ -541,6 +707,7 @@
 
 
 <!-- SUPABASE -->
+
 <script type="module">
 
   import {
@@ -548,10 +715,9 @@
   } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
-  /* SUPABASE CONNECTION */
-
   const SUPABASE_URL =
     "https://lgrdxyjbmzwhhnkfmups.supabase.co";
+
 
   const SUPABASE_KEY =
     "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
@@ -789,6 +955,10 @@
       .getElementById("orders")
       .classList.add("hidden");
 
+    document
+      .getElementById("payment")
+      .classList.add("hidden");
+
 
     document
       .getElementById(section)
@@ -798,6 +968,13 @@
     if (section === "orders") {
 
       loadOrders();
+
+    }
+
+
+    if (section === "payment") {
+
+      loadPaymentRequests();
 
     }
 
@@ -850,7 +1027,8 @@
 
       document
         .getElementById("totalPrice")
-        .innerText = "Rs 0.00";
+        .innerText =
+          "Rs 0.00";
 
       return;
 
@@ -1164,6 +1342,322 @@
 
       list.innerHTML =
         "❌ Could not load orders: "
+        + error.message;
+
+    }
+
+  }
+
+
+  /* SUBMIT PAYMENT */
+
+  window.submitPayment = async function() {
+
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabase.auth.getUser();
+
+
+    const message =
+      document.getElementById(
+        "paymentMessage"
+      );
+
+
+    if (!user) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "❌ Please login first.";
+
+      return;
+
+    }
+
+
+    const amount =
+      Number(
+        document
+          .getElementById("paymentAmount")
+          .value
+      );
+
+
+    const method =
+      document
+        .getElementById("paymentMethod")
+        .value;
+
+
+    const transactionId =
+      document
+        .getElementById("transactionId")
+        .value
+        .trim();
+
+
+    const proof =
+      document
+        .getElementById("paymentProof")
+        .value
+        .trim();
+
+
+    if (!amount || amount <= 0) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Please enter a valid amount.";
+
+      return;
+
+    }
+
+
+    if (!method) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Please select a payment method.";
+
+      return;
+
+    }
+
+
+    if (!transactionId) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Please enter transaction ID.";
+
+      return;
+
+    }
+
+
+    if (!proof) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Please enter proof.";
+
+      return;
+
+    }
+
+
+    try {
+
+      const {
+        error
+      } =
+        await supabase
+          .from("payment_requests")
+          .insert({
+
+            amount:
+              amount,
+
+            method:
+              method,
+
+            transaction_id:
+              transactionId,
+
+            proof:
+              proof,
+
+            status:
+              "Pending"
+
+          });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      message.className =
+        "success";
+
+      message.innerText =
+        "✅ Payment request submitted successfully!";
+
+
+      document
+        .getElementById("paymentAmount")
+        .value = "";
+
+
+      document
+        .getElementById("paymentMethod")
+        .value = "";
+
+
+      document
+        .getElementById("transactionId")
+        .value = "";
+
+
+      document
+        .getElementById("paymentProof")
+        .value = "";
+
+
+      loadPaymentRequests();
+
+
+    } catch (error) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "❌ Payment request could not be saved: "
+        + error.message;
+
+    }
+
+  };
+
+
+  /* LOAD PAYMENT REQUESTS */
+
+  async function loadPaymentRequests() {
+
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabase.auth.getUser();
+
+
+    const list =
+      document.getElementById(
+        "paymentRequestsList"
+      );
+
+
+    if (!user) {
+
+      list.innerHTML =
+        "Please login first.";
+
+      return;
+
+    }
+
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("payment_requests")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data || data.length === 0) {
+
+        list.innerHTML =
+          "📋 No payment requests found.";
+
+        return;
+
+      }
+
+
+      let html = "";
+
+
+      data.forEach((payment) => {
+
+        const date =
+          payment.created_at
+            ? new Date(
+                payment.created_at
+              ).toLocaleString()
+            : "N/A";
+
+
+        html += `
+
+          <div class="payment-card">
+
+            <p>
+              <b>💵 Amount:</b>
+              Rs ${Number(payment.amount || 0).toFixed(2)}
+            </p>
+
+            <p>
+              <b>💳 Method:</b>
+              ${escapeHtml(payment.method)}
+            </p>
+
+            <p>
+              <b>🔢 Transaction ID:</b>
+              ${escapeHtml(payment.transaction_id)}
+            </p>
+
+            <p>
+              <b>🧾 Proof:</b>
+              ${escapeHtml(payment.proof)}
+            </p>
+
+            <p>
+              <b>📌 Status:</b>
+              ${escapeHtml(payment.status || "Pending")}
+            </p>
+
+            <p>
+              <b>🕒 Date:</b>
+              ${date}
+            </p>
+
+          </div>
+
+        `;
+
+      });
+
+
+      list.innerHTML =
+        html;
+
+
+    } catch (error) {
+
+      list.innerHTML =
+        "❌ Could not load payment requests: "
         + error.message;
 
     }
