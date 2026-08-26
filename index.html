@@ -81,6 +81,19 @@
       font-size: 15px;
     }
 
+    input[type="file"] {
+      background: #fff;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .file-help {
+      color: #777;
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 15px;
+    }
+
     .main-btn {
       width: 100%;
       padding: 14px;
@@ -96,6 +109,11 @@
 
     .main-btn:hover {
       background: #5520d8;
+    }
+
+    .main-btn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
     }
 
     .link-btn {
@@ -204,6 +222,21 @@
       border-radius: 10px;
       margin-bottom: 15px;
       line-height: 1.7;
+    }
+
+    .proof-link {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 8px 12px;
+      background: #6c2cff;
+      color: white;
+      text-decoration: none;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+
+    .proof-link:hover {
+      background: #5520d8;
     }
   </style>
 </head>
@@ -663,18 +696,23 @@
 
 
       <label>
-        🧾 Proof
+        🧾 Payment Screenshot / Proof
       </label>
 
       <input
-        type="text"
+        type="file"
         id="paymentProof"
-        placeholder="Proof image link / screenshot link"
+        accept="image/png,image/jpeg,image/jpg,image/webp"
       >
+
+      <div class="file-help">
+        📷 Upload payment screenshot — JPG, PNG or WEBP. Maximum size: 5 MB.
+      </div>
 
 
       <button
         class="main-btn"
+        id="submitPaymentBtn"
         onclick="submitPayment()"
       >
         🚀 Submit Payment Request
@@ -728,6 +766,15 @@
       SUPABASE_URL,
       SUPABASE_KEY
     );
+
+
+  /* PAYMENT PROOF STORAGE SETTINGS */
+
+  const PAYMENT_PROOF_BUCKET =
+    "payment-proofs";
+
+  const MAX_PROOF_SIZE =
+    5 * 1024 * 1024;
 
 
   /* SHOW SIGNUP */
@@ -1349,6 +1396,88 @@
   }
 
 
+  /* UPLOAD PAYMENT PROOF */
+
+  async function uploadPaymentProof(file, user) {
+
+    if (!file) {
+      throw new Error("Please select payment screenshot.");
+    }
+
+
+    if (!file.type.startsWith("image/")) {
+      throw new Error("Proof must be an image file.");
+    }
+
+
+    if (file.size > MAX_PROOF_SIZE) {
+      throw new Error("Proof image must be 5 MB or smaller.");
+    }
+
+
+    const originalName =
+      file.name
+        .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+
+    const filePath =
+      user.id
+      + "/"
+      + Date.now()
+      + "_"
+      + originalName;
+
+
+    const {
+      error
+    } =
+      await supabase
+        .storage
+        .from(PAYMENT_PROOF_BUCKET)
+        .upload(
+          filePath,
+          file,
+          {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: file.type
+          }
+        );
+
+
+    if (error) {
+      throw error;
+    }
+
+
+    return filePath;
+
+  }
+
+
+  /* GET PUBLIC PROOF URL */
+
+  function getProofUrl(path) {
+
+    if (!path) {
+      return "";
+    }
+
+
+    const {
+      data
+    } =
+      supabase
+        .storage
+        .from(PAYMENT_PROOF_BUCKET)
+        .getPublicUrl(path);
+
+
+    return data?.publicUrl || "";
+
+  }
+
+
   /* SUBMIT PAYMENT */
 
   window.submitPayment = async function() {
@@ -1364,6 +1493,12 @@
     const message =
       document.getElementById(
         "paymentMessage"
+      );
+
+
+    const submitButton =
+      document.getElementById(
+        "submitPaymentBtn"
       );
 
 
@@ -1401,11 +1536,10 @@
         .trim();
 
 
-    const proof =
+    const proofFile =
       document
         .getElementById("paymentProof")
-        .value
-        .trim();
+        .files[0];
 
 
     if (!amount || amount <= 0) {
@@ -1447,13 +1581,39 @@
     }
 
 
-    if (!proof) {
+    if (!proofFile) {
 
       message.className =
         "error";
 
       message.innerText =
-        "⚠️ Please enter proof.";
+        "⚠️ Please choose payment screenshot.";
+
+      return;
+
+    }
+
+
+    if (!proofFile.type.startsWith("image/")) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Payment proof must be an image.";
+
+      return;
+
+    }
+
+
+    if (proofFile.size > MAX_PROOF_SIZE) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "⚠️ Image size must be 5 MB or smaller.";
 
       return;
 
@@ -1461,6 +1621,33 @@
 
 
     try {
+
+      submitButton.disabled = true;
+
+      submitButton.innerText =
+        "⏳ Uploading Proof...";
+
+
+      /*
+        STEP 1:
+        Upload screenshot to Supabase Storage
+      */
+
+      const proofPath =
+        await uploadPaymentProof(
+          proofFile,
+          user
+        );
+
+
+      /*
+        STEP 2:
+        Save payment request in database
+      */
+
+      submitButton.innerText =
+        "⏳ Saving Payment Request...";
+
 
       const {
         error
@@ -1479,7 +1666,7 @@
               transactionId,
 
             proof:
-              proof,
+              proofPath,
 
             status:
               "Pending"
@@ -1487,8 +1674,23 @@
           });
 
 
+      /*
+        If database insert fails,
+        try to remove uploaded proof
+        so unused files are not left behind.
+      */
+
       if (error) {
+
+        await supabase
+          .storage
+          .from(PAYMENT_PROOF_BUCKET)
+          .remove([
+            proofPath
+          ]);
+
         throw error;
+
       }
 
 
@@ -1496,7 +1698,7 @@
         "success";
 
       message.innerText =
-        "✅ Payment request submitted successfully!";
+        "✅ Payment screenshot uploaded and payment request submitted successfully!";
 
 
       document
@@ -1528,8 +1730,15 @@
         "error";
 
       message.innerText =
-        "❌ Payment request could not be saved: "
+        "❌ Payment request could not be submitted: "
         + error.message;
+
+    } finally {
+
+      submitButton.disabled = false;
+
+      submitButton.innerText =
+        "🚀 Submit Payment Request";
 
     }
 
@@ -1609,6 +1818,33 @@
             : "N/A";
 
 
+        const proofUrl =
+          getProofUrl(
+            payment.proof
+          );
+
+
+        const proofHtml =
+          proofUrl
+
+            ? `
+                <a
+                  class="proof-link"
+                  href="${escapeAttribute(proofUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  🖼️ View Proof
+                </a>
+              `
+
+            : `
+                <span>
+                  No proof available
+                </span>
+              `;
+
+
         html += `
 
           <div class="payment-card">
@@ -1630,7 +1866,8 @@
 
             <p>
               <b>🧾 Proof:</b>
-              ${escapeHtml(payment.proof)}
+              <br>
+              ${proofHtml}
             </p>
 
             <p>
