@@ -6,25 +6,196 @@
 <title>Mr SMM Pannels - Admin Panel</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f3f6fb;color:#222}
-header{background:linear-gradient(135deg,#6c2cff,#9b4dff);color:white;padding:25px;text-align:center}
-header h1{font-size:28px;margin-bottom:6px}
-.container{max-width:1100px;margin:25px auto;padding:0 15px}
-.box{background:white;padding:25px;margin-bottom:20px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
-h2{color:#6c2cff;margin-bottom:20px}
-input{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:9px;font-size:15px}
-button{padding:12px 16px;background:#6c2cff;color:white;border:0;border-radius:9px;font-weight:bold;cursor:pointer}
-button:hover{background:#5520d8}
-.logout{background:#d32f2f;width:100%;margin-top:15px}
-.order{background:#f8f9ff;padding:18px;border-radius:12px;margin-bottom:15px;border-left:5px solid #6c2cff}
-.order p{margin:8px 0;word-break:break-word}
-select{padding:10px;border:1px solid #ddd;border-radius:8px;margin-top:8px}
-.update{margin-left:8px;background:#168321}
-.success{background:#e8f7e8;color:#168321;padding:10px;border-radius:8px;margin-top:10px}
-.error{background:#ffecec;color:#c62828;padding:10px;border-radius:8px;margin-top:10px}
-.hidden{display:none}
-footer{text-align:center;padding:25px;color:#777}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif
+}
+
+body{
+  background:#f3f6fb;
+  color:#222
+}
+
+header{
+  background:linear-gradient(135deg,#6c2cff,#9b4dff);
+  color:white;
+  padding:25px;
+  text-align:center
+}
+
+header h1{
+  font-size:28px;
+  margin-bottom:6px
+}
+
+.container{
+  max-width:1100px;
+  margin:25px auto;
+  padding:0 15px
+}
+
+.box{
+  background:white;
+  padding:25px;
+  margin-bottom:20px;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08)
+}
+
+h2{
+  color:#6c2cff;
+  margin-bottom:20px
+}
+
+input{
+  width:100%;
+  padding:13px;
+  margin:8px 0 15px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  font-size:15px
+}
+
+button{
+  padding:12px 16px;
+  background:#6c2cff;
+  color:white;
+  border:0;
+  border-radius:9px;
+  font-weight:bold;
+  cursor:pointer
+}
+
+button:hover{
+  background:#5520d8
+}
+
+.logout{
+  background:#d32f2f;
+  width:100%;
+  margin-top:15px
+}
+
+.order{
+  background:#f8f9ff;
+  padding:18px;
+  border-radius:12px;
+  margin-bottom:15px;
+  border-left:5px solid #6c2cff
+}
+
+.order p{
+  margin:8px 0;
+  word-break:break-word
+}
+
+.payment-card{
+  background:#f8f9ff;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:15px;
+  border-left:5px solid #f0a000
+}
+
+.payment-card p{
+  margin:8px 0;
+  word-break:break-word
+}
+
+select{
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin-top:8px
+}
+
+.update{
+  margin-left:8px;
+  background:#168321
+}
+
+.approve{
+  background:#168321;
+  margin-top:12px;
+  margin-right:6px
+}
+
+.reject{
+  background:#d32f2f;
+  margin-top:12px
+}
+
+.proof-link{
+  display:inline-block;
+  margin-top:8px;
+  padding:9px 13px;
+  background:#6c2cff;
+  color:white;
+  text-decoration:none;
+  border-radius:7px;
+  font-size:13px
+}
+
+.proof-link:hover{
+  background:#5520d8
+}
+
+.status-pending{
+  color:#f0a000;
+  font-weight:bold
+}
+
+.status-approved{
+  color:#168321;
+  font-weight:bold
+}
+
+.status-rejected{
+  color:#d32f2f;
+  font-weight:bold
+}
+
+.success{
+  background:#e8f7e8;
+  color:#168321;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px
+}
+
+.error{
+  background:#ffecec;
+  color:#c62828;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px
+}
+
+.info{
+  background:#eef3ff;
+  color:#4b45a8;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:15px
+}
+
+.hidden{
+  display:none
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777
+}
+
+hr{
+  border:0;
+  border-top:1px solid #ddd;
+  margin:15px 0
+}
 </style>
 </head>
 
@@ -35,18 +206,30 @@ footer{text-align:center;padding:25px;color:#777}
 <p>Admin Panel</p>
 </header>
 
+
 <!-- LOGIN -->
+
 <div id="loginPage" class="container">
 
 <div class="box">
 
 <h2>🔐 Admin Login</h2>
 
-<input type="email" id="adminEmail" placeholder="Admin Email">
+<input
+type="email"
+id="adminEmail"
+placeholder="Admin Email"
+>
 
-<input type="password" id="adminPassword" placeholder="Admin Password">
+<input
+type="password"
+id="adminPassword"
+placeholder="Admin Password"
+>
 
-<button onclick="adminLogin()">🔐 Login as Admin</button>
+<button onclick="adminLogin()">
+🔐 Login as Admin
+</button>
 
 <div id="loginMessage"></div>
 
@@ -56,6 +239,7 @@ footer{text-align:center;padding:25px;color:#777}
 
 
 <!-- ADMIN PANEL -->
+
 <div id="adminPanel" class="container hidden">
 
 <div class="box">
@@ -66,18 +250,48 @@ footer{text-align:center;padding:25px;color:#777}
 
 <br>
 
-<button onclick="loadOrders()">🔄 Refresh Orders</button>
+<button onclick="loadOrders()">
+🔄 Refresh Orders
+</button>
 
-<button class="logout" onclick="adminLogout()">🚪 Logout</button>
+<button onclick="loadPaymentRequests()">
+💳 Refresh Payments
+</button>
+
+<button class="logout" onclick="adminLogout()">
+🚪 Logout
+</button>
 
 </div>
 
+
+<!-- PAYMENT REQUESTS -->
+
+<div class="box">
+
+<h2>💳 Customer Payment Requests</h2>
+
+<div class="info">
+💡 Yahan customers ki payment requests nazar aayengi.
+Admin payment screenshot verify karke Approve ya Reject kar sakta hai.
+</div>
+
+<div id="paymentRequestsList">
+Loading payment requests...
+</div>
+
+</div>
+
+
+<!-- ORDERS -->
 
 <div class="box">
 
 <h2>📋 All Orders</h2>
 
-<div id="ordersList">Loading orders...</div>
+<div id="ordersList">
+Loading orders...
+</div>
 
 </div>
 
@@ -98,8 +312,17 @@ from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const SUPABASE_URL =
 "https://lgrdxyjbmzwhhnkfmups.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
+
+
+const ADMIN_UID =
+"d4053fd1-6277-4a44-98d9-6e087caa74b1";
+
+
+const PAYMENT_PROOF_BUCKET =
+"payment-proofs";
 
 
 const supabase =
@@ -109,15 +332,44 @@ SUPABASE_PUBLISHABLE_KEY
 );
 
 
+/* CHECK ADMIN */
+
+async function checkAdmin(){
+
+const {
+data:{
+user
+}
+} =
+await supabase.auth.getUser();
+
+
+if(!user){
+
+return false;
+
+}
+
+
+return user.id === ADMIN_UID;
+
+}
+
+
 /* ADMIN LOGIN */
 
 window.adminLogin = async function(){
 
 const email =
-document.getElementById("adminEmail").value.trim();
+document
+.getElementById("adminEmail")
+.value
+.trim();
 
 const password =
-document.getElementById("adminPassword").value;
+document
+.getElementById("adminPassword")
+.value;
 
 const message =
 document.getElementById("loginMessage");
@@ -126,35 +378,72 @@ document.getElementById("loginMessage");
 if(!email || !password){
 
 message.className="error";
-message.innerText="⚠️ Please enter email and password.";
+
+message.innerText=
+"⚠️ Please enter email and password.";
+
 return;
 
 }
 
+
 try{
 
-const {error} =
+const {
+data,
+error
+} =
 await supabase.auth.signInWithPassword({
+
 email:email,
+
 password:password
+
 });
 
-if(error) throw error;
+
+if(error){
+
+throw error;
+
+}
+
+
+if(!data.user || data.user.id !== ADMIN_UID){
+
+await supabase.auth.signOut();
+
+throw new Error(
+"This account is not authorized as Admin."
+);
+
+}
+
 
 document
 .getElementById("loginPage")
 .classList.add("hidden");
 
+
 document
 .getElementById("adminPanel")
 .classList.remove("hidden");
 
+
+message.innerHTML="";
+
+
 loadOrders();
+
+loadPaymentRequests();
+
 
 }catch(error){
 
 message.className="error";
-message.innerText="❌ Login failed: "+error.message;
+
+message.innerText=
+"❌ Login failed: "+error.message;
 
 }
 
@@ -165,36 +454,62 @@ message.innerText="❌ Login failed: "+error.message;
 
 window.loadOrders = async function(){
 
+if(!(await checkAdmin())){
+
+return;
+
+}
+
+
 const list =
 document.getElementById("ordersList");
 
-list.innerHTML="⏳ Loading orders...";
+list.innerHTML=
+"⏳ Loading orders...";
+
 
 try{
 
-const {data,error} =
+const {
+data,
+error
+} =
 await supabase
 .from("orders")
 .select("*")
 .order("id",{ascending:false});
 
-if(error) throw error;
+
+if(error){
+
+throw error;
+
+}
+
 
 if(!data || data.length===0){
 
-list.innerHTML="📋 No orders found.";
+list.innerHTML=
+"📋 No orders found.";
+
 return;
 
 }
 
+
 let html="";
+
 
 data.forEach(order=>{
 
 const date =
 order.created_at
-? new Date(order.created_at).toLocaleString()
-: "N/A";
+?
+new Date(
+order.created_at
+).toLocaleString()
+:
+"N/A";
 
 
 html += `
@@ -203,29 +518,38 @@ html += `
 
 <p>
 <b>🆔 Order ID:</b>
-${order.id}
+${escapeHtml(order.id)}
 </p>
 
 <p>
 <b>📧 Customer:</b>
-${order.user_email || order.user_id || "N/A"}
+${escapeHtml(
+order.user_email ||
+order.user_id ||
+"N/A"
+)}
 </p>
 
 <p>
 <b>📱 Service:</b>
-${order.service || "N/A"}
+${escapeHtml(
+order.service || "N/A"
+)}
 </p>
 
 <p>
 <b>🔗 Link:</b>
-<a href="${order.link || "#"}" target="_blank">
-${order.link || "N/A"}
+<a
+href="${escapeAttribute(order.link || "#")}"
+target="_blank"
+>
+${escapeHtml(order.link || "N/A")}
 </a>
 </p>
 
 <p>
 <b>📊 Quantity:</b>
-${order.quantity || 0}
+${escapeHtml(order.quantity || 0)}
 </p>
 
 <p>
@@ -235,7 +559,9 @@ Rs ${Number(order.price || 0).toFixed(2)}
 
 <p>
 <b>📌 Current Status:</b>
-<strong>${order.status || "Pending"}</strong>
+<strong>
+${escapeHtml(order.status || "Pending")}
+</strong>
 </p>
 
 <div>
@@ -272,7 +598,8 @@ Cancelled
 
 <button
 class="update"
-onclick="updateStatus(${order.id})">
+onclick="updateStatus(${order.id})"
+>
 💾 Update Status
 </button>
 
@@ -294,10 +621,13 @@ ${date}
 
 list.innerHTML=html;
 
+
 }catch(error){
 
 list.innerHTML=
-"❌ Could not load orders: "+error.message;
+"❌ Could not load orders: "
++
+escapeHtml(error.message);
 
 }
 
@@ -306,21 +636,39 @@ list.innerHTML=
 
 /* UPDATE ORDER STATUS */
 
-window.updateStatus = async function(orderId){
+window.updateStatus =
+async function(orderId){
+
+if(!(await checkAdmin())){
+
+alert("Unauthorized.");
+
+return;
+
+}
+
 
 const select =
-document.getElementById("status-"+orderId);
+document.getElementById(
+"status-"+orderId
+);
+
 
 const newStatus =
 select.value;
 
+
 const message =
-document.getElementById("message-"+orderId);
+document.getElementById(
+"message-"+orderId
+);
 
 
 try{
 
-const {error} =
+const {
+error
+} =
 await supabase
 .from("orders")
 .update({
@@ -328,16 +676,26 @@ status:newStatus
 })
 .eq("id",orderId);
 
-if(error) throw error;
+
+if(error){
+
+throw error;
+
+}
+
 
 message.className="success";
 
 message.innerText=
-"✅ Status updated to "+newStatus;
+"✅ Status updated to "
++
+newStatus;
 
 
 setTimeout(()=>{
+
 loadOrders();
+
 },800);
 
 
@@ -346,7 +704,404 @@ loadOrders();
 message.className="error";
 
 message.innerText=
-"❌ Could not update status: "+error.message;
+"❌ Could not update status: "
++
+error.message;
+
+}
+
+};
+
+
+/* LOAD PAYMENT REQUESTS */
+
+window.loadPaymentRequests =
+async function(){
+
+if(!(await checkAdmin())){
+
+return;
+
+}
+
+
+const list =
+document.getElementById(
+"paymentRequestsList"
+);
+
+
+list.innerHTML=
+"⏳ Loading payment requests...";
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabase
+.from("payment_requests")
+.select("*")
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+throw error;
+
+}
+
+
+if(!data || data.length===0){
+
+list.innerHTML=
+"📋 No payment requests found.";
+
+return;
+
+}
+
+
+let html="";
+
+
+data.forEach(payment=>{
+
+const date =
+payment.created_at
+?
+new Date(
+payment.created_at
+).toLocaleString()
+:
+"N/A";
+
+
+const proofUrl =
+payment.proof
+?
+supabase
+.storage
+.from(PAYMENT_PROOF_BUCKET)
+.getPublicUrl(payment.proof)
+.data.publicUrl
+:
+"";
+
+
+let statusClass =
+"status-pending";
+
+
+if(payment.status === "Approved"){
+
+statusClass =
+"status-approved";
+
+}
+
+
+if(payment.status === "Rejected"){
+
+statusClass =
+"status-rejected";
+
+}
+
+
+const proofHtml =
+proofUrl
+?
+`
+<a
+class="proof-link"
+href="${escapeAttribute(proofUrl)}"
+target="_blank"
+rel="noopener noreferrer"
+>
+🖼️ View Payment Screenshot
+</a>
+`
+:
+"No proof available";
+
+
+let actionHtml="";
+
+
+if(payment.status === "Pending"){
+
+actionHtml = `
+
+<hr>
+
+<button
+class="approve"
+onclick="approvePayment(${payment.id})"
+>
+✅ Approve Payment
+</button>
+
+<button
+class="reject"
+onclick="rejectPayment(${payment.id})"
+>
+❌ Reject Payment
+</button>
+
+<div id="payment-message-${payment.id}"></div>
+
+`;
+
+}
+
+
+html += `
+
+<div class="payment-card">
+
+<p>
+<b>🆔 Payment Request ID:</b>
+${escapeHtml(payment.id)}
+</p>
+
+<p>
+<b>👤 Customer User ID:</b>
+${escapeHtml(payment.user_id || "N/A")}
+</p>
+
+<p>
+<b>📧 Customer Email:</b>
+${escapeHtml(payment.user_email || "Email linked with User ID")}
+</p>
+
+<p>
+<b>💵 Amount:</b>
+Rs ${Number(payment.amount || 0).toFixed(2)}
+</p>
+
+<p>
+<b>💳 Method:</b>
+${escapeHtml(payment.method || "N/A")}
+</p>
+
+<p>
+<b>🔢 Transaction ID:</b>
+${escapeHtml(payment.transaction_id || "N/A")}
+</p>
+
+<p>
+<b>🧾 Proof:</b>
+<br>
+${proofHtml}
+</p>
+
+<p>
+<b>📌 Status:</b>
+<span class="${statusClass}">
+${escapeHtml(payment.status || "Pending")}
+</span>
+</p>
+
+<p>
+<b>🕒 Date:</b>
+${date}
+</p>
+
+${actionHtml}
+
+</div>
+
+`;
+
+});
+
+
+list.innerHTML=html;
+
+
+}catch(error){
+
+list.innerHTML=
+"❌ Could not load payment requests: "
++
+escapeHtml(error.message);
+
+}
+
+};
+
+
+/* APPROVE PAYMENT */
+
+window.approvePayment =
+async function(paymentId){
+
+if(!(await checkAdmin())){
+
+alert("Unauthorized.");
+
+return;
+
+}
+
+
+const message =
+document.getElementById(
+"payment-message-"+paymentId
+);
+
+
+if(
+!confirm(
+"Are you sure you want to APPROVE this payment?\\n\\nThe customer's balance will be increased."
+)
+){
+
+return;
+
+}
+
+
+try{
+
+message.className="info";
+
+message.innerText=
+"⏳ Approving payment...";
+
+
+/*
+IMPORTANT:
+Balance update will be done by
+Supabase RPC function.
+*/
+
+const {
+error
+} =
+await supabase.rpc(
+"approve_payment_request",
+{
+p_payment_id:paymentId
+}
+);
+
+
+if(error){
+
+throw error;
+
+}
+
+
+message.className="success";
+
+message.innerText=
+"✅ Payment approved and customer balance updated successfully!";
+
+
+setTimeout(()=>{
+
+loadPaymentRequests();
+
+},800);
+
+
+}catch(error){
+
+message.className="error";
+
+message.innerText=
+"❌ Payment could not be approved: "
++
+error.message;
+
+}
+
+};
+
+
+/* REJECT PAYMENT */
+
+window.rejectPayment =
+async function(paymentId){
+
+if(!(await checkAdmin())){
+
+alert("Unauthorized.");
+
+return;
+
+}
+
+
+const message =
+document.getElementById(
+"payment-message-"+paymentId
+);
+
+
+if(
+!confirm(
+"Are you sure you want to REJECT this payment?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+message.className="info";
+
+message.innerText=
+"⏳ Rejecting payment...";
+
+
+const {
+error
+} =
+await supabase.rpc(
+"reject_payment_request",
+{
+p_payment_id:paymentId
+}
+);
+
+
+if(error){
+
+throw error;
+
+}
+
+
+message.className="success";
+
+message.innerText=
+"✅ Payment rejected successfully!";
+
+
+setTimeout(()=>{
+
+loadPaymentRequests();
+
+},800);
+
+
+}catch(error){
+
+message.className="error";
+
+message.innerText=
+"❌ Payment could not be rejected: "
++
+error.message;
 
 }
 
@@ -355,13 +1110,16 @@ message.innerText=
 
 /* LOGOUT */
 
-window.adminLogout = async function(){
+window.adminLogout =
+async function(){
 
 await supabase.auth.signOut();
+
 
 document
 .getElementById("adminPanel")
 .classList.add("hidden");
+
 
 document
 .getElementById("loginPage")
@@ -370,25 +1128,62 @@ document
 };
 
 
+/* SECURITY HELPERS */
+
+function escapeHtml(value){
+
+return String(value ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+
+function escapeAttribute(value){
+
+return String(value ?? "")
+.replaceAll('"',"%22")
+.replaceAll("'","%27");
+
+}
+
+
 /* EXISTING SESSION */
 
 const {
-data:{session}
+data:{
+session
+}
 } =
 await supabase.auth.getSession();
 
 
 if(session){
 
+if(session.user.id === ADMIN_UID){
+
 document
 .getElementById("loginPage")
 .classList.add("hidden");
+
 
 document
 .getElementById("adminPanel")
 .classList.remove("hidden");
 
+
 loadOrders();
+
+loadPaymentRequests();
+
+}else{
+
+await supabase.auth.signOut();
+
+}
 
 }
 
