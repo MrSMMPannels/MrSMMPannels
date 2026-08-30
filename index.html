@@ -248,7 +248,6 @@
   <p>Social Media Marketing Services</p>
 </header>
 
-
 <!-- LOGIN -->
 
 <div id="loginPage" class="container">
@@ -282,7 +281,6 @@
   </div>
 
 </div>
-
 
 <!-- SIGNUP -->
 
@@ -324,7 +322,6 @@
 
 </div>
 
-
 <!-- MAIN APP -->
 
 <div id="app" class="hidden">
@@ -353,7 +350,6 @@
 
   </nav>
 
-
   <!-- DASHBOARD -->
 
   <section id="dashboard" class="container">
@@ -378,11 +374,9 @@
 
     </div>
 
-
     <h2 style="margin-bottom:15px;">
       🔥 All Services
     </h2>
-
 
     <div
       class="service"
@@ -394,7 +388,6 @@
       </p>
     </div>
 
-
     <div
       class="service"
       onclick="openOrder('TikTok Likes')"
@@ -404,7 +397,6 @@
         Likes • Followers • Views • Shares
       </p>
     </div>
-
 
     <div
       class="service"
@@ -416,7 +408,6 @@
       </p>
     </div>
 
-
     <div
       class="service"
       onclick="openOrder('Facebook Likes')"
@@ -427,7 +418,6 @@
       </p>
     </div>
 
-
     <div
       class="service"
       onclick="openOrder('Telegram Members')"
@@ -437,7 +427,6 @@
         Members • Views • Reactions
       </p>
     </div>
-
 
     <div
       class="service"
@@ -450,7 +439,6 @@
     </div>
 
   </section>
-
 
   <!-- NEW ORDER -->
 
@@ -551,7 +539,6 @@
 
       </select>
 
-
       <label>
         🔗 Post / Profile Link
       </label>
@@ -561,7 +548,6 @@
         id="link"
         placeholder="https://..."
       >
-
 
       <label>
         📊 Quantity
@@ -575,12 +561,10 @@
         oninput="calculatePrice()"
       >
 
-
       <div class="price-box">
         💵 Total Price:
         <b id="totalPrice">Rs 0.00</b>
       </div>
-
 
       <button
         class="main-btn"
@@ -589,13 +573,11 @@
         🚀 Place Order
       </button>
 
-
       <div id="orderMessage"></div>
 
     </div>
 
   </section>
-
 
   <!-- MY ORDERS -->
 
@@ -613,7 +595,6 @@
 
   </section>
 
-
   <!-- ADD BALANCE / PAYMENT -->
 
   <section id="payment" class="container hidden">
@@ -626,7 +607,6 @@
         💡 Payment send karne ke baad neeche transaction details submit karein.
         Admin payment verify karne ke baad request approve karega.
       </div>
-
 
       <!-- REAL PAYMENT DETAILS -->
 
@@ -648,7 +628,6 @@
 
       </div>
 
-
       <label>
         💵 Amount (Rs)
       </label>
@@ -659,7 +638,6 @@
         placeholder="Example: 1000"
         min="1"
       >
-
 
       <label>
         💳 Payment Method
@@ -689,7 +667,6 @@
 
       </select>
 
-
       <label>
         🔢 Transaction ID
       </label>
@@ -699,7 +676,6 @@
         id="transactionId"
         placeholder="Enter transaction ID"
       >
-
 
       <label>
         🧾 Payment Screenshot / Proof
@@ -715,7 +691,6 @@
         📷 Upload payment screenshot — JPG, PNG or WEBP. Maximum size: 5 MB.
       </div>
 
-
       <button
         class="main-btn"
         id="submitPaymentBtn"
@@ -724,11 +699,9 @@
         🚀 Submit Payment Request
       </button>
 
-
       <div id="paymentMessage"></div>
 
     </div>
-
 
     <div class="box">
 
@@ -744,11 +717,9 @@
 
 </div>
 
-
 <footer>
   © 2026 Mr SMM Pannels — All Rights Reserved
 </footer>
-
 
 <!-- SUPABASE -->
 
@@ -758,21 +729,17 @@
     createClient
   } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-
   const SUPABASE_URL =
     "https://lgrdxyjbmzwhhnkfmups.supabase.co";
 
-
   const SUPABASE_KEY =
     "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
-
 
   const supabase =
     createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
-
 
   /* PAYMENT PROOF STORAGE SETTINGS */
 
@@ -781,7 +748,6 @@
 
   const MAX_PROOF_SIZE =
     5 * 1024 * 1024;
-
 
   /* SHOW SIGNUP */
 
@@ -797,7 +763,6 @@
 
   };
 
-
   /* SHOW LOGIN */
 
   window.showLogin = function() {
@@ -811,7 +776,6 @@
       .classList.remove("hidden");
 
   };
-
 
   /* SIGNUP */
 
@@ -837,7 +801,6 @@
     const message =
       document.getElementById("signupMessage");
 
-
     if (!name || !email || !password) {
 
       message.className = "error";
@@ -848,7 +811,6 @@
       return;
     }
 
-
     if (password.length < 6) {
 
       message.className = "error";
@@ -858,7 +820,6 @@
 
       return;
     }
-
 
     try {
 
@@ -882,11 +843,9 @@
 
         });
 
-
       if (error) {
         throw error;
       }
-
 
       message.className =
         "success";
@@ -894,11 +853,9 @@
       message.innerText =
         "✅ Account created successfully!";
 
-
       document
         .getElementById("signupPassword")
         .value = "";
-
 
     } catch (error) {
 
@@ -911,7 +868,6 @@
     }
 
   };
-
 
   /* LOGIN */
 
@@ -931,7 +887,6 @@
     const message =
       document.getElementById("loginMessage");
 
-
     if (!email || !password) {
 
       message.className =
@@ -942,7 +897,6 @@
 
       return;
     }
-
 
     try {
 
@@ -957,18 +911,15 @@
 
         });
 
-
       if (error) {
         throw error;
       }
-
 
       message.className =
         "success";
 
       message.innerText =
         "✅ Login successful!";
-
 
     } catch (error) {
 
@@ -982,7 +933,6 @@
 
   };
 
-
   /* LOGOUT */
 
   window.logoutUser = async function() {
@@ -990,7 +940,6 @@
     await supabase.auth.signOut();
 
   };
-
 
   /* SHOW SECTION */
 
@@ -1012,18 +961,15 @@
       .getElementById("payment")
       .classList.add("hidden");
 
-
     document
       .getElementById(section)
       .classList.remove("hidden");
-
 
     if (section === "orders") {
 
       loadOrders();
 
     }
-
 
     if (section === "payment") {
 
@@ -1032,7 +978,6 @@
     }
 
   };
-
 
   /* OPEN ORDER */
 
@@ -1048,7 +993,6 @@
 
   };
 
-
   /* CALCULATE PRICE */
 
   window.calculatePrice = function() {
@@ -1061,12 +1005,10 @@
         select.selectedIndex
       ];
 
-
     const pricePerThousand =
       Number(
         selectedOption.dataset.price
       );
-
 
     const quantity =
       Number(
@@ -1074,7 +1016,6 @@
           .getElementById("quantity")
           .value
       );
-
 
     if (!quantity) {
 
@@ -1087,11 +1028,9 @@
 
     }
 
-
     const total =
       (quantity / 1000)
       * pricePerThousand;
-
 
     document
       .getElementById("totalPrice")
@@ -1099,7 +1038,6 @@
         "Rs " + total.toFixed(2);
 
   };
-
 
   /* PLACE ORDER */
 
@@ -1112,7 +1050,6 @@
     } =
       await supabase.auth.getUser();
 
-
     if (!user) {
 
       alert("Please login first.");
@@ -1121,19 +1058,16 @@
 
     }
 
-
     const service =
       document
         .getElementById("service")
         .value;
-
 
     const link =
       document
         .getElementById("link")
         .value
         .trim();
-
 
     const quantity =
       Number(
@@ -1142,12 +1076,10 @@
           .value
       );
 
-
     const message =
       document.getElementById(
         "orderMessage"
       );
-
 
     if (!link || !quantity) {
 
@@ -1161,29 +1093,24 @@
 
     }
 
-
     const select =
       document.getElementById(
         "service"
       );
-
 
     const selectedOption =
       select.options[
         select.selectedIndex
       ];
 
-
     const pricePerThousand =
       Number(
         selectedOption.dataset.price
       );
 
-
     const price =
       (quantity / 1000)
       * pricePerThousand;
-
 
     try {
 
@@ -1216,11 +1143,9 @@
 
           });
 
-
       if (error) {
         throw error;
       }
-
 
       message.className =
         "success";
@@ -1228,22 +1153,18 @@
       message.innerText =
         "✅ Order placed successfully!";
 
-
       document
         .getElementById("link")
         .value = "";
-
 
       document
         .getElementById("quantity")
         .value = "";
 
-
       document
         .getElementById("totalPrice")
         .innerText =
           "Rs 0.00";
-
 
     } catch (error) {
 
@@ -1258,7 +1179,6 @@
 
   };
 
-
   /* LOAD MY ORDERS */
 
   async function loadOrders() {
@@ -1270,12 +1190,10 @@
     } =
       await supabase.auth.getUser();
 
-
     const list =
       document.getElementById(
         "ordersList"
       );
-
 
     if (!user) {
 
@@ -1285,7 +1203,6 @@
       return;
 
     }
-
 
     try {
 
@@ -1307,11 +1224,9 @@
             }
           );
 
-
       if (error) {
         throw error;
       }
-
 
       if (!data || data.length === 0) {
 
@@ -1322,9 +1237,7 @@
 
       }
 
-
       let html = "";
-
 
       data.forEach((order) => {
 
@@ -1334,7 +1247,6 @@
                 order.created_at
               ).toLocaleString()
             : "N/A";
-
 
         html += `
 
@@ -1386,10 +1298,8 @@
 
       });
 
-
       list.innerHTML =
         html;
-
 
     } catch (error) {
 
@@ -1401,7 +1311,6 @@
 
   }
 
-
   /* UPLOAD PAYMENT PROOF */
 
   async function uploadPaymentProof(file, user) {
@@ -1410,21 +1319,17 @@
       throw new Error("Please select payment screenshot.");
     }
 
-
     if (!file.type.startsWith("image/")) {
       throw new Error("Proof must be an image file.");
     }
-
 
     if (file.size > MAX_PROOF_SIZE) {
       throw new Error("Proof image must be 5 MB or smaller.");
     }
 
-
     const originalName =
       file.name
-        .replace(/[^a-zA-Z0-9._-]/g, "_");
-
+        .replace(/[^a-zA-Z0-9.\_-]/g, "_");
 
     const filePath =
       user.id
@@ -1432,7 +1337,6 @@
       + Date.now()
       + "_"
       + originalName;
-
 
     const {
       error
@@ -1450,16 +1354,13 @@
           }
         );
 
-
     if (error) {
       throw error;
     }
 
-
     return filePath;
 
   }
-
 
   /* GET PUBLIC PROOF URL */
 
@@ -1469,7 +1370,6 @@
       return "";
     }
 
-
     const {
       data
     } =
@@ -1478,11 +1378,9 @@
         .from(PAYMENT_PROOF_BUCKET)
         .getPublicUrl(path);
 
-
     return data?.publicUrl || "";
 
   }
-
 
   /* SUBMIT PAYMENT */
 
@@ -1495,18 +1393,15 @@
     } =
       await supabase.auth.getUser();
 
-
     const message =
       document.getElementById(
         "paymentMessage"
       );
 
-
     const submitButton =
       document.getElementById(
         "submitPaymentBtn"
       );
-
 
     if (!user) {
 
@@ -1520,7 +1415,6 @@
 
     }
 
-
     const amount =
       Number(
         document
@@ -1528,12 +1422,10 @@
           .value
       );
 
-
     const method =
       document
         .getElementById("paymentMethod")
         .value;
-
 
     const transactionId =
       document
@@ -1541,12 +1433,10 @@
         .value
         .trim();
 
-
     const proofFile =
       document
         .getElementById("paymentProof")
         .files[0];
-
 
     if (!amount || amount <= 0) {
 
@@ -1560,7 +1450,6 @@
 
     }
 
-
     if (!method) {
 
       message.className =
@@ -1572,7 +1461,6 @@
       return;
 
     }
-
 
     if (!transactionId) {
 
@@ -1586,7 +1474,6 @@
 
     }
 
-
     if (!proofFile) {
 
       message.className =
@@ -1598,7 +1485,6 @@
       return;
 
     }
-
 
     if (!proofFile.type.startsWith("image/")) {
 
@@ -1612,7 +1498,6 @@
 
     }
 
-
     if (proofFile.size > MAX_PROOF_SIZE) {
 
       message.className =
@@ -1625,14 +1510,12 @@
 
     }
 
-
     try {
 
       submitButton.disabled = true;
 
       submitButton.innerText =
         "⏳ Uploading Proof...";
-
 
       /*
         STEP 1:
@@ -1645,7 +1528,6 @@
           user
         );
 
-
       /*
         STEP 2:
         Save payment request in database
@@ -1653,7 +1535,6 @@
 
       submitButton.innerText =
         "⏳ Saving Payment Request...";
-
 
       const {
         error
@@ -1670,8 +1551,16 @@
 
             transaction_id:
               transactionId,
+
             user_id:
-  user.id,
+              user.id,
+
+            /* NEW:
+               Save customer email with payment request
+            */
+
+            user_email:
+              user.email,
 
             proof:
               proofPath,
@@ -1680,7 +1569,6 @@
               "Pending"
 
           });
-
 
       /*
         If database insert fails,
@@ -1701,36 +1589,29 @@
 
       }
 
-
       message.className =
         "success";
 
       message.innerText =
         "✅ Payment screenshot uploaded and payment request submitted successfully!";
 
-
       document
         .getElementById("paymentAmount")
         .value = "";
-
 
       document
         .getElementById("paymentMethod")
         .value = "";
 
-
       document
         .getElementById("transactionId")
         .value = "";
-
 
       document
         .getElementById("paymentProof")
         .value = "";
 
-
       loadPaymentRequests();
-
 
     } catch (error) {
 
@@ -1752,8 +1633,7 @@
 
   };
 
-
-  /* LOAD PAYMENT REQUESTS */
+  /* LOAD MY PAYMENT REQUESTS */
 
   async function loadPaymentRequests() {
 
@@ -1764,12 +1644,10 @@
     } =
       await supabase.auth.getUser();
 
-
     const list =
       document.getElementById(
         "paymentRequestsList"
       );
-
 
     if (!user) {
 
@@ -1780,7 +1658,6 @@
 
     }
 
-
     try {
 
       const {
@@ -1790,6 +1667,17 @@
         await supabase
           .from("payment_requests")
           .select("*")
+
+          /* IMPORTANT:
+             Customer will only see
+             their own payment requests.
+          */
+
+          .eq(
+            "user_id",
+            user.id
+          )
+
           .order(
             "created_at",
             {
@@ -1797,11 +1685,9 @@
             }
           );
 
-
       if (error) {
         throw error;
       }
-
 
       if (!data || data.length === 0) {
 
@@ -1812,9 +1698,7 @@
 
       }
 
-
       let html = "";
-
 
       data.forEach((payment) => {
 
@@ -1825,12 +1709,10 @@
               ).toLocaleString()
             : "N/A";
 
-
         const proofUrl =
           getProofUrl(
             payment.proof
           );
-
 
         const proofHtml =
           proofUrl
@@ -1851,7 +1733,6 @@
                   No proof available
                 </span>
               `;
-
 
         html += `
 
@@ -1894,10 +1775,8 @@
 
       });
 
-
       list.innerHTML =
         html;
-
 
     } catch (error) {
 
@@ -1908,7 +1787,6 @@
     }
 
   }
-
 
   /* SECURITY HELPERS */
 
@@ -1923,7 +1801,6 @@
 
   }
 
-
   function escapeAttribute(value) {
 
     return String(value ?? "")
@@ -1932,7 +1809,6 @@
 
   }
 
-
   /* AUTH STATE */
 
   supabase.auth.onAuthStateChange(
@@ -1940,7 +1816,6 @@
 
       const user =
         session?.user || null;
-
 
       if (user) {
 
@@ -1956,18 +1831,15 @@
           .getElementById("app")
           .classList.remove("hidden");
 
-
         const name =
           user.user_metadata?.full_name
           || user.email
           || "Customer";
 
-
         document
           .getElementById("welcomeText")
           .innerText =
             "Welcome, " + name + "!";
-
 
       } else {
 
@@ -1987,7 +1859,6 @@
 
     }
   );
-
 
 </script>
 
