@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Mr SMM Pannels</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -238,15 +243,21 @@
     .proof-link:hover {
       background: #5520d8;
     }
+
   </style>
+
 </head>
 
 <body>
 
 <header>
+
   <h1>🚀 Mr SMM Pannels</h1>
+
   <p>Social Media Marketing Services</p>
+
 </header>
+
 
 <!-- LOGIN -->
 
@@ -281,6 +292,7 @@
   </div>
 
 </div>
+
 
 <!-- SIGNUP -->
 
@@ -322,6 +334,7 @@
 
 </div>
 
+
 <!-- MAIN APP -->
 
 <div id="app" class="hidden">
@@ -350,6 +363,7 @@
 
   </nav>
 
+
   <!-- DASHBOARD -->
 
   <section id="dashboard" class="container">
@@ -358,7 +372,9 @@
 
       <h2>💰 Your Balance</h2>
 
-      <div class="balance">
+      <!-- IMPORTANT: Balance now loads from profiles table -->
+
+      <div class="balance" id="userBalance">
         Rs 0.00
       </div>
 
@@ -374,71 +390,97 @@
 
     </div>
 
+
     <h2 style="margin-bottom:15px;">
       🔥 All Services
     </h2>
+
 
     <div
       class="service"
       onclick="openOrder('Instagram Likes')"
     >
+
       <h3>📸 Instagram</h3>
+
       <p>
         Likes • Followers • Views • Comments
       </p>
+
     </div>
+
 
     <div
       class="service"
       onclick="openOrder('TikTok Likes')"
     >
+
       <h3>🎵 TikTok</h3>
+
       <p>
         Likes • Followers • Views • Shares
       </p>
+
     </div>
+
 
     <div
       class="service"
       onclick="openOrder('YouTube Views')"
     >
+
       <h3>▶️ YouTube</h3>
+
       <p>
         Views • Likes • Subscribers • Comments
       </p>
+
     </div>
+
 
     <div
       class="service"
       onclick="openOrder('Facebook Likes')"
     >
+
       <h3>📘 Facebook</h3>
+
       <p>
         Likes • Followers • Page Likes • Comments
       </p>
+
     </div>
+
 
     <div
       class="service"
       onclick="openOrder('Telegram Members')"
     >
+
       <h3>✈️ Telegram</h3>
+
       <p>
         Members • Views • Reactions
       </p>
+
     </div>
+
 
     <div
       class="service"
       onclick="openOrder('Comments')"
     >
+
       <h3>💬 Comments</h3>
+
       <p>
         Social Media Comments Services
       </p>
+
     </div>
 
   </section>
+
 
   <!-- NEW ORDER -->
 
@@ -539,6 +581,7 @@
 
       </select>
 
+
       <label>
         🔗 Post / Profile Link
       </label>
@@ -548,6 +591,7 @@
         id="link"
         placeholder="https://..."
       >
+
 
       <label>
         📊 Quantity
@@ -561,10 +605,15 @@
         oninput="calculatePrice()"
       >
 
+
       <div class="price-box">
+
         💵 Total Price:
+
         <b id="totalPrice">Rs 0.00</b>
+
       </div>
+
 
       <button
         class="main-btn"
@@ -573,11 +622,13 @@
         🚀 Place Order
       </button>
 
+
       <div id="orderMessage"></div>
 
     </div>
 
   </section>
+
 
   <!-- MY ORDERS -->
 
@@ -595,6 +646,7 @@
 
   </section>
 
+
   <!-- ADD BALANCE / PAYMENT -->
 
   <section id="payment" class="container hidden">
@@ -604,11 +656,12 @@
       <h2>💳 Add Balance</h2>
 
       <div class="info">
+
         💡 Payment send karne ke baad neeche transaction details submit karein.
         Admin payment verify karne ke baad request approve karega.
+
       </div>
 
-      <!-- REAL PAYMENT DETAILS -->
 
       <div class="method-box">
 
@@ -628,6 +681,7 @@
 
       </div>
 
+
       <label>
         💵 Amount (Rs)
       </label>
@@ -638,6 +692,7 @@
         placeholder="Example: 1000"
         min="1"
       >
+
 
       <label>
         💳 Payment Method
@@ -667,6 +722,7 @@
 
       </select>
 
+
       <label>
         🔢 Transaction ID
       </label>
@@ -676,6 +732,7 @@
         id="transactionId"
         placeholder="Enter transaction ID"
       >
+
 
       <label>
         🧾 Payment Screenshot / Proof
@@ -687,9 +744,14 @@
         accept="image/png,image/jpeg,image/jpg,image/webp"
       >
 
+
       <div class="file-help">
-        📷 Upload payment screenshot — JPG, PNG or WEBP. Maximum size: 5 MB.
+
+        📷 Upload payment screenshot — JPG, PNG or WEBP.
+        Maximum size: 5 MB.
+
       </div>
+
 
       <button
         class="main-btn"
@@ -699,9 +761,11 @@
         🚀 Submit Payment Request
       </button>
 
+
       <div id="paymentMessage"></div>
 
     </div>
+
 
     <div class="box">
 
@@ -717,9 +781,13 @@
 
 </div>
 
+
 <footer>
+
   © 2026 Mr SMM Pannels — All Rights Reserved
+
 </footer>
+
 
 <!-- SUPABASE -->
 
@@ -729,11 +797,14 @@
     createClient
   } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+
   const SUPABASE_URL =
     "https://lgrdxyjbmzwhhnkfmups.supabase.co";
 
+
   const SUPABASE_KEY =
     "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
+
 
   const supabase =
     createClient(
@@ -741,13 +812,72 @@
       SUPABASE_KEY
     );
 
+
   /* PAYMENT PROOF STORAGE SETTINGS */
 
   const PAYMENT_PROOF_BUCKET =
     "payment-proofs";
 
+
   const MAX_PROOF_SIZE =
     5 * 1024 * 1024;
+
+
+  /* =====================================================
+     LOAD CUSTOMER BALANCE FROM PROFILES TABLE
+     ===================================================== */
+
+  async function loadUserBalance(userId) {
+
+    const balanceElement =
+      document.getElementById("userBalance");
+
+
+    if (!balanceElement || !userId) {
+      return;
+    }
+
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("profiles")
+          .select("balance")
+          .eq("id", userId)
+          .maybeSingle();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      const balance =
+        Number(data?.balance || 0);
+
+
+      balanceElement.innerText =
+        "Rs " + balance.toFixed(2);
+
+
+    } catch (error) {
+
+      console.error(
+        "Balance loading error:",
+        error
+      );
+
+      balanceElement.innerText =
+        "Rs 0.00";
+
+    }
+
+  }
+
 
   /* SHOW SIGNUP */
 
@@ -757,11 +887,13 @@
       .getElementById("loginPage")
       .classList.add("hidden");
 
+
     document
       .getElementById("signupPage")
       .classList.remove("hidden");
 
   };
+
 
   /* SHOW LOGIN */
 
@@ -771,11 +903,13 @@
       .getElementById("signupPage")
       .classList.add("hidden");
 
+
     document
       .getElementById("loginPage")
       .classList.remove("hidden");
 
   };
+
 
   /* SIGNUP */
 
@@ -787,19 +921,23 @@
         .value
         .trim();
 
+
     const email =
       document
         .getElementById("signupEmail")
         .value
         .trim();
 
+
     const password =
       document
         .getElementById("signupPassword")
         .value;
 
+
     const message =
       document.getElementById("signupMessage");
+
 
     if (!name || !email || !password) {
 
@@ -809,7 +947,9 @@
         "⚠️ Please fill all fields.";
 
       return;
+
     }
+
 
     if (password.length < 6) {
 
@@ -819,7 +959,9 @@
         "⚠️ Password must be at least 6 characters.";
 
       return;
+
     }
+
 
     try {
 
@@ -843,24 +985,30 @@
 
         });
 
+
       if (error) {
         throw error;
       }
 
+
       message.className =
         "success";
 
+
       message.innerText =
         "✅ Account created successfully!";
+
 
       document
         .getElementById("signupPassword")
         .value = "";
 
+
     } catch (error) {
 
       message.className =
         "error";
+
 
       message.innerText =
         "❌ " + error.message;
@@ -868,6 +1016,7 @@
     }
 
   };
+
 
   /* LOGIN */
 
@@ -879,13 +1028,16 @@
         .value
         .trim();
 
+
     const password =
       document
         .getElementById("loginPassword")
         .value;
 
+
     const message =
       document.getElementById("loginMessage");
+
 
     if (!email || !password) {
 
@@ -896,7 +1048,9 @@
         "⚠️ Please enter email and password.";
 
       return;
+
     }
+
 
     try {
 
@@ -911,20 +1065,25 @@
 
         });
 
+
       if (error) {
         throw error;
       }
 
+
       message.className =
         "success";
 
+
       message.innerText =
         "✅ Login successful!";
+
 
     } catch (error) {
 
       message.className =
         "error";
+
 
       message.innerText =
         "❌ " + error.message;
@@ -932,6 +1091,7 @@
     }
 
   };
+
 
   /* LOGOUT */
 
@@ -941,6 +1101,7 @@
 
   };
 
+
   /* SHOW SECTION */
 
   window.showSection = function(section) {
@@ -949,21 +1110,33 @@
       .getElementById("dashboard")
       .classList.add("hidden");
 
+
     document
       .getElementById("order")
       .classList.add("hidden");
+
 
     document
       .getElementById("orders")
       .classList.add("hidden");
 
+
     document
       .getElementById("payment")
       .classList.add("hidden");
 
+
     document
       .getElementById(section)
       .classList.remove("hidden");
+
+
+    if (section === "dashboard") {
+
+      refreshCurrentUserBalance();
+
+    }
+
 
     if (section === "orders") {
 
@@ -971,13 +1144,38 @@
 
     }
 
+
     if (section === "payment") {
 
       loadPaymentRequests();
 
+      refreshCurrentUserBalance();
+
     }
 
   };
+
+
+  /* REFRESH CURRENT USER BALANCE */
+
+  async function refreshCurrentUserBalance() {
+
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabase.auth.getUser();
+
+
+    if (user) {
+
+      await loadUserBalance(user.id);
+
+    }
+
+  }
+
 
   /* OPEN ORDER */
 
@@ -987,11 +1185,14 @@
       .getElementById("service")
       .value = serviceName;
 
+
     calculatePrice();
+
 
     showSection("order");
 
   };
+
 
   /* CALCULATE PRICE */
 
@@ -1000,15 +1201,18 @@
     const select =
       document.getElementById("service");
 
+
     const selectedOption =
       select.options[
         select.selectedIndex
       ];
 
+
     const pricePerThousand =
       Number(
         selectedOption.dataset.price
       );
+
 
     const quantity =
       Number(
@@ -1016,6 +1220,7 @@
           .getElementById("quantity")
           .value
       );
+
 
     if (!quantity) {
 
@@ -1028,9 +1233,11 @@
 
     }
 
+
     const total =
       (quantity / 1000)
       * pricePerThousand;
+
 
     document
       .getElementById("totalPrice")
@@ -1038,6 +1245,7 @@
         "Rs " + total.toFixed(2);
 
   };
+
 
   /* PLACE ORDER */
 
@@ -1050,6 +1258,7 @@
     } =
       await supabase.auth.getUser();
 
+
     if (!user) {
 
       alert("Please login first.");
@@ -1058,16 +1267,19 @@
 
     }
 
+
     const service =
       document
         .getElementById("service")
         .value;
+
 
     const link =
       document
         .getElementById("link")
         .value
         .trim();
+
 
     const quantity =
       Number(
@@ -1076,41 +1288,50 @@
           .value
       );
 
+
     const message =
       document.getElementById(
         "orderMessage"
       );
+
 
     if (!link || !quantity) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Please enter the link and quantity.";
+
 
       return;
 
     }
+
 
     const select =
       document.getElementById(
         "service"
       );
 
+
     const selectedOption =
       select.options[
         select.selectedIndex
       ];
+
 
     const pricePerThousand =
       Number(
         selectedOption.dataset.price
       );
 
+
     const price =
       (quantity / 1000)
       * pricePerThousand;
+
 
     try {
 
@@ -1143,33 +1364,41 @@
 
           });
 
+
       if (error) {
         throw error;
       }
 
+
       message.className =
         "success";
 
+
       message.innerText =
         "✅ Order placed successfully!";
+
 
       document
         .getElementById("link")
         .value = "";
 
+
       document
         .getElementById("quantity")
         .value = "";
+
 
       document
         .getElementById("totalPrice")
         .innerText =
           "Rs 0.00";
 
+
     } catch (error) {
 
       message.className =
         "error";
+
 
       message.innerText =
         "❌ Order could not be saved: "
@@ -1178,6 +1407,7 @@
     }
 
   };
+
 
   /* LOAD MY ORDERS */
 
@@ -1190,10 +1420,12 @@
     } =
       await supabase.auth.getUser();
 
+
     const list =
       document.getElementById(
         "ordersList"
       );
+
 
     if (!user) {
 
@@ -1203,6 +1435,7 @@
       return;
 
     }
+
 
     try {
 
@@ -1224,9 +1457,11 @@
             }
           );
 
+
       if (error) {
         throw error;
       }
+
 
       if (!data || data.length === 0) {
 
@@ -1237,7 +1472,9 @@
 
       }
 
+
       let html = "";
+
 
       data.forEach((order) => {
 
@@ -1247,6 +1484,7 @@
                 order.created_at
               ).toLocaleString()
             : "N/A";
+
 
         html += `
 
@@ -1264,12 +1502,14 @@
 
             <p>
               <b>🔗 Link:</b>
+
               <a
                 href="${escapeAttribute(order.link)}"
                 target="_blank"
               >
                 ${escapeHtml(order.link)}
               </a>
+
             </p>
 
             <p>
@@ -1298,8 +1538,10 @@
 
       });
 
+
       list.innerHTML =
         html;
+
 
     } catch (error) {
 
@@ -1311,25 +1553,39 @@
 
   }
 
+
   /* UPLOAD PAYMENT PROOF */
 
   async function uploadPaymentProof(file, user) {
 
     if (!file) {
-      throw new Error("Please select payment screenshot.");
+      throw new Error(
+        "Please select payment screenshot."
+      );
     }
+
 
     if (!file.type.startsWith("image/")) {
-      throw new Error("Proof must be an image file.");
+      throw new Error(
+        "Proof must be an image file."
+      );
     }
 
+
     if (file.size > MAX_PROOF_SIZE) {
-      throw new Error("Proof image must be 5 MB or smaller.");
+      throw new Error(
+        "Proof image must be 5 MB or smaller."
+      );
     }
+
 
     const originalName =
       file.name
-        .replace(/[^a-zA-Z0-9.\_-]/g, "_");
+        .replace(
+          /[^a-zA-Z0-9.\_-]/g,
+          "_"
+        );
+
 
     const filePath =
       user.id
@@ -1337,6 +1593,7 @@
       + Date.now()
       + "_"
       + originalName;
+
 
     const {
       error
@@ -1354,13 +1611,16 @@
           }
         );
 
+
     if (error) {
       throw error;
     }
 
+
     return filePath;
 
   }
+
 
   /* GET PUBLIC PROOF URL */
 
@@ -1370,6 +1630,7 @@
       return "";
     }
 
+
     const {
       data
     } =
@@ -1378,9 +1639,11 @@
         .from(PAYMENT_PROOF_BUCKET)
         .getPublicUrl(path);
 
+
     return data?.publicUrl || "";
 
   }
+
 
   /* SUBMIT PAYMENT */
 
@@ -1393,27 +1656,33 @@
     } =
       await supabase.auth.getUser();
 
+
     const message =
       document.getElementById(
         "paymentMessage"
       );
+
 
     const submitButton =
       document.getElementById(
         "submitPaymentBtn"
       );
 
+
     if (!user) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "❌ Please login first.";
+
 
       return;
 
     }
+
 
     const amount =
       Number(
@@ -1422,10 +1691,12 @@
           .value
       );
 
+
     const method =
       document
         .getElementById("paymentMethod")
         .value;
+
 
     const transactionId =
       document
@@ -1433,94 +1704,113 @@
         .value
         .trim();
 
+
     const proofFile =
       document
         .getElementById("paymentProof")
         .files[0];
+
 
     if (!amount || amount <= 0) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Please enter a valid amount.";
+
 
       return;
 
     }
+
 
     if (!method) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Please select a payment method.";
+
 
       return;
 
     }
+
 
     if (!transactionId) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Please enter transaction ID.";
+
 
       return;
 
     }
+
 
     if (!proofFile) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Please choose payment screenshot.";
+
 
       return;
 
     }
+
 
     if (!proofFile.type.startsWith("image/")) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Payment proof must be an image.";
+
 
       return;
 
     }
+
 
     if (proofFile.size > MAX_PROOF_SIZE) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "⚠️ Image size must be 5 MB or smaller.";
+
 
       return;
 
     }
 
+
     try {
 
       submitButton.disabled = true;
 
+
       submitButton.innerText =
         "⏳ Uploading Proof...";
 
-      /*
-        STEP 1:
-        Upload screenshot to Supabase Storage
-      */
+
+      /* STEP 1: Upload screenshot */
 
       const proofPath =
         await uploadPaymentProof(
@@ -1528,13 +1818,12 @@
           user
         );
 
-      /*
-        STEP 2:
-        Save payment request in database
-      */
+
+      /* STEP 2: Save payment request */
 
       submitButton.innerText =
         "⏳ Saving Payment Request...";
+
 
       const {
         error
@@ -1555,10 +1844,6 @@
             user_id:
               user.id,
 
-            /* NEW:
-               Save customer email with payment request
-            */
-
             user_email:
               user.email,
 
@@ -1570,11 +1855,9 @@
 
           });
 
-      /*
-        If database insert fails,
-        try to remove uploaded proof
-        so unused files are not left behind.
-      */
+
+      /* If database insert fails,
+         remove uploaded screenshot */
 
       if (error) {
 
@@ -1585,46 +1868,58 @@
             proofPath
           ]);
 
+
         throw error;
 
       }
 
+
       message.className =
         "success";
 
+
       message.innerText =
         "✅ Payment screenshot uploaded and payment request submitted successfully!";
+
 
       document
         .getElementById("paymentAmount")
         .value = "";
 
+
       document
         .getElementById("paymentMethod")
         .value = "";
+
 
       document
         .getElementById("transactionId")
         .value = "";
 
+
       document
         .getElementById("paymentProof")
         .value = "";
 
+
       loadPaymentRequests();
+
 
     } catch (error) {
 
       message.className =
         "error";
 
+
       message.innerText =
         "❌ Payment request could not be submitted: "
         + error.message;
 
+
     } finally {
 
       submitButton.disabled = false;
+
 
       submitButton.innerText =
         "🚀 Submit Payment Request";
@@ -1632,6 +1927,7 @@
     }
 
   };
+
 
   /* LOAD MY PAYMENT REQUESTS */
 
@@ -1644,10 +1940,12 @@
     } =
       await supabase.auth.getUser();
 
+
     const list =
       document.getElementById(
         "paymentRequestsList"
       );
+
 
     if (!user) {
 
@@ -1658,6 +1956,7 @@
 
     }
 
+
     try {
 
       const {
@@ -1667,17 +1966,10 @@
         await supabase
           .from("payment_requests")
           .select("*")
-
-          /* IMPORTANT:
-             Customer will only see
-             their own payment requests.
-          */
-
           .eq(
             "user_id",
             user.id
           )
-
           .order(
             "created_at",
             {
@@ -1685,9 +1977,11 @@
             }
           );
 
+
       if (error) {
         throw error;
       }
+
 
       if (!data || data.length === 0) {
 
@@ -1698,7 +1992,9 @@
 
       }
 
+
       let html = "";
+
 
       data.forEach((payment) => {
 
@@ -1709,15 +2005,18 @@
               ).toLocaleString()
             : "N/A";
 
+
         const proofUrl =
           getProofUrl(
             payment.proof
           );
 
+
         const proofHtml =
           proofUrl
 
             ? `
+
                 <a
                   class="proof-link"
                   href="${escapeAttribute(proofUrl)}"
@@ -1726,13 +2025,17 @@
                 >
                   🖼️ View Proof
                 </a>
+
               `
 
             : `
+
                 <span>
                   No proof available
                 </span>
+
               `;
+
 
         html += `
 
@@ -1775,8 +2078,10 @@
 
       });
 
+
       list.innerHTML =
         html;
+
 
     } catch (error) {
 
@@ -1788,34 +2093,46 @@
 
   }
 
+
   /* SECURITY HELPERS */
 
   function escapeHtml(value) {
 
     return String(value ?? "")
+
       .replaceAll("&", "&amp;")
+
       .replaceAll("<", "&lt;")
+
       .replaceAll(">", "&gt;")
+
       .replaceAll('"', "&quot;")
+
       .replaceAll("'", "&#039;");
 
   }
 
+
   function escapeAttribute(value) {
 
     return String(value ?? "")
+
       .replaceAll('"', "%22")
+
       .replaceAll("'", "%27");
 
   }
 
+
   /* AUTH STATE */
 
   supabase.auth.onAuthStateChange(
+
     async (event, session) => {
 
       const user =
         session?.user || null;
+
 
       if (user) {
 
@@ -1823,23 +2140,34 @@
           .getElementById("loginPage")
           .classList.add("hidden");
 
+
         document
           .getElementById("signupPage")
           .classList.add("hidden");
 
+
         document
           .getElementById("app")
           .classList.remove("hidden");
+
 
         const name =
           user.user_metadata?.full_name
           || user.email
           || "Customer";
 
+
         document
           .getElementById("welcomeText")
           .innerText =
             "Welcome, " + name + "!";
+
+
+        /* IMPORTANT:
+           Load actual balance from profiles */
+
+        await loadUserBalance(user.id);
+
 
       } else {
 
@@ -1847,20 +2175,31 @@
           .getElementById("app")
           .classList.add("hidden");
 
+
         document
           .getElementById("signupPage")
           .classList.add("hidden");
+
 
         document
           .getElementById("loginPage")
           .classList.remove("hidden");
 
+
+        document
+          .getElementById("userBalance")
+          .innerText =
+            "Rs 0.00";
+
       }
 
     }
+
   );
+
 
 </script>
 
 </body>
+
 </html>
