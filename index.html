@@ -1250,956 +1250,260 @@
   /* PLACE ORDER */
 
   window.placeOrder = async function() {
+/* PLACE ORDER */
+window.placeOrder = async function() {
 
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    if (!user) {
-
-      alert("Please login first.");
-
-      return;
-
+  const {
+    data: {
+      user
     }
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+
+    alert("Please login first.");
+
+    return;
+
+  }
 
 
-    const service =
-      document
-        .getElementById("service")
-        .value;
+  const service =
+    document
+      .getElementById("service")
+      .value;
 
 
-    const link =
-      document
-        .getElementById("link")
-        .value
-        .trim();
+  const link =
+    document
+      .getElementById("link")
+      .value
+      .trim();
 
 
-    const quantity =
-      Number(
-        document
-          .getElementById("quantity")
-          .value
-      );
-
-
-    const message =
-      document.getElementById(
-        "orderMessage"
-      );
-
-
-    if (!link || !quantity) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "⚠️ Please enter the link and quantity.";
-
-
-      return;
-
-    }
-
-
-    const select =
-      document.getElementById(
-        "service"
-      );
-
-
-    const selectedOption =
-      select.options[
-        select.selectedIndex
-      ];
-
-
-    const pricePerThousand =
-      Number(
-        selectedOption.dataset.price
-      );
-
-
-    const price =
-      (quantity / 1000)
-      * pricePerThousand;
-
-
-    try {
-
-      const {
-        error
-      } =
-        await supabase
-          .from("orders")
-          .insert({
-
-            user_email:
-              user.email,
-
-            service:
-              service,
-
-            link:
-              link,
-
-            quantity:
-              quantity,
-
-            price:
-              Number(
-                price.toFixed(2)
-              ),
-
-            status:
-              "Pending"
-
-          });
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      message.className =
-        "success";
-
-
-      message.innerText =
-        "✅ Order placed successfully!";
-
-
-      document
-        .getElementById("link")
-        .value = "";
-
-
+  const quantity =
+    Number(
       document
         .getElementById("quantity")
-        .value = "";
+        .value
+    );
 
 
-      document
-        .getElementById("totalPrice")
-        .innerText =
-          "Rs 0.00";
+  const message =
+    document.getElementById(
+      "orderMessage"
+    );
 
 
-    } catch (error) {
+  if (!link || !quantity || quantity <= 0) {
 
-      message.className =
-        "error";
+    message.className =
+      "error";
 
+    message.innerText =
+      "⚠️ Please enter the link and quantity.";
 
-      message.innerText =
-        "❌ Order could not be saved: "
-        + error.message;
-
-    }
-
-  };
-
-
-  /* LOAD MY ORDERS */
-
-  async function loadOrders() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    const list =
-      document.getElementById(
-        "ordersList"
-      );
-
-
-    if (!user) {
-
-      list.innerHTML =
-        "Please login first.";
-
-      return;
-
-    }
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from("orders")
-          .select("*")
-          .eq(
-            "user_email",
-            user.email
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      if (!data || data.length === 0) {
-
-        list.innerHTML =
-          "📋 No orders found yet.";
-
-        return;
-
-      }
-
-
-      let html = "";
-
-
-      data.forEach((order) => {
-
-        const date =
-          order.created_at
-            ? new Date(
-                order.created_at
-              ).toLocaleString()
-            : "N/A";
-
-
-        html += `
-
-          <div class="order">
-
-            <p>
-              <b>🆔 Order ID:</b>
-              ${order.id}
-            </p>
-
-            <p>
-              <b>📱 Service:</b>
-              ${escapeHtml(order.service)}
-            </p>
-
-            <p>
-              <b>🔗 Link:</b>
-
-              <a
-                href="${escapeAttribute(order.link)}"
-                target="_blank"
-              >
-                ${escapeHtml(order.link)}
-              </a>
-
-            </p>
-
-            <p>
-              <b>📊 Quantity:</b>
-              ${order.quantity}
-            </p>
-
-            <p>
-              <b>💵 Price:</b>
-              Rs ${Number(order.price).toFixed(2)}
-            </p>
-
-            <p>
-              <b>📌 Status:</b>
-              ${escapeHtml(order.status)}
-            </p>
-
-            <p>
-              <b>🕒 Date:</b>
-              ${date}
-            </p>
-
-          </div>
-
-        `;
-
-      });
-
-
-      list.innerHTML =
-        html;
-
-
-    } catch (error) {
-
-      list.innerHTML =
-        "❌ Could not load orders: "
-        + error.message;
-
-    }
+    return;
 
   }
 
 
-  /* UPLOAD PAYMENT PROOF */
-
-  async function uploadPaymentProof(file, user) {
-
-    if (!file) {
-      throw new Error(
-        "Please select payment screenshot."
-      );
-    }
+  const select =
+    document.getElementById(
+      "service"
+    );
 
 
-    if (!file.type.startsWith("image/")) {
-      throw new Error(
-        "Proof must be an image file."
-      );
-    }
+  const selectedOption =
+    select.options[
+      select.selectedIndex
+    ];
 
 
-    if (file.size > MAX_PROOF_SIZE) {
-      throw new Error(
-        "Proof image must be 5 MB or smaller."
-      );
-    }
+  const pricePerThousand =
+    Number(
+      selectedOption.dataset.price
+    );
 
 
-    const originalName =
-      file.name
-        .replace(
-          /[^a-zA-Z0-9.\_-]/g,
-          "_"
-        );
+  const price =
+    (quantity / 1000) *
+    pricePerThousand;
 
 
-    const filePath =
-      user.id
-      + "/"
-      + Date.now()
-      + "_"
-      + originalName;
+  try {
 
+    /* STEP 1: GET CURRENT BALANCE */
 
     const {
-      error
+      data: profile,
+      error: balanceError
     } =
       await supabase
-        .storage
-        .from(PAYMENT_PROOF_BUCKET)
-        .upload(
-          filePath,
-          file,
-          {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: file.type
-          }
-        );
+        .from("profiles")
+        .select("balance")
+        .eq("id", user.id)
+        .maybeSingle();
 
 
-    if (error) {
-      throw error;
+    if (balanceError) {
+      throw balanceError;
     }
 
 
-    return filePath;
+    if (!profile) {
 
-  }
+      throw new Error(
+        "Customer profile not found."
+      );
 
-
-  /* GET PUBLIC PROOF URL */
-
-  function getProofUrl(path) {
-
-    if (!path) {
-      return "";
     }
+
+
+    const currentBalance =
+      Number(profile.balance || 0);
+
+
+    /* STEP 2: CHECK BALANCE */
+
+    if (currentBalance < price) {
+
+      message.className =
+        "error";
+
+      message.innerText =
+        "❌ Insufficient balance. Your balance is Rs " +
+        currentBalance.toFixed(2) +
+        " but this order costs Rs " +
+        price.toFixed(2) +
+        ".";
+
+      return;
+
+    }
+
+
+    /* STEP 3: DEDUCT ORDER PRICE */
+
+    const newBalance =
+      currentBalance - price;
 
 
     const {
-      data
+      error: updateBalanceError
     } =
-      supabase
-        .storage
-        .from(PAYMENT_PROOF_BUCKET)
-        .getPublicUrl(path);
+      await supabase
+        .from("profiles")
+        .update({
+          balance:
+            Number(
+              newBalance.toFixed(2)
+            )
+        })
+        .eq("id", user.id);
 
 
-    return data?.publicUrl || "";
+    if (updateBalanceError) {
+      throw updateBalanceError;
+    }
 
-  }
 
-
-  /* SUBMIT PAYMENT */
-
-  window.submitPayment = async function() {
+    /* STEP 4: SAVE ORDER */
 
     const {
-      data: {
-        user
-      }
+      error: orderError
     } =
-      await supabase.auth.getUser();
+      await supabase
+        .from("orders")
+        .insert({
+
+          user_email:
+            user.email,
+
+          service:
+            service,
+
+          link:
+            link,
+
+          quantity:
+            quantity,
+
+          price:
+            Number(
+              price.toFixed(2)
+            ),
+
+          status:
+            "Pending"
+
+        });
 
 
-    const message =
-      document.getElementById(
-        "paymentMessage"
-      );
+    /* IF ORDER SAVE FAILS,
+       RESTORE BALANCE */
 
+    if (orderError) {
 
-    const submitButton =
-      document.getElementById(
-        "submitPaymentBtn"
-      );
+      await supabase
+        .from("profiles")
+        .update({
+          balance:
+            Number(
+              currentBalance.toFixed(2)
+            )
+        })
+        .eq("id", user.id);
 
-
-    if (!user) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "❌ Please login first.";
-
-
-      return;
-
-    }
-
-
-    const amount =
-      Number(
-        document
-          .getElementById("paymentAmount")
-          .value
-      );
-
-
-    const method =
-      document
-        .getElementById("paymentMethod")
-        .value;
-
-
-    const transactionId =
-      document
-        .getElementById("transactionId")
-        .value
-        .trim();
-
-
-    const proofFile =
-      document
-        .getElementById("paymentProof")
-        .files[0];
-
-
-    if (!amount || amount <= 0) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "⚠️ Please enter a valid amount.";
-
-
-      return;
+      throw orderError;
 
     }
 
 
-    if (!method) {
+    /* STEP 5: SHOW SUCCESS */
 
-      message.className =
-        "error";
+    message.className =
+      "success";
 
+    message.innerText =
+      "✅ Order placed successfully! Rs " +
+      price.toFixed(2) +
+      " deducted from your balance.";
 
-      message.innerText =
-        "⚠️ Please select a payment method.";
 
+    /* CLEAR FORM */
 
-      return;
+    document
+      .getElementById("link")
+      .value = "";
 
-    }
 
+    document
+      .getElementById("quantity")
+      .value = "";
 
-    if (!transactionId) {
 
-      message.className =
-        "error";
+    document
+      .getElementById("totalPrice")
+      .innerText =
+        "Rs 0.00";
 
 
-      message.innerText =
-        "⚠️ Please enter transaction ID.";
+    /* REFRESH BALANCE */
 
+    await loadUserBalance(user.id);
 
-      return;
 
-    }
+  } catch (error) {
 
+    message.className =
+      "error";
 
-    if (!proofFile) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "⚠️ Please choose payment screenshot.";
-
-
-      return;
-
-    }
-
-
-    if (!proofFile.type.startsWith("image/")) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "⚠️ Payment proof must be an image.";
-
-
-      return;
-
-    }
-
-
-    if (proofFile.size > MAX_PROOF_SIZE) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "⚠️ Image size must be 5 MB or smaller.";
-
-
-      return;
-
-    }
-
-
-    try {
-
-      submitButton.disabled = true;
-
-
-      submitButton.innerText =
-        "⏳ Uploading Proof...";
-
-
-      /* STEP 1: Upload screenshot */
-
-      const proofPath =
-        await uploadPaymentProof(
-          proofFile,
-          user
-        );
-
-
-      /* STEP 2: Save payment request */
-
-      submitButton.innerText =
-        "⏳ Saving Payment Request...";
-
-
-      const {
-        error
-      } =
-        await supabase
-          .from("payment_requests")
-          .insert({
-
-            amount:
-              amount,
-
-            method:
-              method,
-
-            transaction_id:
-              transactionId,
-
-            user_id:
-              user.id,
-
-            user_email:
-              user.email,
-
-            proof:
-              proofPath,
-
-            status:
-              "Pending"
-
-          });
-
-
-      /* If database insert fails,
-         remove uploaded screenshot */
-
-      if (error) {
-
-        await supabase
-          .storage
-          .from(PAYMENT_PROOF_BUCKET)
-          .remove([
-            proofPath
-          ]);
-
-
-        throw error;
-
-      }
-
-
-      message.className =
-        "success";
-
-
-      message.innerText =
-        "✅ Payment screenshot uploaded and payment request submitted successfully!";
-
-
-      document
-        .getElementById("paymentAmount")
-        .value = "";
-
-
-      document
-        .getElementById("paymentMethod")
-        .value = "";
-
-
-      document
-        .getElementById("transactionId")
-        .value = "";
-
-
-      document
-        .getElementById("paymentProof")
-        .value = "";
-
-
-      loadPaymentRequests();
-
-
-    } catch (error) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "❌ Payment request could not be submitted: "
-        + error.message;
-
-
-    } finally {
-
-      submitButton.disabled = false;
-
-
-      submitButton.innerText =
-        "🚀 Submit Payment Request";
-
-    }
-
-  };
-
-
-  /* LOAD MY PAYMENT REQUESTS */
-
-  async function loadPaymentRequests() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    const list =
-      document.getElementById(
-        "paymentRequestsList"
-      );
-
-
-    if (!user) {
-
-      list.innerHTML =
-        "Please login first.";
-
-      return;
-
-    }
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from("payment_requests")
-          .select("*")
-          .eq(
-            "user_id",
-            user.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      if (!data || data.length === 0) {
-
-        list.innerHTML =
-          "📋 No payment requests found.";
-
-        return;
-
-      }
-
-
-      let html = "";
-
-
-      data.forEach((payment) => {
-
-        const date =
-          payment.created_at
-            ? new Date(
-                payment.created_at
-              ).toLocaleString()
-            : "N/A";
-
-
-        const proofUrl =
-          getProofUrl(
-            payment.proof
-          );
-
-
-        const proofHtml =
-          proofUrl
-
-            ? `
-
-                <a
-                  class="proof-link"
-                  href="${escapeAttribute(proofUrl)}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🖼️ View Proof
-                </a>
-
-              `
-
-            : `
-
-                <span>
-                  No proof available
-                </span>
-
-              `;
-
-
-        html += `
-
-          <div class="payment-card">
-
-            <p>
-              <b>💵 Amount:</b>
-              Rs ${Number(payment.amount || 0).toFixed(2)}
-            </p>
-
-            <p>
-              <b>💳 Method:</b>
-              ${escapeHtml(payment.method)}
-            </p>
-
-            <p>
-              <b>🔢 Transaction ID:</b>
-              ${escapeHtml(payment.transaction_id)}
-            </p>
-
-            <p>
-              <b>🧾 Proof:</b>
-              <br>
-              ${proofHtml}
-            </p>
-
-            <p>
-              <b>📌 Status:</b>
-              ${escapeHtml(payment.status || "Pending")}
-            </p>
-
-            <p>
-              <b>🕒 Date:</b>
-              ${date}
-            </p>
-
-          </div>
-
-        `;
-
-      });
-
-
-      list.innerHTML =
-        html;
-
-
-    } catch (error) {
-
-      list.innerHTML =
-        "❌ Could not load payment requests: "
-        + error.message;
-
-    }
+    message.innerText =
+      "❌ Order could not be saved: " +
+      error.message;
 
   }
 
-
-  /* SECURITY HELPERS */
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-
-      .replaceAll("&", "&amp;")
-
-      .replaceAll("<", "&lt;")
-
-      .replaceAll(">", "&gt;")
-
-      .replaceAll('"', "&quot;")
-
-      .replaceAll("'", "&#039;");
-
-  }
-
-
-  function escapeAttribute(value) {
-
-    return String(value ?? "")
-
-      .replaceAll('"', "%22")
-
-      .replaceAll("'", "%27");
-
-  }
-
-
-  /* AUTH STATE */
-
-  supabase.auth.onAuthStateChange(
-
-    async (event, session) => {
-
-      const user =
-        session?.user || null;
-
-
-      if (user) {
-
-        document
-          .getElementById("loginPage")
-          .classList.add("hidden");
-
-
-        document
-          .getElementById("signupPage")
-          .classList.add("hidden");
-
-
-        document
-          .getElementById("app")
-          .classList.remove("hidden");
-
-
-        const name =
-          user.user_metadata?.full_name
-          || user.email
-          || "Customer";
-
-
-        document
-          .getElementById("welcomeText")
-          .innerText =
-            "Welcome, " + name + "!";
-
-
-        /* IMPORTANT:
-           Load actual balance from profiles */
-
-        await loadUserBalance(user.id);
-
-
-      } else {
-
-        document
-          .getElementById("app")
-          .classList.add("hidden");
-
-
-        document
-          .getElementById("signupPage")
-          .classList.add("hidden");
-
-
-        document
-          .getElementById("loginPage")
-          .classList.remove("hidden");
-
-
-        document
-          .getElementById("userBalance")
-          .innerText =
-            "Rs 0.00";
-
-      }
-
-    }
-
-  );
-
-
-</script>
-
-</body>
-
-</html>
+};
+         
