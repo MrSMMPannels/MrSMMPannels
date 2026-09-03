@@ -196,6 +196,45 @@ hr{
   border-top:1px solid #ddd;
   margin:15px 0
 }
+
+/* SERVICES */
+
+.service-card{
+  background:#f8f9ff;
+  padding:18px;
+  border-radius:12px;
+  margin-bottom:15px;
+  border-left:5px solid #6c2cff
+}
+
+.service-card p{
+  margin:8px 0
+}
+
+.service-price{
+  width:180px;
+  display:inline-block;
+  margin:8px 8px 8px 0;
+}
+
+.service-update{
+  background:#168321;
+}
+
+.service-active{
+  color:#168321;
+  font-weight:bold;
+}
+
+.service-inactive{
+  color:#d32f2f;
+  font-weight:bold;
+}
+
+.toggle-btn{
+  background:#6c2cff;
+  margin-left:6px;
+}
 </style>
 </head>
 
@@ -258,9 +297,30 @@ placeholder="Admin Password"
 💳 Refresh Payments
 </button>
 
+<button onclick="loadServices()">
+🛠️ Refresh Services
+</button>
+
 <button class="logout" onclick="adminLogout()">
 🚪 Logout
 </button>
+
+</div>
+
+
+<!-- SERVICES & PRICES -->
+
+<div class="box">
+
+<h2>🛠️ Services & Prices</h2>
+
+<div class="info">
+💡 Yahan se aap services ki price aur Active/Inactive status manage kar sakte hain.
+</div>
+
+<div id="servicesList">
+⏳ Loading services...
+</div>
 
 </div>
 
@@ -343,13 +403,11 @@ user
 } =
 await supabase.auth.getUser();
 
-
 if(!user){
 
 return false;
 
 }
-
 
 return user.id === ADMIN_UID;
 
@@ -437,6 +495,8 @@ loadOrders();
 
 loadPaymentRequests();
 
+loadServices();
+
 
 }catch(error){
 
@@ -444,6 +504,307 @@ message.className="error";
 
 message.innerText =
 "❌ Login failed: "+error.message;
+
+}
+
+};
+
+
+/* LOAD SERVICES */
+
+window.loadServices = async function(){
+
+if(!(await checkAdmin())){
+
+return;
+
+}
+
+
+const list =
+document.getElementById("servicesList");
+
+
+list.innerHTML =
+"⏳ Loading services...";
+
+
+try{
+
+const {
+data,
+error
+} =
+await supabase
+.from("services")
+.select("*")
+.order("id",{ascending:true});
+
+
+if(error){
+
+throw error;
+
+}
+
+
+if(!data || data.length===0){
+
+list.innerHTML =
+"📋 No services found.";
+
+return;
+
+}
+
+
+let html="";
+
+
+data.forEach(service=>{
+
+const active =
+service.active === true;
+
+
+html += `
+
+<div class="service-card">
+
+<p>
+<b>🆔 Service ID:</b>
+${escapeHtml(service.id)}
+</p>
+
+<p>
+<b>📱 Service:</b>
+${escapeHtml(service.name)}
+</p>
+
+<p>
+<b>📂 Category:</b>
+${escapeHtml(service.category)}
+</p>
+
+<p>
+<b>💰 Current Price:</b>
+Rs ${Number(service.price_per_1000 || 0).toFixed(2)} / 1000
+</p>
+
+<p>
+<b>📌 Status:</b>
+
+<span class="${active ? "service-active" : "service-inactive"}">
+${active ? "Active" : "Inactive"}
+</span>
+
+</p>
+
+<hr>
+
+<label>
+<b>💵 New Price per 1000:</b>
+</label>
+
+<br>
+
+<input
+class="service-price"
+type="number"
+min="0"
+step="0.01"
+id="price-${service.id}"
+value="${Number(service.price_per_1000 || 0).toFixed(2)}"
+>
+
+<button
+class="service-update"
+onclick="updateServicePrice(${service.id})"
+>
+💾 Update Price
+</button>
+
+<button
+class="toggle-btn"
+onclick="toggleService(${service.id}, ${active})"
+>
+${active ? "⛔ Deactivate" : "✅ Activate"}
+</button>
+
+<div id="service-message-${service.id}"></div>
+
+</div>
+
+`;
+
+});
+
+
+list.innerHTML=html;
+
+
+}catch(error){
+
+list.innerHTML =
+"❌ Could not load services: "
++
+escapeHtml(error.message);
+
+}
+
+};
+
+
+/* UPDATE SERVICE PRICE */
+
+window.updateServicePrice =
+async function(serviceId){
+
+if(!(await checkAdmin())){
+
+alert("Unauthorized.");
+
+return;
+
+}
+
+
+const input =
+document.getElementById(
+"price-"+serviceId
+);
+
+
+const message =
+document.getElementById(
+"service-message-"+serviceId
+);
+
+
+if(!input){
+
+return;
+
+}
+
+
+const newPrice =
+Number(input.value);
+
+
+if(!Number.isFinite(newPrice) || newPrice < 0){
+
+message.className="error";
+
+message.innerText =
+"⚠️ Please enter a valid price.";
+
+return;
+
+}
+
+
+try{
+
+message.className="info";
+
+message.innerText =
+"⏳ Updating price...";
+
+
+const {
+error
+} =
+await supabase
+.from("services")
+.update({
+price_per_1000:newPrice
+})
+.eq("id",serviceId);
+
+
+if(error){
+
+throw error;
+
+}
+
+
+message.className="success";
+
+message.innerText =
+"✅ Price updated successfully!";
+
+
+setTimeout(()=>{
+
+loadServices();
+
+},800);
+
+
+}catch(error){
+
+message.className="error";
+
+message.innerText =
+"❌ Could not update price: "
++
+error.message;
+
+}
+
+};
+
+
+/* ACTIVATE / DEACTIVATE SERVICE */
+
+window.toggleService =
+async function(serviceId,currentStatus){
+
+if(!(await checkAdmin())){
+
+alert("Unauthorized.");
+
+return;
+
+}
+
+
+const newStatus =
+!currentStatus;
+
+
+try{
+
+const {
+error
+} =
+await supabase
+.from("services")
+.update({
+active:newStatus
+})
+.eq("id",serviceId);
+
+
+if(error){
+
+throw error;
+
+}
+
+
+loadServices();
+
+
+}catch(error){
+
+alert(
+"❌ Could not change service status: "
++
+error.message
+);
 
 }
 
@@ -775,11 +1136,6 @@ return;
 
 /*
 TRY TO GET EMAILS FROM PROFILES
-
-If profiles table has matching users,
-their email will be used.
-
-If not, payment.user_email will be used.
 */
 
 let profileMap = {};
@@ -846,14 +1202,6 @@ payment.created_at
 :
 "N/A";
 
-
-/*
-CUSTOMER EMAIL PRIORITY:
-
-1. payment_requests.user_email
-2. profiles.email
-3. Email not saved
-*/
 
 const customerEmail =
 payment.user_email
@@ -1069,11 +1417,6 @@ message.innerText =
 "⏳ Approving payment...";
 
 
-/*
-Balance update is done by
-Supabase RPC function.
-*/
-
 const {
 error
 } =
@@ -1273,6 +1616,9 @@ document
 loadOrders();
 
 loadPaymentRequests();
+
+loadServices();
+
 
 }else{
 
