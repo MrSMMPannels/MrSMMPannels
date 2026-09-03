@@ -357,6 +357,7 @@
       <div id="loginForm" class="auth-form active">
 
         <label>Email</label>
+
         <input
           type="email"
           id="loginEmail"
@@ -364,6 +365,7 @@
         >
 
         <label>Password</label>
+
         <input
           type="password"
           id="loginPassword"
@@ -382,6 +384,7 @@
       <div id="signupForm" class="auth-form">
 
         <label>Full Name</label>
+
         <input
           type="text"
           id="signupName"
@@ -389,6 +392,7 @@
         >
 
         <label>Email</label>
+
         <input
           type="email"
           id="signupEmail"
@@ -396,6 +400,7 @@
         >
 
         <label>Password</label>
+
         <input
           type="password"
           id="signupPassword"
@@ -873,6 +878,7 @@
           );
 
           return;
+
         }
 
 
@@ -956,6 +962,7 @@
           );
 
           return;
+
         }
 
 
@@ -1438,7 +1445,7 @@
 
 
     /* =========================
-       PLACE ORDER
+       SECURE PLACE ORDER
     ========================= */
 
     window.placeOrder =
@@ -1522,220 +1529,13 @@
 
         if (
           !quantity ||
-          quantity <= 0
+          quantity <= 0 ||
+          !Number.isInteger(quantity)
         ) {
 
           showMessage(
             "orderMessage",
-            "Please enter a valid quantity.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        /* Get latest active service price */
-
-        const {
-          data: serviceData,
-          error: serviceError
-        } =
-          await supabase
-            .from("services")
-            .select(
-              "name, price_per_1000, active"
-            )
-            .eq(
-              "name",
-              service
-            )
-            .eq(
-              "active",
-              true
-            )
-            .maybeSingle();
-
-
-        if (serviceError) {
-
-          showMessage(
-            "orderMessage",
-            serviceError.message,
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        if (!serviceData) {
-
-          showMessage(
-            "orderMessage",
-            "This service is currently unavailable.",
-            "error"
-          );
-
-          await loadServices();
-
-          return;
-
-        }
-
-
-        const pricePerThousand =
-          Number(
-            serviceData.price_per_1000
-          );
-
-
-        const totalPrice =
-          (
-            quantity / 1000
-          ) *
-          pricePerThousand;
-
-
-        /* Get current balance */
-
-        const {
-          data: profile,
-          error: profileError
-        } =
-          await supabase
-            .from("profiles")
-            .select(
-              "balance"
-            )
-            .eq(
-              "id",
-              currentUser.id
-            )
-            .single();
-
-
-        if (profileError) {
-
-          showMessage(
-            "orderMessage",
-            profileError.message,
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        const currentBalance =
-          Number(
-            profile.balance || 0
-          );
-
-
-        if (
-          currentBalance <
-          totalPrice
-        ) {
-
-          showMessage(
-            "orderMessage",
-            `Insufficient balance. Your balance is Rs ${currentBalance.toFixed(2)}.`,
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        const newBalance =
-          currentBalance -
-          totalPrice;
-
-
-        /* Deduct balance */
-
-        const {
-          error: balanceError
-        } =
-          await supabase
-            .from("profiles")
-            .update({
-              balance:
-                newBalance
-            })
-            .eq(
-              "id",
-              currentUser.id
-            );
-
-
-        if (balanceError) {
-
-          showMessage(
-            "orderMessage",
-            balanceError.message,
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        /* Create order */
-
-        const {
-          error: orderError
-        } =
-          await supabase
-            .from("orders")
-            .insert({
-
-              user_email:
-                currentUser.email,
-
-              service:
-                serviceData.name,
-
-              link:
-                link,
-
-              quantity:
-                quantity,
-
-              price:
-                totalPrice,
-
-              status:
-                "Pending"
-
-            });
-
-
-        if (orderError) {
-
-          /* Restore balance */
-
-          await supabase
-            .from("profiles")
-            .update({
-              balance:
-                currentBalance
-            })
-            .eq(
-              "id",
-              currentUser.id
-            );
-
-
-          showMessage(
-            "orderMessage",
-            orderError.message,
+            "Please enter a valid whole-number quantity.",
             "error"
           );
 
@@ -1746,7 +1546,80 @@
 
         showMessage(
           "orderMessage",
-          `Order placed successfully! Rs ${totalPrice.toFixed(2)} deducted from your balance.`,
+          "Processing your order...",
+          "success"
+        );
+
+
+        /*
+          IMPORTANT:
+
+          Price calculation, balance checking,
+          balance deduction and order creation
+          are now handled securely inside Supabase.
+
+          The browser does NOT update the balance
+          directly anymore.
+        */
+
+        const {
+          data,
+          error
+        } =
+          await supabase.rpc(
+            "place_order_secure",
+            {
+              p_service: service,
+              p_link: link,
+              p_quantity: quantity
+            }
+          );
+
+
+        if (error) {
+
+          console.error(
+            "Secure order error:",
+            error
+          );
+
+          showMessage(
+            "orderMessage",
+            error.message ||
+              "Could not place order.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !data ||
+          data.success !== true
+        ) {
+
+          showMessage(
+            "orderMessage",
+            "Order could not be completed.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const totalPrice =
+          Number(
+            data.price || 0
+          );
+
+
+        showMessage(
+          "orderMessage",
+          `Order #${data.order_id} placed successfully! Rs ${totalPrice.toFixed(2)} deducted from your balance.`,
           "success"
         );
 
@@ -2453,7 +2326,6 @@
       await setupUser();
 
     }
-
 
   </script>
 
