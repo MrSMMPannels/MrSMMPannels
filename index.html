@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Mr SMM Pannels</title>
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -19,129 +15,113 @@
     }
 
     body {
-      background: #f3f6fb;
+      background: #f5f3ff;
       color: #222;
+    }
+
+    .app {
+      display: none;
     }
 
     header {
       background: linear-gradient(135deg, #6c2cff, #9b4dff);
       color: white;
-      padding: 25px;
+      padding: 20px;
       text-align: center;
     }
 
     header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      opacity: 0.9;
     }
 
     nav {
-      background: #fff;
-      padding: 14px;
-      text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      background: white;
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     nav button {
-      width: auto;
-      margin: 4px;
-      padding: 10px 16px;
-      background: #6c2cff;
-      color: white;
       border: none;
+      background: #eee8ff;
+      color: #5b20d6;
+      padding: 10px 14px;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     nav button:hover {
-      background: #5520d8;
+      background: #6c2cff;
+      color: white;
     }
 
     .container {
-      max-width: 1000px;
-      margin: 25px auto;
-      padding: 0 15px;
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
     }
 
-    .box {
-      background: white;
-      padding: 25px;
-      margin-bottom: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    .section {
+      display: none;
     }
 
-    .box h2 {
-      color: #6c2cff;
-      margin-bottom: 18px;
+    .section.active {
+      display: block;
     }
 
-    input,
-    select {
-      width: 100%;
-      padding: 13px;
-      margin: 8px 0 15px;
-      border: 1px solid #ddd;
-      border-radius: 9px;
-      font-size: 15px;
-    }
-
-    input[type="file"] {
-      background: #fff;
-      cursor: pointer;
-      padding: 10px;
-    }
-
-    .file-help {
-      color: #777;
-      font-size: 13px;
-      margin-top: -8px;
-      margin-bottom: 15px;
-    }
-
-    .main-btn {
-      width: 100%;
-      padding: 14px;
-      background: #6c2cff;
+    .balance-box {
+      background: linear-gradient(135deg, #6c2cff, #9b4dff);
       color: white;
-      border: none;
-      border-radius: 9px;
-      font-size: 16px;
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(108,44,255,0.25);
+    }
+
+    .balance-box h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .balance {
+      font-size: 32px;
       font-weight: bold;
-      cursor: pointer;
-      margin-top: 5px;
     }
 
-    .main-btn:hover {
-      background: #5520d8;
-    }
-
-    .main-btn:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-
-    .link-btn {
-      background: none;
-      border: none;
-      color: #6c2cff;
-      cursor: pointer;
-      margin-top: 15px;
-      font-weight: bold;
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
     }
 
     .service {
       background: white;
       padding: 18px;
-      margin: 10px 0;
       border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.06);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
       cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid #eee;
+    }
+
+    .service:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(108,44,255,0.15);
     }
 
     .service h3 {
       color: #6c2cff;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
+      font-size: 17px;
     }
 
     .service p {
@@ -149,823 +129,723 @@
       font-size: 14px;
     }
 
-    .order {
-      background: #f8f9ff;
-      padding: 18px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      border-left: 5px solid #6c2cff;
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
     }
 
-    .order p {
-      margin: 7px 0;
-      word-break: break-word;
-    }
-
-    .success {
-      background: #e8f7e8;
-      color: #168321;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
-
-    .error {
-      background: #ffecec;
-      color: #c62828;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
-
-    .info {
-      background: #eef3ff;
-      color: #4b45a8;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #777;
-      margin-top: 30px;
-    }
-
-    .balance {
-      font-size: 30px;
-      font-weight: bold;
+    .card h2 {
       color: #6c2cff;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #6c2cff;
+    }
+
+    button.primary {
+      width: 100%;
+      margin-top: 18px;
+      background: linear-gradient(135deg, #6c2cff, #9b4dff);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.primary:hover {
+      opacity: 0.9;
     }
 
     .price-box {
-      font-size: 18px;
-      margin: 15px 0;
+      margin-top: 15px;
+      padding: 15px;
+      background: #f1ebff;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #6c2cff;
+      text-align: center;
     }
 
-    .payment-card {
-      background: #f8f9ff;
+    .order-item {
+      background: white;
       padding: 18px;
       border-radius: 12px;
-      margin-bottom: 15px;
-      border-left: 5px solid #168321;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
     }
 
-    .payment-card p {
-      margin: 7px 0;
-      word-break: break-word;
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 8px;
     }
 
-    .method-box {
-      background: #f1edff;
+    .status.Pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status.Completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.Cancelled {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #6c2cff, #9b4dff);
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .auth-box h1 {
+      text-align: center;
+      color: #6c2cff;
+      margin-bottom: 8px;
+    }
+
+    .auth-box > p {
+      text-align: center;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    .auth-tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 7px;
+      background: #eee8ff;
+      color: #6c2cff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .auth-tabs button.active {
+      background: #6c2cff;
+      color: white;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .payment-info {
+      background: #f1ebff;
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 15px;
       line-height: 1.7;
     }
 
-    .proof-link {
-      display: inline-block;
-      margin-top: 5px;
-      padding: 8px 12px;
-      background: #6c2cff;
-      color: white;
-      text-decoration: none;
-      border-radius: 7px;
-      font-size: 13px;
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
     }
 
-    .proof-link:hover {
-      background: #5520d8;
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
     }
 
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #6c2cff;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 23px;
+      }
+
+      .container {
+        padding: 12px;
+      }
+
+      nav button {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+    }
   </style>
-
 </head>
 
 <body>
 
-<header>
+  <!-- AUTH -->
+  <div id="authContainer" class="auth-container">
 
-  <h1>🚀 Mr SMM Pannels</h1>
+    <div class="auth-box">
 
-  <p>Social Media Marketing Services</p>
+      <h1>🚀 Mr SMM Pannels</h1>
+      <p>Social Media Marketing Services</p>
 
-</header>
+      <div class="auth-tabs">
+        <button id="loginTab" class="active" onclick="showAuthForm('login')">
+          Login
+        </button>
 
+        <button id="signupTab" onclick="showAuthForm('signup')">
+          Signup
+        </button>
+      </div>
 
-<!-- LOGIN -->
+      <!-- LOGIN -->
+      <div id="loginForm" class="auth-form active">
 
-<div id="loginPage" class="container">
+        <label>Email</label>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Enter your email"
+        >
 
-  <div class="box">
+        <label>Password</label>
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Enter your password"
+        >
 
-    <h2>🔐 Customer Login</h2>
+        <button class="primary" onclick="login()">
+          Login
+        </button>
 
-    <input
-      type="email"
-      id="loginEmail"
-      placeholder="Email"
-    >
+        <div id="loginMessage"></div>
 
-    <input
-      type="password"
-      id="loginPassword"
-      placeholder="Password"
-    >
+      </div>
 
-    <button class="main-btn" onclick="loginUser()">
-      Login
-    </button>
+      <!-- SIGNUP -->
+      <div id="signupForm" class="auth-form">
 
-    <button class="link-btn" onclick="showSignup()">
-      Don't have an account? Create Account
-    </button>
+        <label>Full Name</label>
+        <input
+          type="text"
+          id="signupName"
+          placeholder="Enter your name"
+        >
 
-    <div id="loginMessage"></div>
+        <label>Email</label>
+        <input
+          type="email"
+          id="signupEmail"
+          placeholder="Enter your email"
+        >
+
+        <label>Password</label>
+        <input
+          type="password"
+          id="signupPassword"
+          placeholder="Create password"
+        >
+
+        <button class="primary" onclick="signup()">
+          Create Account
+        </button>
+
+        <div id="signupMessage"></div>
+
+      </div>
+
+    </div>
 
   </div>
 
-</div>
+
+  <!-- MAIN APP -->
+  <div id="app" class="app">
+
+    <header>
+
+      <h1>🚀 Mr SMM Pannels</h1>
+
+      <p>
+        Social Media Marketing Services
+      </p>
+
+    </header>
 
 
-<!-- SIGNUP -->
+    <nav>
 
-<div id="signupPage" class="container hidden">
+      <button onclick="showSection('dashboard')">
+        🏠 Dashboard
+      </button>
 
-  <div class="box">
+      <button onclick="showSection('order')">
+        🛒 New Order
+      </button>
 
-    <h2>📝 Create Account</h2>
+      <button onclick="showSection('orders')">
+        📦 My Orders
+      </button>
 
-    <input
-      type="text"
-      id="signupName"
-      placeholder="Full Name"
-    >
+      <button onclick="showSection('balance')">
+        💰 Add Balance
+      </button>
 
-    <input
-      type="email"
-      id="signupEmail"
-      placeholder="Email"
-    >
+      <button onclick="logout()">
+        🚪 Logout
+      </button>
 
-    <input
-      type="password"
-      id="signupPassword"
-      placeholder="Password"
-    >
+    </nav>
 
-    <button class="main-btn" onclick="signupUser()">
-      Create Account
-    </button>
 
-    <button class="link-btn" onclick="showLogin()">
-      Already have an account? Login
-    </button>
+    <div class="container">
 
-    <div id="signupMessage"></div>
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+
+        <div class="balance-box">
+
+          <h2>Your Balance</h2>
+
+          <div class="balance" id="dashboardBalance">
+            Rs 0.00
+          </div>
+
+        </div>
+
+        <h2 style="margin-bottom:15px;">
+          🔥 All Services
+        </h2>
+
+        <div
+          id="dashboardServices"
+          class="services-grid"
+        >
+          <div class="loading">
+            ⏳ Loading services...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- NEW ORDER -->
+      <section id="order" class="section">
+
+        <div class="card">
+
+          <h2>🛒 New Order</h2>
+
+          <label>
+            Select Service
+          </label>
+
+          <select
+            id="service"
+            onchange="calculatePrice()"
+          >
+            <option value="">
+              ⏳ Loading services...
+            </option>
+          </select>
+
+
+          <label>
+            Link
+          </label>
+
+          <input
+            type="text"
+            id="link"
+            placeholder="Enter post/profile/video link"
+          >
+
+
+          <label>
+            Quantity
+          </label>
+
+          <input
+            type="number"
+            id="quantity"
+            placeholder="Enter quantity"
+            min="1"
+            oninput="calculatePrice()"
+          >
+
+
+          <div
+            class="price-box"
+            id="totalPrice"
+          >
+            Rs 0.00
+          </div>
+
+
+          <button
+            class="primary"
+            onclick="placeOrder()"
+          >
+            🚀 Place Order
+          </button>
+
+          <div id="orderMessage"></div>
+
+        </div>
+
+      </section>
+
+
+      <!-- MY ORDERS -->
+      <section id="orders" class="section">
+
+        <div class="card">
+
+          <h2>📦 My Orders</h2>
+
+          <div id="ordersList">
+            <div class="loading">
+              ⏳ Loading orders...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ADD BALANCE -->
+      <section id="balance" class="section">
+
+        <div class="card">
+
+          <h2>💰 Add Balance</h2>
+
+
+          <div class="payment-info">
+
+            <strong>💳 Payment Details</strong>
+
+            <br>
+
+            Method:
+            <strong>Easypaisa</strong>
+
+            <br>
+
+            Account Number:
+            <strong>03450096580</strong>
+
+            <br>
+
+            Account Holder:
+            <strong>SherKhan</strong>
+
+          </div>
+
+
+          <label>
+            Amount
+          </label>
+
+          <input
+            type="number"
+            id="paymentAmount"
+            placeholder="Enter payment amount"
+            min="1"
+          >
+
+
+          <label>
+            Payment Method
+          </label>
+
+          <select id="paymentMethod">
+
+            <option value="Easypaisa">
+              Easypaisa
+            </option>
+
+            <option value="JazzCash">
+              JazzCash
+            </option>
+
+            <option value="Bank">
+              Bank
+            </option>
+
+          </select>
+
+
+          <label>
+            Transaction ID
+          </label>
+
+          <input
+            type="text"
+            id="transactionId"
+            placeholder="Enter transaction ID"
+          >
+
+
+          <label>
+            Choose Payment Screenshot
+          </label>
+
+          <input
+            type="file"
+            id="paymentProof"
+            accept="image/*"
+          >
+
+
+          <button
+            class="primary"
+            onclick="submitPaymentRequest()"
+          >
+            📤 Submit Payment Request
+          </button>
+
+
+          <div id="paymentMessage"></div>
+
+        </div>
+
+      </section>
+
+    </div>
 
   </div>
 
-</div>
 
+  <!-- SUPABASE -->
+  <script type="module">
 
-<!-- MAIN APP -->
+    import {
+      createClient
+    } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-<div id="app" class="hidden">
 
-  <nav>
+    const SUPABASE_URL =
+      "https://lgrdxyjbmzwhhnkfmups.supabase.co";
 
-    <button onclick="showSection('dashboard')">
-      🏠 Dashboard
-    </button>
 
-    <button onclick="showSection('order')">
-      🛒 New Order
-    </button>
+    const SUPABASE_KEY =
+      "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
 
-    <button onclick="showSection('orders')">
-      📋 My Orders
-    </button>
 
-    <button onclick="showSection('payment')">
-      💳 Add Balance
-    </button>
-
-    <button onclick="logoutUser()">
-      🚪 Logout
-    </button>
-
-  </nav>
-
-
-  <!-- DASHBOARD -->
-
-  <section id="dashboard" class="container">
-
-    <div class="box">
-
-      <h2>💰 Your Balance</h2>
-
-      <div class="balance" id="userBalance">
-        Rs 0.00
-      </div>
-
-      <p id="welcomeText" style="margin-top:10px;"></p>
-
-      <button
-        class="main-btn"
-        onclick="showSection('payment')"
-        style="margin-top:20px;"
-      >
-        💳 Add Balance
-      </button>
-
-    </div>
-
-
-    <h2 style="margin-bottom:15px;">
-      🔥 All Services
-    </h2>
-
-
-    <div
-      class="service"
-      onclick="openOrder('Instagram Likes')"
-    >
-
-      <h3>📸 Instagram</h3>
-
-      <p>
-        Likes • Followers • Views • Comments
-      </p>
-
-    </div>
-
-
-    <div
-      class="service"
-      onclick="openOrder('TikTok Likes')"
-    >
-
-      <h3>🎵 TikTok</h3>
-
-      <p>
-        Likes • Followers • Views • Shares
-      </p>
-
-    </div>
-
-
-    <div
-      class="service"
-      onclick="openOrder('YouTube Views')"
-    >
-
-      <h3>▶️ YouTube</h3>
-
-      <p>
-        Views • Likes • Subscribers • Comments
-      </p>
-
-    </div>
-
-
-    <div
-      class="service"
-      onclick="openOrder('Facebook Likes')"
-    >
-
-      <h3>📘 Facebook</h3>
-
-      <p>
-        Likes • Followers • Page Likes • Comments
-      </p>
-
-    </div>
-
-
-    <div
-      class="service"
-      onclick="openOrder('Telegram Members')"
-    >
-
-      <h3>✈️ Telegram</h3>
-
-      <p>
-        Members • Views • Reactions
-      </p>
-
-    </div>
-
-
-    <div
-      class="service"
-      onclick="openOrder('Comments')"
-    >
-
-      <h3>💬 Comments</h3>
-
-      <p>
-        Social Media Comments Services
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- NEW ORDER -->
-
-  <section id="order" class="container hidden">
-
-    <div class="box">
-
-      <h2>🛒 New Order</h2>
-
-      <label>
-        📱 Select Service
-      </label>
-
-      <select
-        id="service"
-        onchange="calculatePrice()"
-      >
-
-        <option value="Instagram Likes" data-price="200">
-          Instagram Likes — Rs 200 / 1,000
-        </option>
-
-        <option value="Instagram Followers" data-price="500">
-          Instagram Followers — Rs 500 / 1,000
-        </option>
-
-        <option value="Instagram Views" data-price="100">
-          Instagram Views — Rs 100 / 1,000
-        </option>
-
-        <option value="Instagram Comments" data-price="300">
-          Instagram Comments — Rs 300 / 1,000
-        </option>
-
-        <option value="TikTok Likes" data-price="200">
-          TikTok Likes — Rs 200 / 1,000
-        </option>
-
-        <option value="TikTok Followers" data-price="500">
-          TikTok Followers — Rs 500 / 1,000
-        </option>
-
-        <option value="TikTok Views" data-price="100">
-          TikTok Views — Rs 100 / 1,000
-        </option>
-
-        <option value="TikTok Shares" data-price="150">
-          TikTok Shares — Rs 150 / 1,000
-        </option>
-
-        <option value="YouTube Views" data-price="300">
-          YouTube Views — Rs 300 / 1,000
-        </option>
-
-        <option value="YouTube Likes" data-price="400">
-          YouTube Likes — Rs 400 / 1,000
-        </option>
-
-        <option value="YouTube Subscribers" data-price="800">
-          YouTube Subscribers — Rs 800 / 1,000
-        </option>
-
-        <option value="YouTube Comments" data-price="500">
-          YouTube Comments — Rs 500 / 1,000
-        </option>
-
-        <option value="Facebook Likes" data-price="200">
-          Facebook Likes — Rs 200 / 1,000
-        </option>
-
-        <option value="Facebook Followers" data-price="500">
-          Facebook Followers — Rs 500 / 1,000
-        </option>
-
-        <option value="Facebook Page Likes" data-price="500">
-          Facebook Page Likes — Rs 500 / 1,000
-        </option>
-
-        <option value="Facebook Comments" data-price="300">
-          Facebook Comments — Rs 300 / 1,000
-        </option>
-
-        <option value="Telegram Members" data-price="600">
-          Telegram Members — Rs 600 / 1,000
-        </option>
-
-        <option value="Telegram Views" data-price="100">
-          Telegram Views — Rs 100 / 1,000
-        </option>
-
-        <option value="Telegram Reactions" data-price="200">
-          Telegram Reactions — Rs 200 / 1,000
-        </option>
-
-        <option value="Comments" data-price="300">
-          Comments — Rs 300 / 1,000
-        </option>
-
-      </select>
-
-
-      <label>
-        🔗 Post / Profile Link
-      </label>
-
-      <input
-        type="url"
-        id="link"
-        placeholder="https://..."
-      >
-
-
-      <label>
-        📊 Quantity
-      </label>
-
-      <input
-        type="number"
-        id="quantity"
-        placeholder="Example: 1000"
-        min="1"
-        oninput="calculatePrice()"
-      >
-
-
-      <div class="price-box">
-
-        💵 Total Price:
-
-        <b id="totalPrice">Rs 0.00</b>
-
-      </div>
-
-
-      <button
-        class="main-btn"
-        onclick="placeOrder()"
-      >
-        🚀 Place Order
-      </button>
-
-
-      <div id="orderMessage"></div>
-
-    </div>
-
-  </section>
-
-
-  <!-- MY ORDERS -->
-
-  <section id="orders" class="container hidden">
-
-    <div class="box">
-
-      <h2>📋 My Orders</h2>
-
-      <div id="ordersList">
-        Loading orders...
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ADD BALANCE / PAYMENT -->
-
-  <section id="payment" class="container hidden">
-
-    <div class="box">
-
-      <h2>💳 Add Balance</h2>
-
-      <div class="info">
-
-        💡 Payment send karne ke baad neeche transaction details submit karein.
-        Admin payment verify karne ke baad request approve karega.
-
-      </div>
-
-
-      <div class="method-box">
-
-        <b>🏦 Payment Details</b>
-
-        <br><br>
-
-        <b>💳 Method:</b> Easypaisa
-
-        <br>
-
-        <b>📱 Account Number:</b> 03450096580
-
-        <br>
-
-        <b>👤 Account Holder Name:</b> SherKhan
-
-      </div>
-
-
-      <label>
-        💵 Amount (Rs)
-      </label>
-
-      <input
-        type="number"
-        id="paymentAmount"
-        placeholder="Example: 1000"
-        min="1"
-      >
-
-
-      <label>
-        💳 Payment Method
-      </label>
-
-      <select id="paymentMethod">
-
-        <option value="">
-          Select Payment Method
-        </option>
-
-        <option value="Easypaisa">
-          Easypaisa
-        </option>
-
-        <option value="JazzCash">
-          JazzCash
-        </option>
-
-        <option value="Bank Transfer">
-          Bank Transfer
-        </option>
-
-        <option value="Other">
-          Other
-        </option>
-
-      </select>
-
-
-      <label>
-        🔢 Transaction ID
-      </label>
-
-      <input
-        type="text"
-        id="transactionId"
-        placeholder="Enter transaction ID"
-      >
-
-
-      <label>
-        🧾 Payment Screenshot / Proof
-      </label>
-
-      <input
-        type="file"
-        id="paymentProof"
-        accept="image/png,image/jpeg,image/jpg,image/webp"
-      >
-
-
-      <div class="file-help">
-
-        📷 Upload payment screenshot — JPG, PNG or WEBP.
-        Maximum size: 5 MB.
-
-      </div>
-
-
-      <button
-        class="main-btn"
-        id="submitPaymentBtn"
-        onclick="submitPayment()"
-      >
-        🚀 Submit Payment Request
-      </button>
-
-
-      <div id="paymentMessage"></div>
-
-    </div>
-
-
-    <div class="box">
-
-      <h2>📋 My Payment Requests</h2>
-
-      <div id="paymentRequestsList">
-        Loading payment requests...
-      </div>
-
-    </div>
-
-  </section>
-
-</div>
-
-
-<footer>
-
-  © 2026 Mr SMM Pannels — All Rights Reserved
-
-</footer>
-
-
-<!-- SUPABASE -->
-
-<script type="module">
-
-  import {
-    createClient
-  } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-
-  const SUPABASE_URL =
-    "https://lgrdxyjbmzwhhnkfmups.supabase.co";
-
-
-  const SUPABASE_KEY =
-    "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
-
-
-  const supabase =
-    createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-
-  /* PAYMENT PROOF STORAGE SETTINGS */
-
-  const PAYMENT_PROOF_BUCKET =
-    "payment-proofs";
-
-
-  const MAX_PROOF_SIZE =
-    5 * 1024 * 1024;
-
-
-  /* LOAD CUSTOMER BALANCE */
-
-  async function loadUserBalance(userId) {
-
-    const balanceElement =
-      document.getElementById("userBalance");
-
-
-    if (!balanceElement || !userId) {
-      return;
-    }
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from("profiles")
-          .select("balance")
-          .eq("id", userId)
-          .maybeSingle();
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      const balance =
-        Number(data?.balance || 0);
-
-
-      balanceElement.innerText =
-        "Rs " + balance.toFixed(2);
-
-
-    } catch (error) {
-
-      console.error(
-        "Balance loading error:",
-        error
+    const supabase =
+      createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
       );
 
-      balanceElement.innerText =
-        "Rs 0.00";
 
-    }
-
-  }
+    window.supabase = supabase;
 
 
-  /* SHOW SIGNUP */
+    /* =========================
+       GLOBAL DATA
+    ========================= */
 
-  window.showSignup = function() {
+    let currentUser = null;
 
-    document
-      .getElementById("loginPage")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("signupPage")
-      .classList.remove("hidden");
-
-  };
+    let servicesData = [];
 
 
-  /* SHOW LOGIN */
+    /* =========================
+       HELPERS
+    ========================= */
 
-  window.showLogin = function() {
+    function escapeHtml(value) {
 
-    document
-      .getElementById("signupPage")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("loginPage")
-      .classList.remove("hidden");
-
-  };
-
-
-  /* SIGNUP */
-
-  window.signupUser = async function() {
-
-    const name =
-      document
-        .getElementById("signupName")
-        .value
-        .trim();
-
-
-    const email =
-      document
-        .getElementById("signupEmail")
-        .value
-        .trim();
-
-
-    const password =
-      document
-        .getElementById("signupPassword")
-        .value;
-
-
-    const message =
-      document.getElementById("signupMessage");
-
-
-    if (!name || !email || !password) {
-
-      message.className = "error";
-
-      message.innerText =
-        "⚠️ Please fill all fields.";
-
-      return;
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
     }
 
 
-    if (password.length < 6) {
+    function showMessage(
+      elementId,
+      message,
+      type = "success"
+    ) {
 
-      message.className = "error";
+      const element =
+        document.getElementById(elementId);
 
-      message.innerText =
-        "⚠️ Password must be at least 6 characters.";
+      if (!element) return;
 
-      return;
+      element.innerHTML =
+        `<div class="${type}-message">
+          ${escapeHtml(message)}
+        </div>`;
 
     }
 
 
-    try {
+    /* =========================
+       AUTH TABS
+    ========================= */
 
-      const {
-        data,
-        error
-      } =
-        await supabase.auth.signUp({
+    window.showAuthForm =
+      function(form) {
+
+        document
+          .getElementById("loginForm")
+          .classList.remove("active");
+
+        document
+          .getElementById("signupForm")
+          .classList.remove("active");
+
+        document
+          .getElementById("loginTab")
+          .classList.remove("active");
+
+        document
+          .getElementById("signupTab")
+          .classList.remove("active");
+
+
+        if (form === "login") {
+
+          document
+            .getElementById("loginForm")
+            .classList.add("active");
+
+          document
+            .getElementById("loginTab")
+            .classList.add("active");
+
+        } else {
+
+          document
+            .getElementById("signupForm")
+            .classList.add("active");
+
+          document
+            .getElementById("signupTab")
+            .classList.add("active");
+
+        }
+
+      };
+
+
+    /* =========================
+       SIGNUP
+    ========================= */
+
+    window.signup =
+      async function() {
+
+        const name =
+          document
+            .getElementById("signupName")
+            .value
+            .trim();
+
+        const email =
+          document
+            .getElementById("signupEmail")
+            .value
+            .trim();
+
+        const password =
+          document
+            .getElementById("signupPassword")
+            .value;
+
+
+        if (!name || !email || !password) {
+
+          showMessage(
+            "signupMessage",
+            "Please fill all fields.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (password.length < 6) {
+
+          showMessage(
+            "signupMessage",
+            "Password must be at least 6 characters.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        const {
+          data,
+          error
+        } = await supabase.auth.signUp({
 
           email: email,
 
@@ -974,7 +854,9 @@
           options: {
 
             data: {
+
               full_name: name
+
             }
 
           }
@@ -982,566 +864,1002 @@
         });
 
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+
+          showMessage(
+            "signupMessage",
+            error.message,
+            "error"
+          );
+
+          return;
+        }
 
 
-      message.className =
-        "success";
+        if (data.user) {
+
+          showMessage(
+            "signupMessage",
+            "Account created successfully. Please login.",
+            "success"
+          );
+
+          document
+            .getElementById("signupName")
+            .value = "";
+
+          document
+            .getElementById("signupEmail")
+            .value = "";
+
+          document
+            .getElementById("signupPassword")
+            .value = "";
+
+          showAuthForm("login");
+
+        }
+
+      };
 
 
-      if (data?.session) {
+    /* =========================
+       LOGIN
+    ========================= */
 
-        message.innerText =
-          "✅ Account created and logged in successfully!";
+    window.login =
+      async function() {
 
-      } else {
+        const email =
+          document
+            .getElementById("loginEmail")
+            .value
+            .trim();
 
-        message.innerText =
-          "✅ Account created successfully! Please check your email if confirmation is required.";
+        const password =
+          document
+            .getElementById("loginPassword")
+            .value;
 
-      }
+
+        if (!email || !password) {
+
+          showMessage(
+            "loginMessage",
+            "Please enter email and password.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        const {
+          data,
+          error
+        } =
+          await supabase.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+
+          showMessage(
+            "loginMessage",
+            error.message,
+            "error"
+          );
+
+          return;
+        }
+
+
+        currentUser = data.user;
+
+        await setupUser();
+
+      };
+
+
+    /* =========================
+       USER SETUP
+    ========================= */
+
+    async function setupUser() {
+
+      if (!currentUser) return;
 
 
       document
-        .getElementById("signupPassword")
-        .value = "";
+        .getElementById("authContainer")
+        .style.display = "none";
 
-
-    } catch (error) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "❌ " + error.message;
-
-    }
-
-  };
-
-
-  /* LOGIN */
-
-  window.loginUser = async function() {
-
-    const email =
-      document
-        .getElementById("loginEmail")
-        .value
-        .trim();
-
-
-    const password =
-      document
-        .getElementById("loginPassword")
-        .value;
-
-
-    const message =
-      document.getElementById("loginMessage");
-
-
-    if (!email || !password) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Please enter email and password.";
-
-      return;
-
-    }
-
-
-    try {
-
-      const {
-        error
-      } =
-        await supabase.auth.signInWithPassword({
-
-          email: email,
-
-          password: password
-
-        });
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      message.className =
-        "success";
-
-
-      message.innerText =
-        "✅ Login successful!";
-
-
-    } catch (error) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "❌ " + error.message;
-
-    }
-
-  };
-
-
-  /* LOGOUT */
-
-  window.logoutUser = async function() {
-
-    await supabase.auth.signOut();
-
-  };
-
-
-  /* SHOW SECTION */
-
-  window.showSection = function(section) {
-
-    document
-      .getElementById("dashboard")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("order")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("orders")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("payment")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById(section)
-      .classList.remove("hidden");
-
-
-    if (section === "dashboard") {
-
-      refreshCurrentUserBalance();
-
-    }
-
-
-    if (section === "orders") {
-
-      loadOrders();
-
-    }
-
-
-    if (section === "payment") {
-
-      loadPaymentRequests();
-
-      refreshCurrentUserBalance();
-
-    }
-
-  };
-
-
-  /* REFRESH CURRENT USER BALANCE */
-
-  async function refreshCurrentUserBalance() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    if (user) {
-
-      await loadUserBalance(user.id);
-
-    }
-
-  }
-
-
-  /* OPEN ORDER */
-
-  window.openOrder = function(serviceName) {
-
-    document
-      .getElementById("service")
-      .value = serviceName;
-
-
-    calculatePrice();
-
-
-    showSection("order");
-
-  };
-
-
-  /* CALCULATE PRICE */
-
-  window.calculatePrice = function() {
-
-    const select =
-      document.getElementById("service");
-
-
-    const selectedOption =
-      select.options[
-        select.selectedIndex
-      ];
-
-
-    const pricePerThousand =
-      Number(
-        selectedOption.dataset.price
-      );
-
-
-    const quantity =
-      Number(
-        document
-          .getElementById("quantity")
-          .value
-      );
-
-
-    if (!quantity) {
 
       document
-        .getElementById("totalPrice")
-        .innerText =
-          "Rs 0.00";
-
-      return;
-
-    }
+        .getElementById("app")
+        .style.display = "block";
 
 
-    const total =
-      (quantity / 1000) *
-      pricePerThousand;
+      await loadServices();
 
+      await loadBalance();
 
-    document
-      .getElementById("totalPrice")
-      .innerText =
-        "Rs " + total.toFixed(2);
-
-  };
-
-
-  /* PLACE ORDER */
-
-  window.placeOrder = async function() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    if (!user) {
-
-      alert("Please login first.");
-
-      return;
+      await loadOrders();
 
     }
 
 
-    const service =
-      document
-        .getElementById("service")
-        .value;
+    /* =========================
+       LOAD SERVICES
+    ========================= */
+
+    async function loadServices() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabase
+            .from("services")
+            .select("*")
+            .eq("active", true)
+            .order("id", {
+              ascending: true
+            });
 
 
-    const link =
-      document
-        .getElementById("link")
-        .value
-        .trim();
+        if (error) throw error;
 
 
-    const quantity =
-      Number(
-        document
-          .getElementById("quantity")
-          .value
-      );
+        servicesData =
+          data || [];
 
 
-    const message =
-      document.getElementById(
-        "orderMessage"
-      );
+        renderDashboardServices();
+
+        renderOrderServices();
 
 
-    if (!link || !quantity || quantity <= 0) {
+      } catch (error) {
 
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Please enter the link and quantity.";
-
-      return;
-
-    }
-
-
-    const select =
-      document.getElementById(
-        "service"
-      );
-
-
-    const selectedOption =
-      select.options[
-        select.selectedIndex
-      ];
-
-
-    const pricePerThousand =
-      Number(
-        selectedOption.dataset.price
-      );
-
-
-    const price =
-      (quantity / 1000) *
-      pricePerThousand;
-
-
-    try {
-
-      /* STEP 1: GET CURRENT BALANCE */
-
-      const {
-        data: profile,
-        error: balanceError
-      } =
-        await supabase
-          .from("profiles")
-          .select("balance")
-          .eq("id", user.id)
-          .maybeSingle();
-
-
-      if (balanceError) {
-        throw balanceError;
-      }
-
-
-      if (!profile) {
-
-        throw new Error(
-          "Customer profile not found."
+        console.error(
+          "Services loading error:",
+          error
         );
 
+
+        const dashboard =
+          document
+            .getElementById(
+              "dashboardServices"
+            );
+
+
+        if (dashboard) {
+
+          dashboard.innerHTML =
+            `<div class="error-message">
+              ❌ Could not load services.
+              ${escapeHtml(error.message)}
+            </div>`;
+
+        }
+
+
+        const select =
+          document
+            .getElementById("service");
+
+
+        if (select) {
+
+          select.innerHTML =
+            `<option value="">
+              ❌ Services could not load
+            </option>`;
+
+        }
+
       }
 
-
-      const currentBalance =
-        Number(profile.balance || 0);
+    }
 
 
-      /* STEP 2: CHECK BALANCE */
+    /* =========================
+       DASHBOARD SERVICES
+    ========================= */
 
-      if (currentBalance < price) {
+    function renderDashboardServices() {
 
-        message.className =
-          "error";
+      const container =
+        document
+          .getElementById(
+            "dashboardServices"
+          );
 
-        message.innerText =
-          "❌ Insufficient balance. Your balance is Rs " +
-          currentBalance.toFixed(2) +
-          " but this order costs Rs " +
-          price.toFixed(2) +
-          ".";
+
+      if (!container) return;
+
+
+      container.innerHTML = "";
+
+
+      if (
+        !servicesData ||
+        servicesData.length === 0
+      ) {
+
+        container.innerHTML =
+          `<div class="card">
+            📋 No active services available.
+          </div>`;
 
         return;
 
       }
 
 
-      /* STEP 3: DEDUCT ORDER PRICE */
+      servicesData.forEach(
+        service => {
 
-      const newBalance =
-        currentBalance - price;
+          let icon = "📱";
 
 
-      const {
-        error: updateBalanceError
-      } =
-        await supabase
-          .from("profiles")
-          .update({
-            balance:
+          if (
+            service.category ===
+            "Instagram"
+          ) {
+
+            icon = "📸";
+
+          } else if (
+            service.category ===
+            "TikTok"
+          ) {
+
+            icon = "🎵";
+
+          } else if (
+            service.category ===
+            "YouTube"
+          ) {
+
+            icon = "▶️";
+
+          } else if (
+            service.category ===
+            "Facebook"
+          ) {
+
+            icon = "📘";
+
+          } else if (
+            service.category ===
+            "Telegram"
+          ) {
+
+            icon = "✈️";
+
+          } else if (
+            service.category ===
+            "Comments"
+          ) {
+
+            icon = "💬";
+
+          }
+
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+
+          card.className =
+            "service";
+
+
+          const title =
+            document.createElement(
+              "h3"
+            );
+
+
+          title.textContent =
+            `${icon} ${service.name}`;
+
+
+          const description =
+            document.createElement(
+              "p"
+            );
+
+
+          description.textContent =
+            `${service.category} • Rs ${
               Number(
-                newBalance.toFixed(2)
-              )
-          })
-          .eq("id", user.id);
+                service.price_per_1000 || 0
+              ).toFixed(2)
+            } / 1,000`;
 
 
-      if (updateBalanceError) {
-        throw updateBalanceError;
-      }
+          card.appendChild(title);
+
+          card.appendChild(
+            description
+          );
 
 
-      /* STEP 4: SAVE ORDER */
+          card.addEventListener(
+            "click",
+            () => {
 
-      const {
-        error: orderError
-      } =
-        await supabase
-          .from("orders")
-          .insert({
+              openOrder(
+                service.name
+              );
 
-            user_email:
-              user.email,
-
-            service:
-              service,
-
-            link:
-              link,
-
-            quantity:
-              quantity,
-
-            price:
-              Number(
-                price.toFixed(2)
-              ),
-
-            status:
-              "Pending"
-
-          });
+            }
+          );
 
 
-      /* IF ORDER SAVE FAILS,
-         RESTORE BALANCE */
+          container.appendChild(
+            card
+          );
 
-      if (orderError) {
-
-        await supabase
-          .from("profiles")
-          .update({
-            balance:
-              Number(
-                currentBalance.toFixed(2)
-              )
-          })
-          .eq("id", user.id);
-
-        throw orderError;
-
-      }
-
-
-      /* STEP 5: SHOW SUCCESS */
-
-      message.className =
-        "success";
-
-      message.innerText =
-        "✅ Order placed successfully! Rs " +
-        price.toFixed(2) +
-        " deducted from your balance.";
-
-
-      /* CLEAR FORM */
-
-      document
-        .getElementById("link")
-        .value = "";
-
-
-      document
-        .getElementById("quantity")
-        .value = "";
-
-
-      document
-        .getElementById("totalPrice")
-        .innerText =
-          "Rs 0.00";
-
-
-      /* REFRESH BALANCE */
-
-      await loadUserBalance(user.id);
-
-
-    } catch (error) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "❌ Order could not be saved: " +
-        error.message;
+        }
+      );
 
     }
 
-  };
+
+    /* =========================
+       ORDER SERVICE SELECT
+    ========================= */
+
+    function renderOrderServices() {
+
+      const select =
+        document
+          .getElementById("service");
 
 
-  /* LOAD MY ORDERS */
-
-  async function loadOrders() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
+      if (!select) return;
 
 
-    const list =
-      document.getElementById(
-        "ordersList"
+      select.innerHTML = "";
+
+
+      const firstOption =
+        document.createElement(
+          "option"
+        );
+
+
+      firstOption.value = "";
+
+      firstOption.textContent =
+        "Select Service";
+
+
+      select.appendChild(
+        firstOption
       );
 
 
-    if (!user) {
+      if (
+        !servicesData ||
+        servicesData.length === 0
+      ) {
 
-      list.innerHTML =
-        "Please login first.";
+        firstOption.textContent =
+          "No active services available";
 
-      return;
+        return;
+
+      }
+
+
+      servicesData.forEach(
+        service => {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+
+          option.value =
+            service.name;
+
+
+          option.dataset.price =
+            Number(
+              service.price_per_1000 || 0
+            );
+
+
+          option.textContent =
+            `${service.name} — Rs ${
+              Number(
+                service.price_per_1000 || 0
+              ).toFixed(2)
+            } / 1,000`;
+
+
+          select.appendChild(
+            option
+          );
+
+        }
+      );
 
     }
 
 
-    try {
+    /* =========================
+       OPEN ORDER
+    ========================= */
+
+    window.openOrder =
+      async function(serviceName) {
+
+        const select =
+          document
+            .getElementById("service");
+
+
+        let option =
+          Array.from(
+            select.options
+          ).find(
+            item =>
+              item.value ===
+              serviceName
+          );
+
+
+        if (!option) {
+
+          await loadServices();
+
+
+          option =
+            Array.from(
+              select.options
+            ).find(
+              item =>
+                item.value ===
+                serviceName
+            );
+
+        }
+
+
+        if (!option) {
+
+          alert(
+            "This service is currently unavailable."
+          );
+
+          return;
+
+        }
+
+
+        select.value =
+          serviceName;
+
+
+        calculatePrice();
+
+
+        showSection(
+          "order"
+        );
+
+      };
+
+
+    /* =========================
+       CALCULATE PRICE
+    ========================= */
+
+    window.calculatePrice =
+      function() {
+
+        const select =
+          document
+            .getElementById("service");
+
+
+        const selectedOption =
+          select.options[
+            select.selectedIndex
+          ];
+
+
+        const pricePerThousand =
+          Number(
+            selectedOption?.dataset?.price ||
+            0
+          );
+
+
+        const quantity =
+          Number(
+            document
+              .getElementById("quantity")
+              .value
+          );
+
+
+        if (
+          !quantity ||
+          quantity <= 0 ||
+          !pricePerThousand
+        ) {
+
+          document
+            .getElementById(
+              "totalPrice"
+            )
+            .innerText =
+              "Rs 0.00";
+
+          return;
+
+        }
+
+
+        const total =
+          (
+            quantity / 1000
+          ) *
+          pricePerThousand;
+
+
+        document
+          .getElementById(
+            "totalPrice"
+          )
+          .innerText =
+            "Rs " +
+            total.toFixed(2);
+
+      };
+
+
+    /* =========================
+       PLACE ORDER
+    ========================= */
+
+    window.placeOrder =
+      async function() {
+
+        const message =
+          document
+            .getElementById(
+              "orderMessage"
+            );
+
+
+        message.innerHTML = "";
+
+
+        if (!currentUser) {
+
+          showMessage(
+            "orderMessage",
+            "Please login first.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const service =
+          document
+            .getElementById(
+              "service"
+            )
+            .value;
+
+
+        const link =
+          document
+            .getElementById(
+              "link"
+            )
+            .value
+            .trim();
+
+
+        const quantity =
+          Number(
+            document
+              .getElementById(
+                "quantity"
+              )
+              .value
+          );
+
+
+        if (!service) {
+
+          showMessage(
+            "orderMessage",
+            "Please select a service.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!link) {
+
+          showMessage(
+            "orderMessage",
+            "Please enter your link.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !quantity ||
+          quantity <= 0
+        ) {
+
+          showMessage(
+            "orderMessage",
+            "Please enter a valid quantity.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /* Get latest active service price */
+
+        const {
+          data: serviceData,
+          error: serviceError
+        } =
+          await supabase
+            .from("services")
+            .select(
+              "name, price_per_1000, active"
+            )
+            .eq(
+              "name",
+              service
+            )
+            .eq(
+              "active",
+              true
+            )
+            .maybeSingle();
+
+
+        if (serviceError) {
+
+          showMessage(
+            "orderMessage",
+            serviceError.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!serviceData) {
+
+          showMessage(
+            "orderMessage",
+            "This service is currently unavailable.",
+            "error"
+          );
+
+          await loadServices();
+
+          return;
+
+        }
+
+
+        const pricePerThousand =
+          Number(
+            serviceData.price_per_1000
+          );
+
+
+        const totalPrice =
+          (
+            quantity / 1000
+          ) *
+          pricePerThousand;
+
+
+        /* Get current balance */
+
+        const {
+          data: profile,
+          error: profileError
+        } =
+          await supabase
+            .from("profiles")
+            .select(
+              "balance"
+            )
+            .eq(
+              "id",
+              currentUser.id
+            )
+            .single();
+
+
+        if (profileError) {
+
+          showMessage(
+            "orderMessage",
+            profileError.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const currentBalance =
+          Number(
+            profile.balance || 0
+          );
+
+
+        if (
+          currentBalance <
+          totalPrice
+        ) {
+
+          showMessage(
+            "orderMessage",
+            `Insufficient balance. Your balance is Rs ${currentBalance.toFixed(2)}.`,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const newBalance =
+          currentBalance -
+          totalPrice;
+
+
+        /* Deduct balance */
+
+        const {
+          error: balanceError
+        } =
+          await supabase
+            .from("profiles")
+            .update({
+              balance:
+                newBalance
+            })
+            .eq(
+              "id",
+              currentUser.id
+            );
+
+
+        if (balanceError) {
+
+          showMessage(
+            "orderMessage",
+            balanceError.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /* Create order */
+
+        const {
+          error: orderError
+        } =
+          await supabase
+            .from("orders")
+            .insert({
+
+              user_email:
+                currentUser.email,
+
+              service:
+                serviceData.name,
+
+              link:
+                link,
+
+              quantity:
+                quantity,
+
+              price:
+                totalPrice,
+
+              status:
+                "Pending"
+
+            });
+
+
+        if (orderError) {
+
+          /* Restore balance */
+
+          await supabase
+            .from("profiles")
+            .update({
+              balance:
+                currentBalance
+            })
+            .eq(
+              "id",
+              currentUser.id
+            );
+
+
+          showMessage(
+            "orderMessage",
+            orderError.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        showMessage(
+          "orderMessage",
+          `Order placed successfully! Rs ${totalPrice.toFixed(2)} deducted from your balance.`,
+          "success"
+        );
+
+
+        document
+          .getElementById(
+            "link"
+          )
+          .value = "";
+
+
+        document
+          .getElementById(
+            "quantity"
+          )
+          .value = "";
+
+
+        document
+          .getElementById(
+            "service"
+          )
+          .value = "";
+
+
+        calculatePrice();
+
+
+        await loadBalance();
+
+        await loadOrders();
+
+      };
+
+
+    /* =========================
+       LOAD BALANCE
+    ========================= */
+
+    async function loadBalance() {
+
+      if (!currentUser) return;
+
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("profiles")
+          .select(
+            "balance"
+          )
+          .eq(
+            "id",
+            currentUser.id
+          )
+          .single();
+
+
+      if (error) {
+
+        console.error(
+          "Balance error:",
+          error
+        );
+
+        return;
+
+      }
+
+
+      const balance =
+        Number(
+          data?.balance || 0
+        );
+
+
+      document
+        .getElementById(
+          "dashboardBalance"
+        )
+        .innerText =
+          "Rs " +
+          balance.toFixed(2);
+
+    }
+
+
+    /* =========================
+       LOAD ORDERS
+    ========================= */
+
+    async function loadOrders() {
+
+      if (!currentUser) return;
+
+
+      const container =
+        document
+          .getElementById(
+            "ordersList"
+          );
+
+
+      if (!container) return;
+
+
+      container.innerHTML =
+        `<div class="loading">
+          ⏳ Loading orders...
+        </div>`;
+
 
       const {
         data,
@@ -1552,7 +1870,7 @@
           .select("*")
           .eq(
             "user_email",
-            user.email
+            currentUser.email
           )
           .order(
             "created_at",
@@ -1563,792 +1881,581 @@
 
 
       if (error) {
-        throw error;
-      }
 
-
-      if (!data || data.length === 0) {
-
-        list.innerHTML =
-          "📋 No orders found yet.";
+        container.innerHTML =
+          `<div class="error-message">
+            ❌ ${escapeHtml(error.message)}
+          </div>`;
 
         return;
 
       }
 
 
-      let html = "";
-
-
-      data.forEach((order) => {
-
-        const date =
-          order.created_at
-            ? new Date(
-                order.created_at
-              ).toLocaleString()
-            : "N/A";
-
-
-        html += `
-
-          <div class="order">
-
-            <p>
-              <b>🆔 Order ID:</b>
-              ${escapeHtml(order.id)}
-            </p>
-
-            <p>
-              <b>📱 Service:</b>
-              ${escapeHtml(order.service)}
-            </p>
-
-            <p>
-              <b>🔗 Link:</b>
-
-              <a
-                href="${escapeAttribute(order.link)}"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                ${escapeHtml(order.link)}
-              </a>
-
-            </p>
-
-            <p>
-              <b>📊 Quantity:</b>
-              ${escapeHtml(order.quantity)}
-            </p>
-
-            <p>
-              <b>💵 Price:</b>
-              Rs ${Number(order.price || 0).toFixed(2)}
-            </p>
-
-            <p>
-              <b>📌 Status:</b>
-              ${escapeHtml(order.status)}
-            </p>
-
-            <p>
-              <b>🕒 Date:</b>
-              ${escapeHtml(date)}
-            </p>
-
-          </div>
-
-        `;
-
-      });
-
-
-      list.innerHTML =
-        html;
-
-
-    } catch (error) {
-
-      list.innerHTML =
-        "❌ Could not load orders: " +
-        escapeHtml(error.message);
-
-    }
-
-  }
-
-
-  /* UPLOAD PAYMENT PROOF */
-
-  async function uploadPaymentProof(file, user) {
-
-    if (!file) {
-
-      throw new Error(
-        "Please select payment screenshot."
-      );
-
-    }
-
-
-    if (!file.type.startsWith("image/")) {
-
-      throw new Error(
-        "Proof must be an image file."
-      );
-
-    }
-
-
-    if (file.size > MAX_PROOF_SIZE) {
-
-      throw new Error(
-        "Proof image must be 5 MB or smaller."
-      );
-
-    }
-
-
-    const originalName =
-      file.name
-        .replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
-        );
-
-
-    const filePath =
-      user.id +
-      "/" +
-      Date.now() +
-      "_" +
-      originalName;
-
-
-    const {
-      error
-    } =
-      await supabase
-        .storage
-        .from(PAYMENT_PROOF_BUCKET)
-        .upload(
-          filePath,
-          file,
-          {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: file.type
-          }
-        );
-
-
-    if (error) {
-      throw error;
-    }
-
-
-    return filePath;
-
-  }
-
-
-  /* GET PUBLIC PROOF URL */
-
-  function getProofUrl(path) {
-
-    if (!path) {
-      return "";
-    }
-
-
-    const {
-      data
-    } =
-      supabase
-        .storage
-        .from(PAYMENT_PROOF_BUCKET)
-        .getPublicUrl(path);
-
-
-    return data?.publicUrl || "";
-
-  }
-
-
-  /* SUBMIT PAYMENT */
-
-  window.submitPayment = async function() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    const message =
-      document.getElementById(
-        "paymentMessage"
-      );
-
-
-    const submitButton =
-      document.getElementById(
-        "submitPaymentBtn"
-      );
-
-
-    if (!user) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "❌ Please login first.";
-
-      return;
-
-    }
-
-
-    const amount =
-      Number(
-        document
-          .getElementById("paymentAmount")
-          .value
-      );
-
-
-    const method =
-      document
-        .getElementById("paymentMethod")
-        .value;
-
-
-    const transactionId =
-      document
-        .getElementById("transactionId")
-        .value
-        .trim();
-
-
-    const proofFile =
-      document
-        .getElementById("paymentProof")
-        .files[0];
-
-
-    if (!amount || amount <= 0) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Please enter a valid amount.";
-
-      return;
-
-    }
-
-
-    if (!method) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Please select a payment method.";
-
-      return;
-
-    }
-
-
-    if (!transactionId) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Please enter transaction ID.";
-
-      return;
-
-    }
-
-
-    if (!proofFile) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Please choose payment screenshot.";
-
-      return;
-
-    }
-
-
-    if (!proofFile.type.startsWith("image/")) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Payment proof must be an image.";
-
-      return;
-
-    }
-
-
-    if (proofFile.size > MAX_PROOF_SIZE) {
-
-      message.className =
-        "error";
-
-      message.innerText =
-        "⚠️ Image size must be 5 MB or smaller.";
-
-      return;
-
-    }
-
-
-    let proofPath = null;
-
-
-    try {
-
-      submitButton.disabled = true;
-
-
-      submitButton.innerText =
-        "⏳ Uploading Proof...";
-
-
-      /* STEP 1: Upload screenshot */
-
-      proofPath =
-        await uploadPaymentProof(
-          proofFile,
-          user
-        );
-
-
-      /* STEP 2: Save payment request */
-
-      submitButton.innerText =
-        "⏳ Saving Payment Request...";
-
-
-      const {
-        error
-      } =
-        await supabase
-          .from("payment_requests")
-          .insert({
-
-            amount:
-              amount,
-
-            method:
-              method,
-
-            transaction_id:
-              transactionId,
-
-            user_id:
-              user.id,
-
-            user_email:
-              user.email,
-
-            proof:
-              proofPath,
-
-            status:
-              "Pending"
-
-          });
-
-
-      /* If database insert fails,
-         remove uploaded screenshot */
-
-      if (error) {
-
-        await supabase
-          .storage
-          .from(PAYMENT_PROOF_BUCKET)
-          .remove([
-            proofPath
-          ]);
-
-        throw error;
+      if (
+        !data ||
+        data.length === 0
+      ) {
+
+        container.innerHTML =
+          `<div class="card">
+            📋 No orders found.
+          </div>`;
+
+        return;
 
       }
 
 
-      message.className =
-        "success";
+      container.innerHTML = "";
 
 
-      message.innerText =
-        "✅ Payment screenshot uploaded and payment request submitted successfully!";
+      data.forEach(
+        order => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
 
 
-      document
-        .getElementById("paymentAmount")
-        .value = "";
+          item.className =
+            "order-item";
 
 
-      document
-        .getElementById("paymentMethod")
-        .value = "";
+          const date =
+            order.created_at
+              ? new Date(
+                  order.created_at
+                ).toLocaleString()
+              : "";
 
 
-      document
-        .getElementById("transactionId")
-        .value = "";
+          const status =
+            order.status ||
+            "Pending";
 
 
-      document
-        .getElementById("paymentProof")
-        .value = "";
+          item.innerHTML = `
+
+            <strong>
+              Order #${escapeHtml(order.id)}
+            </strong>
+
+            <br><br>
+
+            <strong>Service:</strong>
+            ${escapeHtml(order.service)}
+
+            <br>
+
+            <strong>Quantity:</strong>
+            ${escapeHtml(order.quantity)}
+
+            <br>
+
+            <strong>Price:</strong>
+            Rs ${Number(
+              order.price || 0
+            ).toFixed(2)}
+
+            <br>
+
+            <strong>Link:</strong>
+            ${escapeHtml(order.link)}
+
+            <br>
+
+            <span class="status ${escapeHtml(status)}">
+              ${escapeHtml(status)}
+            </span>
+
+            <br><br>
+
+            <small>
+              📅 ${escapeHtml(date)}
+            </small>
+
+          `;
 
 
-      loadPaymentRequests();
+          container.appendChild(
+            item
+          );
 
-
-    } catch (error) {
-
-      message.className =
-        "error";
-
-
-      message.innerText =
-        "❌ Payment request could not be submitted: " +
-        error.message;
-
-
-    } finally {
-
-      submitButton.disabled = false;
-
-
-      submitButton.innerText =
-        "🚀 Submit Payment Request";
-
-    }
-
-  };
-
-
-  /* LOAD MY PAYMENT REQUESTS */
-
-  async function loadPaymentRequests() {
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabase.auth.getUser();
-
-
-    const list =
-      document.getElementById(
-        "paymentRequestsList"
+        }
       );
 
-
-    if (!user) {
-
-      list.innerHTML =
-        "Please login first.";
-
-      return;
-
     }
 
 
-    try {
+    /* =========================
+       PAYMENT REQUEST
+    ========================= */
 
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from("payment_requests")
-          .select("*")
-          .eq(
-            "user_id",
-            user.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
+    window.submitPaymentRequest =
+      async function() {
+
+        const amount =
+          Number(
+            document
+              .getElementById(
+                "paymentAmount"
+              )
+              .value
           );
 
 
-      if (error) {
-        throw error;
-      }
+        const method =
+          document
+            .getElementById(
+              "paymentMethod"
+            )
+            .value;
 
 
-      if (!data || data.length === 0) {
-
-        list.innerHTML =
-          "📋 No payment requests found.";
-
-        return;
-
-      }
-
-
-      let html = "";
+        const transactionId =
+          document
+            .getElementById(
+              "transactionId"
+            )
+            .value
+            .trim();
 
 
-      data.forEach((payment) => {
+        const proofInput =
+          document
+            .getElementById(
+              "paymentProof"
+            );
 
-        const date =
-          payment.created_at
-            ? new Date(
-                payment.created_at
-              ).toLocaleString()
-            : "N/A";
+
+        const file =
+          proofInput.files[0];
+
+
+        if (!currentUser) {
+
+          showMessage(
+            "paymentMessage",
+            "Please login first.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !amount ||
+          amount <= 0
+        ) {
+
+          showMessage(
+            "paymentMessage",
+            "Please enter a valid amount.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!transactionId) {
+
+          showMessage(
+            "paymentMessage",
+            "Please enter transaction ID.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!file) {
+
+          showMessage(
+            "paymentMessage",
+            "Please choose payment screenshot.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !file.type.startsWith(
+            "image/"
+          )
+        ) {
+
+          showMessage(
+            "paymentMessage",
+            "Please select an image file.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          file.size >
+          5 * 1024 * 1024
+        ) {
+
+          showMessage(
+            "paymentMessage",
+            "Image size must be less than 5 MB.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        showMessage(
+          "paymentMessage",
+          "Uploading payment screenshot...",
+          "success"
+        );
+
+
+        /* File name */
+
+        const extension =
+          file.name
+            .split(".")
+            .pop();
+
+
+        const fileName =
+          `${currentUser.id}/${Date.now()}.${extension}`;
+
+
+        /* Upload */
+
+        const {
+          error: uploadError
+        } =
+          await supabase.storage
+            .from(
+              "payment-proofs"
+            )
+            .upload(
+              fileName,
+              file,
+              {
+                upsert: false
+              }
+            );
+
+
+        if (uploadError) {
+
+          showMessage(
+            "paymentMessage",
+            uploadError.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /* Public URL */
+
+        const {
+          data: publicData
+        } =
+          supabase.storage
+            .from(
+              "payment-proofs"
+            )
+            .getPublicUrl(
+              fileName
+            );
 
 
         const proofUrl =
-          getProofUrl(
-            payment.proof
+          publicData.publicUrl;
+
+
+        /* Insert payment request */
+
+        const {
+          error
+        } =
+          await supabase
+            .from(
+              "payment_requests"
+            )
+            .insert({
+
+              user_id:
+                currentUser.id,
+
+              user_email:
+                currentUser.email,
+
+              amount:
+                amount,
+
+              method:
+                method,
+
+              transaction_id:
+                transactionId,
+
+              proof:
+                proofUrl,
+
+              status:
+                "Pending"
+
+            });
+
+
+        if (error) {
+
+          showMessage(
+            "paymentMessage",
+            error.message,
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        showMessage(
+          "paymentMessage",
+          "Payment request submitted successfully. Admin will review it.",
+          "success"
+        );
+
+
+        document
+          .getElementById(
+            "paymentAmount"
+          )
+          .value = "";
+
+
+        document
+          .getElementById(
+            "transactionId"
+          )
+          .value = "";
+
+
+        document
+          .getElementById(
+            "paymentProof"
+          )
+          .value = "";
+
+      };
+
+
+    /* =========================
+       SHOW SECTION
+    ========================= */
+
+    window.showSection =
+      function(section) {
+
+        document
+          .querySelectorAll(
+            ".section"
+          )
+          .forEach(
+            element => {
+
+              element.classList.remove(
+                "active"
+              );
+
+            }
           );
 
 
-        const proofHtml =
-          proofUrl
-
-            ? `
-
-                <a
-                  class="proof-link"
-                  href="${escapeAttribute(proofUrl)}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🖼️ View Proof
-                </a>
-
-              `
-
-            : `
-
-                <span>
-                  No proof available
-                </span>
-
-              `;
+        const target =
+          document.getElementById(
+            section
+          );
 
 
-        html += `
+        if (target) {
 
-          <div class="payment-card">
+          target.classList.add(
+            "active"
+          );
 
-            <p>
-              <b>💵 Amount:</b>
-              Rs ${Number(payment.amount || 0).toFixed(2)}
-            </p>
-
-            <p>
-              <b>💳 Method:</b>
-              ${escapeHtml(payment.method)}
-            </p>
-
-            <p>
-              <b>🔢 Transaction ID:</b>
-              ${escapeHtml(payment.transaction_id)}
-            </p>
-
-            <p>
-              <b>🧾 Proof:</b>
-              <br>
-              ${proofHtml}
-            </p>
-
-            <p>
-              <b>📌 Status:</b>
-              ${escapeHtml(payment.status || "Pending")}
-            </p>
-
-            <p>
-              <b>🕒 Date:</b>
-              ${escapeHtml(date)}
-            </p>
-
-          </div>
-
-        `;
-
-      });
+        }
 
 
-      list.innerHTML =
-        html;
+        if (
+          section ===
+          "dashboard"
+        ) {
+
+          loadServices();
+
+          loadBalance();
+
+        }
 
 
-    } catch (error) {
+        if (
+          section ===
+          "order"
+        ) {
 
-      list.innerHTML =
-        "❌ Could not load payment requests: " +
-        escapeHtml(error.message);
+          loadServices();
 
-    }
-
-  }
-
-
-  /* SECURITY HELPERS */
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-
-      .replaceAll("&", "&amp;")
-
-      .replaceAll("<", "&lt;")
-
-      .replaceAll(">", "&gt;")
-
-      .replaceAll('"', "&quot;")
-
-      .replaceAll("'", "&#039;");
-
-  }
+        }
 
 
-  function escapeAttribute(value) {
+        if (
+          section ===
+          "orders"
+        ) {
 
-    return String(value ?? "")
+          loadOrders();
 
-      .replaceAll("&", "%26")
+        }
 
-      .replaceAll('"', "%22")
-
-      .replaceAll("'", "%27")
-
-      .replaceAll("<", "%3C")
-
-      .replaceAll(">", "%3E");
-
-  }
+      };
 
 
-  /* AUTH STATE */
+    /* =========================
+       LOGOUT
+    ========================= */
 
-  supabase.auth.onAuthStateChange(
+    window.logout =
+      async function() {
 
-    async (event, session) => {
+        await supabase.auth.signOut();
 
-      const user =
-        session?.user || null;
+        currentUser = null;
 
-
-      if (user) {
-
-        document
-          .getElementById("loginPage")
-          .classList.add("hidden");
+        servicesData = [];
 
 
         document
-          .getElementById("signupPage")
-          .classList.add("hidden");
+          .getElementById(
+            "app"
+          )
+          .style.display = "none";
 
 
         document
-          .getElementById("app")
-          .classList.remove("hidden");
-
-
-        const name =
-          user.user_metadata?.full_name
-          || user.email
-          || "Customer";
+          .getElementById(
+            "authContainer"
+          )
+          .style.display = "flex";
 
 
         document
-          .getElementById("welcomeText")
-          .innerText =
-            "Welcome, " + name + "!";
-
-
-        /* Load actual balance */
-
-        await loadUserBalance(user.id);
-
-
-      } else {
-
-        document
-          .getElementById("app")
-          .classList.add("hidden");
+          .getElementById(
+            "loginPassword"
+          )
+          .value = "";
 
 
         document
-          .getElementById("signupPage")
-          .classList.add("hidden");
+          .getElementById(
+            "loginMessage"
+          )
+          .innerHTML = "";
+
+      };
 
 
-        document
-          .getElementById("loginPage")
-          .classList.remove("hidden");
+    /* =========================
+       AUTH STATE
+    ========================= */
+
+    supabase.auth.onAuthStateChange(
+      async (
+        event,
+        session
+      ) => {
+
+        if (
+          session &&
+          session.user
+        ) {
+
+          currentUser =
+            session.user;
 
 
-        document
-          .getElementById("userBalance")
-          .innerText =
-            "Rs 0.00";
+          document
+            .getElementById(
+              "authContainer"
+            )
+            .style.display =
+              "none";
+
+
+          document
+            .getElementById(
+              "app"
+            )
+            .style.display =
+              "block";
+
+
+          await loadServices();
+
+          await loadBalance();
+
+          await loadOrders();
+
+        }
 
       }
-
-    }
-
-  );
-
-
-  /* CHECK EXISTING SESSION ON PAGE LOAD */
-
-  const {
-    data: {
-      session
-    }
-  } =
-    await supabase.auth.getSession();
-
-
-  if (session?.user) {
-
-    document
-      .getElementById("loginPage")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("signupPage")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("app")
-      .classList.remove("hidden");
-
-
-    const name =
-      session.user.user_metadata?.full_name
-      || session.user.email
-      || "Customer";
-
-
-    document
-      .getElementById("welcomeText")
-      .innerText =
-        "Welcome, " + name + "!";
-
-
-    await loadUserBalance(
-      session.user.id
     );
 
-  }
 
-</script>
+    /* =========================
+       CHECK EXISTING SESSION
+    ========================= */
+
+    const {
+      data: sessionData
+    } =
+      await supabase.auth.getSession();
+
+
+    if (
+      sessionData &&
+      sessionData.session &&
+      sessionData.session.user
+    ) {
+
+      currentUser =
+        sessionData.session.user;
+
+
+      await setupUser();
+
+    }
+
+
+  </script>
 
 </body>
-
 </html>
