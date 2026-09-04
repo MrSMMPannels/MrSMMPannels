@@ -197,6 +197,62 @@ hr{
   margin:15px 0
 }
 
+/* DASHBOARD STATS */
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-top:20px
+}
+
+.stat-card{
+  background:#f8f9ff;
+  padding:20px;
+  border-radius:12px;
+  border-left:5px solid #6c2cff
+}
+
+.stat-card h3{
+  font-size:15px;
+  color:#666;
+  margin-bottom:10px
+}
+
+.stat-number{
+  font-size:27px;
+  font-weight:bold;
+  color:#6c2cff
+}
+
+.stat-green{
+  border-left-color:#168321
+}
+
+.stat-green .stat-number{
+  color:#168321
+}
+
+.stat-orange{
+  border-left-color:#f0a000
+}
+
+.stat-orange .stat-number{
+  color:#f0a000
+}
+
+.stat-red{
+  border-left-color:#d32f2f
+}
+
+.stat-red .stat-number{
+  color:#d32f2f
+}
+
+.refresh-stats{
+  margin-top:18px
+}
+
 /* SERVICES */
 
 .service-card{
@@ -234,6 +290,32 @@ hr{
 .toggle-btn{
   background:#6c2cff;
   margin-left:6px;
+}
+
+@media(max-width:900px){
+
+  .stats-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:600px){
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .update{
+    margin-left:0;
+    margin-top:8px;
+  }
+
+  .toggle-btn{
+    margin-left:0;
+    margin-top:8px;
+  }
+
 }
 </style>
 </head>
@@ -281,13 +363,64 @@ placeholder="Admin Password"
 
 <div id="adminPanel" class="container hidden">
 
+
+<!-- DASHBOARD -->
+
 <div class="box">
 
 <h2>📊 Admin Dashboard</h2>
 
 <p>Welcome to Mr SMM Pannels Admin Panel.</p>
 
-<br>
+<div class="stats-grid">
+
+<div class="stat-card">
+<h3>👥 Total Customers</h3>
+<div id="totalCustomers" class="stat-number">0</div>
+</div>
+
+<div class="stat-card">
+<h3>📦 Total Orders</h3>
+<div id="totalOrders" class="stat-number">0</div>
+</div>
+
+<div class="stat-card stat-orange">
+<h3>⏳ Pending Orders</h3>
+<div id="pendingOrders" class="stat-number">0</div>
+</div>
+
+<div class="stat-card stat-green">
+<h3>✅ Completed Orders</h3>
+<div id="completedOrders" class="stat-number">0</div>
+</div>
+
+<div class="stat-card stat-green">
+<h3>💰 Total Revenue</h3>
+<div id="totalRevenue" class="stat-number">Rs 0.00</div>
+</div>
+
+<div class="stat-card stat-orange">
+<h3>💳 Pending Payments</h3>
+<div id="pendingPayments" class="stat-number">0</div>
+</div>
+
+<div class="stat-card stat-green">
+<h3>💵 Approved Payments</h3>
+<div id="approvedPayments" class="stat-number">0</div>
+</div>
+
+<div class="stat-card stat-red">
+<h3>❌ Cancelled Orders</h3>
+<div id="cancelledOrders" class="stat-number">0</div>
+</div>
+
+</div>
+
+<button class="refresh-stats" onclick="loadDashboardStats()">
+🔄 Refresh Statistics
+</button>
+
+<hr>
 
 <button onclick="loadOrders()">
 🔄 Refresh Orders
@@ -304,6 +437,8 @@ placeholder="Admin Password"
 <button class="logout" onclick="adminLogout()">
 🚪 Logout
 </button>
+
+<div id="dashboardMessage"></div>
 
 </div>
 
@@ -491,6 +626,8 @@ document
 message.innerHTML="";
 
 
+loadDashboardStats();
+
 loadOrders();
 
 loadPaymentRequests();
@@ -504,6 +641,206 @@ message.className="error";
 
 message.innerText =
 "❌ Login failed: "+error.message;
+
+}
+
+};
+
+
+/* DASHBOARD STATISTICS */
+
+window.loadDashboardStats = async function(){
+
+if(!(await checkAdmin())){
+
+return;
+
+}
+
+const dashboardMessage =
+document.getElementById("dashboardMessage");
+
+dashboardMessage.className="info";
+
+dashboardMessage.innerText =
+"⏳ Loading dashboard statistics...";
+
+
+try{
+
+/* TOTAL CUSTOMERS */
+
+const customersResult =
+await supabase
+.from("profiles")
+.select("id",{count:"exact",head:true});
+
+if(customersResult.error){
+
+console.log(
+"Customer count error:",
+customersResult.error.message
+);
+
+}else{
+
+document
+.getElementById("totalCustomers")
+.innerText =
+customersResult.count || 0;
+
+}
+
+
+/* ORDERS */
+
+const ordersResult =
+await supabase
+.from("orders")
+.select("id,price,status");
+
+if(ordersResult.error){
+
+throw ordersResult.error;
+
+}
+
+const orders =
+ordersResult.data || [];
+
+let pendingCount=0;
+let completedCount=0;
+let cancelledCount=0;
+let revenue=0;
+
+orders.forEach(order=>{
+
+const status =
+String(order.status || "")
+.toLowerCase();
+
+if(status==="pending"){
+
+pendingCount++;
+
+}
+
+if(status==="completed"){
+
+completedCount++;
+
+revenue +=
+Number(order.price || 0);
+
+}
+
+if(status==="cancelled"){
+
+cancelledCount++;
+
+}
+
+});
+
+
+document
+.getElementById("totalOrders")
+.innerText =
+orders.length;
+
+document
+.getElementById("pendingOrders")
+.innerText =
+pendingCount;
+
+document
+.getElementById("completedOrders")
+.innerText =
+completedCount;
+
+document
+.getElementById("cancelledOrders")
+.innerText =
+cancelledCount;
+
+document
+.getElementById("totalRevenue")
+.innerText =
+"Rs " + revenue.toFixed(2);
+
+
+/* PAYMENTS */
+
+const paymentsResult =
+await supabase
+.from("payment_requests")
+.select("id,status");
+
+if(paymentsResult.error){
+
+throw paymentsResult.error;
+
+}
+
+const payments =
+paymentsResult.data || [];
+
+let pendingPaymentsCount=0;
+let approvedPaymentsCount=0;
+
+payments.forEach(payment=>{
+
+const status =
+String(payment.status || "")
+.toLowerCase();
+
+if(status==="pending"){
+
+pendingPaymentsCount++;
+
+}
+
+if(status==="approved"){
+
+approvedPaymentsCount++;
+
+}
+
+});
+
+
+document
+.getElementById("pendingPayments")
+.innerText =
+pendingPaymentsCount;
+
+document
+.getElementById("approvedPayments")
+.innerText =
+approvedPaymentsCount;
+
+
+dashboardMessage.className="success";
+
+dashboardMessage.innerText =
+"✅ Dashboard statistics updated successfully!";
+
+
+setTimeout(()=>{
+
+dashboardMessage.innerHTML="";
+
+},2000);
+
+
+}catch(error){
+
+dashboardMessage.className="error";
+
+dashboardMessage.innerText =
+"❌ Could not load dashboard statistics: "
++
+error.message;
 
 }
 
@@ -901,6 +1238,7 @@ order.service || "N/A"
 
 <p>
 <b>🔗 Link:</b>
+
 <a
 href="${escapeAttribute(order.link || "#")}"
 target="_blank"
@@ -908,6 +1246,7 @@ rel="noopener noreferrer"
 >
 ${escapeHtml(order.link || "N/A")}
 </a>
+
 </p>
 
 <p>
@@ -922,9 +1261,11 @@ Rs ${Number(order.price || 0).toFixed(2)}
 
 <p>
 <b>📌 Current Status:</b>
+
 <strong>
 ${escapeHtml(order.status || "Pending")}
 </strong>
+
 </p>
 
 <div>
@@ -1066,6 +1407,8 @@ setTimeout(()=>{
 
 loadOrders();
 
+loadDashboardStats();
+
 },800);
 
 
@@ -1134,9 +1477,7 @@ return;
 }
 
 
-/*
-TRY TO GET EMAILS FROM PROFILES
-*/
+/* GET EMAILS FROM PROFILES */
 
 let profileMap = {};
 
@@ -1247,6 +1588,7 @@ const proofHtml =
 proofUrl
 ?
 `
+
 <a
 class="proof-link"
 href="${escapeAttribute(proofUrl)}"
@@ -1255,6 +1597,7 @@ rel="noopener noreferrer"
 >
 🖼️ View Payment Screenshot
 </a>
+
 `
 :
 "No proof available";
@@ -1445,6 +1788,8 @@ setTimeout(()=>{
 
 loadPaymentRequests();
 
+loadDashboardStats();
+
 },800);
 
 
@@ -1529,6 +1874,8 @@ setTimeout(()=>{
 
 loadPaymentRequests();
 
+loadDashboardStats();
+
 },800);
 
 
@@ -1612,6 +1959,8 @@ document
 .getElementById("adminPanel")
 .classList.remove("hidden");
 
+
+loadDashboardStats();
 
 loadOrders();
 
