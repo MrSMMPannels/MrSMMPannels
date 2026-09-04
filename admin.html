@@ -657,8 +657,10 @@ return;
 
 }
 
+
 const dashboardMessage =
 document.getElementById("dashboardMessage");
+
 
 dashboardMessage.className="info";
 
@@ -674,6 +676,7 @@ const customersResult =
 await supabase
 .from("profiles")
 .select("id",{count:"exact",head:true});
+
 
 if(customersResult.error){
 
@@ -699,19 +702,23 @@ await supabase
 .from("orders")
 .select("id,price,status");
 
+
 if(ordersResult.error){
 
 throw ordersResult.error;
 
 }
 
+
 const orders =
 ordersResult.data || [];
+
 
 let pendingCount=0;
 let completedCount=0;
 let cancelledCount=0;
 let revenue=0;
+
 
 orders.forEach(order=>{
 
@@ -719,11 +726,13 @@ const status =
 String(order.status || "")
 .toLowerCase();
 
+
 if(status==="pending"){
 
 pendingCount++;
 
 }
+
 
 if(status==="completed"){
 
@@ -733,6 +742,7 @@ revenue +=
 Number(order.price || 0);
 
 }
+
 
 if(status==="cancelled"){
 
@@ -748,20 +758,24 @@ document
 .innerText =
 orders.length;
 
+
 document
 .getElementById("pendingOrders")
 .innerText =
 pendingCount;
+
 
 document
 .getElementById("completedOrders")
 .innerText =
 completedCount;
 
+
 document
 .getElementById("cancelledOrders")
 .innerText =
 cancelledCount;
+
 
 document
 .getElementById("totalRevenue")
@@ -776,17 +790,21 @@ await supabase
 .from("payment_requests")
 .select("id,status");
 
+
 if(paymentsResult.error){
 
 throw paymentsResult.error;
 
 }
 
+
 const payments =
 paymentsResult.data || [];
 
+
 let pendingPaymentsCount=0;
 let approvedPaymentsCount=0;
+
 
 payments.forEach(payment=>{
 
@@ -794,11 +812,13 @@ const status =
 String(payment.status || "")
 .toLowerCase();
 
+
 if(status==="pending"){
 
 pendingPaymentsCount++;
 
 }
+
 
 if(status==="approved"){
 
@@ -813,6 +833,7 @@ document
 .getElementById("pendingPayments")
 .innerText =
 pendingPaymentsCount;
+
 
 document
 .getElementById("approvedPayments")
@@ -1148,6 +1169,95 @@ error.message
 };
 
 
+/* GET CUSTOMER USER ID FOR NOTIFICATION */
+
+async function getCustomerUserId(order){
+
+if(order.user_id){
+
+return order.user_id;
+
+}
+
+
+if(order.user_email){
+
+const {
+data,
+error
+} =
+await supabase
+.from("profiles")
+.select("id")
+.eq("email",order.user_email)
+.limit(1)
+.maybeSingle();
+
+
+if(!error && data){
+
+return data.id;
+
+}
+
+}
+
+
+return null;
+
+}
+
+
+/* CREATE CUSTOMER NOTIFICATION */
+
+async function createCustomerNotification(
+userId,
+title,
+message
+){
+
+if(!userId){
+
+return {
+success:false,
+error:"Customer user ID not found."
+};
+
+}
+
+
+const {
+data,
+error
+} =
+await supabase.rpc(
+"admin_create_notification",
+{
+p_user_id:userId,
+p_title:title,
+p_message:message
+}
+);
+
+
+if(error){
+
+return {
+success:false,
+error:error.message
+};
+
+}
+
+
+return {
+success:true,
+data:data
+};
+
+}
+
+
 /* LOAD ORDERS */
 
 window.loadOrders = async function(){
@@ -1338,7 +1448,7 @@ escapeHtml(error.message);
 };
 
 
-/* UPDATE ORDER STATUS */
+/* UPDATE ORDER STATUS + NOTIFICATION */
 
 window.updateStatus =
 async function(orderId){
@@ -1377,8 +1487,43 @@ document.getElementById(
 
 try{
 
+message.className="info";
+
+message.innerText =
+"⏳ Updating order status...";
+
+
+/* GET ORDER */
+
 const {
-error
+data:order,
+error:orderError
+} =
+await supabase
+.from("orders")
+.select("*")
+.eq("id",orderId)
+.maybeSingle();
+
+
+if(orderError){
+
+throw orderError;
+
+}
+
+
+if(!order){
+
+throw new Error("Order not found.");
+
+}
+
+
+/* UPDATE STATUS */
+
+const {
+error:updateError
 } =
 await supabase
 .from("orders")
@@ -1388,19 +1533,91 @@ status:newStatus
 .eq("id",orderId);
 
 
-if(error){
+if(updateError){
 
-throw error;
+throw updateError;
 
 }
 
 
+/* CREATE NOTIFICATION */
+
+const customerUserId =
+await getCustomerUserId(order);
+
+
+let notificationTitle =
+"📦 Order Status Updated";
+
+
+let notificationMessage =
+"Your Order #"+orderId+
+" status has been changed to "+newStatus+".";
+
+
+if(newStatus==="Completed"){
+
+notificationTitle =
+"✅ Order Completed";
+
+notificationMessage =
+"Your Order #"+orderId+
+" has been completed successfully.";
+
+}
+
+
+if(newStatus==="Processing"){
+
+notificationTitle =
+"⚙️ Order Processing";
+
+notificationMessage =
+"Your Order #"+orderId+
+" is now being processed.";
+
+}
+
+
+if(newStatus==="Cancelled"){
+
+notificationTitle =
+"❌ Order Cancelled";
+
+notificationMessage =
+"Your Order #"+orderId+
+" has been cancelled.";
+
+}
+
+
+const notificationResult =
+await createCustomerNotification(
+customerUserId,
+notificationTitle,
+notificationMessage
+);
+
+
 message.className="success";
 
+
+if(notificationResult.success){
+
 message.innerText =
-"✅ Status updated to "
-+
-newStatus;
+"✅ Status updated and customer notification sent!";
+
+}else{
+
+message.innerText =
+"✅ Status updated, but notification could not be sent.";
+
+console.log(
+"Notification error:",
+notificationResult.error
+);
+
+}
 
 
 setTimeout(()=>{
@@ -1409,7 +1626,7 @@ loadOrders();
 
 loadDashboardStats();
 
-},800);
+},1000);
 
 
 }catch(error){
@@ -1417,7 +1634,7 @@ loadDashboardStats();
 message.className="error";
 
 message.innerText =
-"❌ Could not update status: "
+"❌ Could not update order: "
 +
 error.message;
 
@@ -1721,7 +1938,7 @@ escapeHtml(error.message);
 };
 
 
-/* APPROVE PAYMENT */
+/* APPROVE PAYMENT + NOTIFICATION */
 
 window.approvePayment =
 async function(paymentId){
@@ -1760,6 +1977,35 @@ message.innerText =
 "⏳ Approving payment...";
 
 
+/* GET PAYMENT BEFORE APPROVAL */
+
+const {
+data:payment,
+error:paymentFetchError
+} =
+await supabase
+.from("payment_requests")
+.select("*")
+.eq("id",paymentId)
+.maybeSingle();
+
+
+if(paymentFetchError){
+
+throw paymentFetchError;
+
+}
+
+
+if(!payment){
+
+throw new Error("Payment request not found.");
+
+}
+
+
+/* APPROVE PAYMENT */
+
 const {
 error
 } =
@@ -1778,10 +2024,41 @@ throw error;
 }
 
 
+/* CUSTOMER NOTIFICATION */
+
+const amount =
+Number(payment.amount || 0).toFixed(2);
+
+
+const notificationResult =
+await createCustomerNotification(
+payment.user_id,
+"💰 Payment Approved",
+"Your payment of Rs "+
+amount+
+" has been approved and added to your balance."
+);
+
+
 message.className="success";
 
+
+if(notificationResult.success){
+
 message.innerText =
-"✅ Payment approved and customer balance updated successfully!";
+"✅ Payment approved, balance updated and notification sent!";
+
+}else{
+
+message.innerText =
+"✅ Payment approved and balance updated, but notification could not be sent.";
+
+console.log(
+"Notification error:",
+notificationResult.error
+);
+
+}
 
 
 setTimeout(()=>{
@@ -1790,7 +2067,7 @@ loadPaymentRequests();
 
 loadDashboardStats();
 
-},800);
+},1000);
 
 
 }catch(error){
@@ -1807,7 +2084,7 @@ error.message;
 };
 
 
-/* REJECT PAYMENT */
+/* REJECT PAYMENT + NOTIFICATION */
 
 window.rejectPayment =
 async function(paymentId){
@@ -1846,6 +2123,35 @@ message.innerText =
 "⏳ Rejecting payment...";
 
 
+/* GET PAYMENT BEFORE REJECTION */
+
+const {
+data:payment,
+error:paymentFetchError
+} =
+await supabase
+.from("payment_requests")
+.select("*")
+.eq("id",paymentId)
+.maybeSingle();
+
+
+if(paymentFetchError){
+
+throw paymentFetchError;
+
+}
+
+
+if(!payment){
+
+throw new Error("Payment request not found.");
+
+}
+
+
+/* REJECT PAYMENT */
+
 const {
 error
 } =
@@ -1864,10 +2170,41 @@ throw error;
 }
 
 
+/* CUSTOMER NOTIFICATION */
+
+const amount =
+Number(payment.amount || 0).toFixed(2);
+
+
+const notificationResult =
+await createCustomerNotification(
+payment.user_id,
+"❌ Payment Rejected",
+"Your payment request of Rs "+
+amount+
+" has been rejected. Please check your payment details and try again."
+);
+
+
 message.className="success";
 
+
+if(notificationResult.success){
+
 message.innerText =
-"✅ Payment rejected successfully!";
+"✅ Payment rejected and customer notification sent!";
+
+}else{
+
+message.innerText =
+"✅ Payment rejected, but notification could not be sent.";
+
+console.log(
+"Notification error:",
+notificationResult.error
+);
+
+}
 
 
 setTimeout(()=>{
@@ -1876,7 +2213,7 @@ loadPaymentRequests();
 
 loadDashboardStats();
 
-},800);
+},1000);
 
 
 }catch(error){
