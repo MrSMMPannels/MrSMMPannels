@@ -57,11 +57,30 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
+      position: relative;
     }
 
     nav button:hover {
       background: #6c2cff;
       color: white;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      min-width: 21px;
+      height: 21px;
+      padding: 2px 6px;
+      background: #dc3545;
+      color: white;
+      border-radius: 50px;
+      font-size: 12px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border: 2px solid white;
     }
 
     .container {
@@ -216,6 +235,11 @@
       color: #856404;
     }
 
+    .status.Processing {
+      background: #cfe2ff;
+      color: #084298;
+    }
+
     .status.Completed {
       background: #d4edda;
       color: #155724;
@@ -316,6 +340,107 @@
       color: #6c2cff;
     }
 
+    /* =========================
+       NOTIFICATIONS
+    ========================= */
+
+    .notifications-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .notifications-header h2 {
+      margin-bottom: 0;
+    }
+
+    .mark-all-btn {
+      border: none;
+      background: #eee8ff;
+      color: #6c2cff;
+      padding: 9px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .mark-all-btn:hover {
+      background: #6c2cff;
+      color: white;
+    }
+
+    .notification-item {
+      background: white;
+      border: 1px solid #eee;
+      border-left: 5px solid #6c2cff;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    }
+
+    .notification-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 14px rgba(108,44,255,0.12);
+    }
+
+    .notification-item.unread {
+      background: #f6f1ff;
+      border-left-color: #6c2cff;
+    }
+
+    .notification-item.read {
+      opacity: 0.75;
+      border-left-color: #bbb;
+    }
+
+    .notification-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #5b20d6;
+      margin-bottom: 7px;
+    }
+
+    .notification-message {
+      color: #444;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .notification-date {
+      display: block;
+      margin-top: 9px;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .unread-label {
+      display: inline-block;
+      background: #dc3545;
+      color: white;
+      padding: 3px 7px;
+      border-radius: 10px;
+      font-size: 10px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .empty-notifications {
+      text-align: center;
+      padding: 35px 20px;
+      color: #777;
+    }
+
+    .empty-notifications .icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
     @media (max-width: 600px) {
       header h1 {
         font-size: 23px;
@@ -328,6 +453,14 @@
       nav button {
         font-size: 13px;
         padding: 8px 10px;
+      }
+
+      .notifications-header {
+        align-items: stretch;
+      }
+
+      .mark-all-btn {
+        width: 100%;
       }
     }
   </style>
@@ -450,6 +583,12 @@
 
       <button onclick="showSection('balance')">
         💰 Add Balance
+      </button>
+
+      <!-- NOTIFICATIONS BUTTON -->
+      <button onclick="showSection('notifications')">
+        🔔 Notifications
+        <span id="notificationBadge" class="notification-badge">0</span>
       </button>
 
       <button onclick="logout()">
@@ -674,6 +813,39 @@
 
       </section>
 
+
+      <!-- NOTIFICATIONS -->
+      <section id="notifications" class="section">
+
+        <div class="card">
+
+          <div class="notifications-header">
+
+            <h2>
+              🔔 Notifications
+            </h2>
+
+            <button
+              class="mark-all-btn"
+              onclick="markAllNotificationsRead()"
+            >
+              ✅ Mark All as Read
+            </button>
+
+          </div>
+
+          <div id="notificationsList">
+
+            <div class="loading">
+              ⏳ Loading notifications...
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
     </div>
 
   </div>
@@ -712,6 +884,8 @@
     let currentUser = null;
 
     let servicesData = [];
+
+    let notificationsData = [];
 
 
     /* =========================
@@ -997,6 +1171,8 @@
       await loadBalance();
 
       await loadOrders();
+
+      await loadNotifications();
 
     }
 
@@ -1551,17 +1727,6 @@
         );
 
 
-        /*
-          IMPORTANT:
-
-          Price calculation, balance checking,
-          balance deduction and order creation
-          are now handled securely inside Supabase.
-
-          The browser does NOT update the balance
-          directly anymore.
-        */
-
         const {
           data,
           error
@@ -2002,8 +2167,6 @@
         );
 
 
-        /* File name */
-
         const extension =
           file.name
             .split(".")
@@ -2013,8 +2176,6 @@
         const fileName =
           `${currentUser.id}/${Date.now()}.${extension}`;
 
-
-        /* Upload */
 
         const {
           error: uploadError
@@ -2045,8 +2206,6 @@
         }
 
 
-        /* Public URL */
-
         const {
           data: publicData
         } =
@@ -2062,8 +2221,6 @@
         const proofUrl =
           publicData.publicUrl;
 
-
-        /* Insert payment request */
 
         const {
           error
@@ -2142,6 +2299,403 @@
 
 
     /* =========================
+       LOAD NOTIFICATIONS
+    ========================= */
+
+    async function loadNotifications() {
+
+      if (!currentUser) return;
+
+
+      const container =
+        document.getElementById(
+          "notificationsList"
+        );
+
+
+      if (!container) return;
+
+
+      container.innerHTML =
+        `<div class="loading">
+          ⏳ Loading notifications...
+        </div>`;
+
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("notifications")
+          .select(
+            "id, user_id, title, message, type, is_read, created_at"
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Notifications loading error:",
+          error
+        );
+
+
+        container.innerHTML =
+          `<div class="error-message">
+            ❌ Could not load notifications.
+            ${escapeHtml(error.message)}
+          </div>`;
+
+        updateNotificationBadge(0);
+
+        return;
+
+      }
+
+
+      notificationsData =
+        data || [];
+
+
+      const unreadCount =
+        notificationsData.filter(
+          notification =>
+            !notification.is_read
+        ).length;
+
+
+      updateNotificationBadge(
+        unreadCount
+      );
+
+
+      renderNotifications();
+
+    }
+
+
+    /* =========================
+       UPDATE NOTIFICATION BADGE
+    ========================= */
+
+    function updateNotificationBadge(
+      count
+    ) {
+
+      const badge =
+        document.getElementById(
+          "notificationBadge"
+        );
+
+
+      if (!badge) return;
+
+
+      const number =
+        Number(count || 0);
+
+
+      if (number > 0) {
+
+        badge.textContent =
+          number > 99
+            ? "99+"
+            : number;
+
+        badge.style.display =
+          "flex";
+
+      } else {
+
+        badge.textContent =
+          "0";
+
+        badge.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    /* =========================
+       RENDER NOTIFICATIONS
+    ========================= */
+
+    function renderNotifications() {
+
+      const container =
+        document.getElementById(
+          "notificationsList"
+        );
+
+
+      if (!container) return;
+
+
+      if (
+        !notificationsData ||
+        notificationsData.length === 0
+      ) {
+
+        container.innerHTML = `
+          <div class="empty-notifications">
+            <div class="icon">🔔</div>
+            <strong>No notifications yet.</strong>
+            <p style="margin-top:8px;">
+              Your order and payment updates will appear here.
+            </p>
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      container.innerHTML = "";
+
+
+      notificationsData.forEach(
+        notification => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "notification-item " +
+            (
+              notification.is_read
+                ? "read"
+                : "unread"
+            );
+
+
+          const date =
+            notification.created_at
+              ? new Date(
+                  notification.created_at
+                ).toLocaleString()
+              : "";
+
+
+          const unreadLabel =
+            notification.is_read
+              ? ""
+              : `<span class="unread-label">
+                   NEW
+                 </span>`;
+
+
+          item.innerHTML = `
+
+            <div class="notification-title">
+              ${escapeHtml(notification.title)}
+              ${unreadLabel}
+            </div>
+
+            <div class="notification-message">
+              ${escapeHtml(notification.message)}
+            </div>
+
+            <small class="notification-date">
+              📅 ${escapeHtml(date)}
+            </small>
+
+          `;
+
+
+          item.addEventListener(
+            "click",
+            () => {
+
+              if (
+                !notification.is_read
+              ) {
+
+                markNotificationRead(
+                  notification.id
+                );
+
+              }
+
+            }
+          );
+
+
+          container.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================
+       MARK ONE NOTIFICATION READ
+    ========================= */
+
+    async function markNotificationRead(
+      notificationId
+    ) {
+
+      if (!currentUser) return;
+
+
+      const {
+        error
+      } =
+        await supabase
+          .from("notifications")
+          .update({
+            is_read: true
+          })
+          .eq(
+            "id",
+            notificationId
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Mark notification read error:",
+          error
+        );
+
+        return;
+
+      }
+
+
+      const notification =
+        notificationsData.find(
+          item =>
+            item.id ===
+            notificationId
+        );
+
+
+      if (notification) {
+
+        notification.is_read =
+          true;
+
+      }
+
+
+      const unreadCount =
+        notificationsData.filter(
+          item =>
+            !item.is_read
+        ).length;
+
+
+      updateNotificationBadge(
+        unreadCount
+      );
+
+
+      renderNotifications();
+
+    }
+
+
+    /* =========================
+       MARK ALL NOTIFICATIONS READ
+    ========================= */
+
+    window.markAllNotificationsRead =
+      async function() {
+
+        if (!currentUser) return;
+
+
+        const unreadCount =
+          notificationsData.filter(
+            item =>
+              !item.is_read
+          ).length;
+
+
+        if (unreadCount === 0) {
+
+          alert(
+            "There are no unread notifications."
+          );
+
+          return;
+
+        }
+
+
+        const {
+          error
+        } =
+          await supabase
+            .from("notifications")
+            .update({
+              is_read: true
+            })
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .eq(
+              "is_read",
+              false
+            );
+
+
+        if (error) {
+
+          alert(
+            "Could not mark notifications as read: " +
+            error.message
+          );
+
+          return;
+
+        }
+
+
+        notificationsData =
+          notificationsData.map(
+            notification => ({
+              ...notification,
+              is_read: true
+            })
+          );
+
+
+        updateNotificationBadge(0);
+
+        renderNotifications();
+
+      };
+
+
+    /* =========================
        SHOW SECTION
     ========================= */
 
@@ -2187,6 +2741,8 @@
 
           loadBalance();
 
+          loadNotifications();
+
         }
 
 
@@ -2209,6 +2765,16 @@
 
         }
 
+
+        if (
+          section ===
+          "notifications"
+        ) {
+
+          loadNotifications();
+
+        }
+
       };
 
 
@@ -2224,6 +2790,11 @@
         currentUser = null;
 
         servicesData = [];
+
+        notificationsData = [];
+
+
+        updateNotificationBadge(0);
 
 
         document
@@ -2296,6 +2867,8 @@
           await loadBalance();
 
           await loadOrders();
+
+          await loadNotifications();
 
         }
 
