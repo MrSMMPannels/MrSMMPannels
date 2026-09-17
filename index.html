@@ -2328,9 +2328,9 @@
       } =
         await supabase
           .from("notifications")
-          .select(
-            "id, user_id, title, message, type, is_read, created_at"
-          )
+      .select(
+  "id, user_id, title, message, is_read, created_at"
+)
           .eq(
             "user_id",
             currentUser.id
