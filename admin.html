@@ -1051,117 +1051,255 @@ error.message
 
 };
 
-/* GET CUSTOMER USER ID FOR NOTIFICATION */
+
+/* =========================================================
+   FIXED CUSTOMER USER ID FOR ORDER NOTIFICATION
+   ========================================================= */
 
 async function getCustomerUserId(order){
 
-if(order.user_id){
-return order.user_id;
+  /*
+    Step 1:
+    Agar order mein direct user_id mojood hai
+    to isi ko use karo.
+  */
+
+  const directUserId =
+    order?.user_id ||
+    order?.customer_id ||
+    order?.userId ||
+    order?.customerId;
+
+  if(directUserId){
+
+    console.log(
+      "Customer ID found directly from order:",
+      directUserId
+    );
+
+    return String(directUserId).trim();
+
+  }
+
+
+  /*
+    Step 2:
+    Agar direct ID nahi mili to customer email nikalo.
+  */
+
+  const customerEmail =
+    String(
+      order?.user_email ||
+      order?.customer_email ||
+      order?.email ||
+      ""
+    ).trim();
+
+
+  if(!customerEmail){
+
+    console.error(
+      "Customer email is also missing from order:",
+      order
+    );
+
+    return null;
+
+  }
+
+
+  /*
+    Step 3:
+    Profiles table mein exact email search.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabase
+      .from("profiles")
+      .select("id,email")
+      .eq("email",customerEmail)
+      .limit(1);
+
+    if(error){
+
+      console.error(
+        "Exact customer email lookup failed:",
+        error
+      );
+
+    }else if(data && data.length > 0){
+
+      console.log(
+        "Customer ID found by exact email:",
+        data[0].id
+      );
+
+      return data[0].id;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Exact email lookup exception:",
+      error
+    );
+
+  }
+
+
+  /*
+    Step 4:
+    Agar exact email match nahi mila,
+    to lowercase/case-insensitive search karo.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabase
+      .from("profiles")
+      .select("id,email")
+      .ilike("email",customerEmail)
+      .limit(1);
+
+    if(error){
+
+      console.error(
+        "Case-insensitive customer lookup failed:",
+        error
+      );
+
+    }else if(data && data.length > 0){
+
+      console.log(
+        "Customer ID found by case-insensitive email:",
+        data[0].id
+      );
+
+      return data[0].id;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Case-insensitive email lookup exception:",
+      error
+    );
+
+  }
+
+
+  /*
+    Step 5:
+    Customer nahi mila.
+  */
+
+  console.error(
+    "Customer user ID could not be found.",
+    {
+      orderId:order?.id,
+      user_id:order?.user_id,
+      user_email:order?.user_email,
+      customer_email:order?.customer_email
+    }
+  );
+
+  return null;
+
 }
 
-if(order.user_email){
-
-const {
-data,
-error
-} =
-await supabase
-.from("profiles")
-.select("id")
-.eq("email",order.user_email)
-.limit(1)
-.maybeSingle();
-
-if(!error && data){
-return data.id;
-}
-
-}
-
-return null;
-
-}
 
 /* CREATE CUSTOMER NOTIFICATION */
 
 async function createCustomerNotification(
-userId,
-title,
-message
+  userId,
+  title,
+  message
 ){
 
-if(!userId){
+  if(!userId){
 
-return {
-success:false,
-error:"Customer user ID not found."
-};
+    return {
+      success:false,
+      error:"Customer user ID not found."
+    };
+
+  }
+
+  console.log(
+    "Sending notification...",
+    {
+      userId:userId,
+      title:title,
+      message:message
+    }
+  );
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+    await supabase.rpc(
+      "create_notification",
+      {
+        p_user_id:userId,
+        p_title:title,
+        p_message:message
+      }
+    );
+
+    if(error){
+
+      console.error(
+        "NOTIFICATION RPC ERROR:",
+        error
+      );
+
+      return {
+        success:false,
+        error:error.message
+      };
+
+    }
+
+    console.log(
+      "NOTIFICATION SENT:",
+      data
+    );
+
+    return {
+      success:true,
+      data:data
+    };
+
+  }catch(error){
+
+    console.error(
+      "NOTIFICATION EXCEPTION:",
+      error
+    );
+
+    return {
+      success:false,
+      error:error.message
+    };
+
+  }
 
 }
 
-console.log(
-"Sending notification...",
-{
-userId:userId,
-title:title,
-message:message
-}
-);
-
-try{
-
-const {
-data,
-error
-} =
-await supabase.rpc(
-"create_notification",
-{
-p_user_id:userId,
-p_title:title,
-p_message:message
-}
-);
-
-if(error){
-
-console.error(
-"NOTIFICATION RPC ERROR:",
-error
-);
-
-return {
-success:false,
-error:error.message
-};
-
-}
-
-console.log(
-"NOTIFICATION SENT:",
-data
-);
-
-return {
-success:true,
-data:data
-};
-
-}catch(error){
-
-console.error(
-"NOTIFICATION EXCEPTION:",
-error
-);
-
-return {
-success:false,
-error:error.message
-};
-
-}
-
-}
 
 /* LOAD ORDERS */
 
@@ -1227,8 +1365,18 @@ ${escapeHtml(order.id)}
 <b>📧 Customer:</b>
 ${escapeHtml(
 order.user_email ||
+order.customer_email ||
 order.user_id ||
 "N/A"
+)}
+</p>
+
+<p>
+<b>👤 Customer User ID:</b>
+${escapeHtml(
+order.user_id ||
+order.customer_id ||
+"Not saved in order"
 )}
 </p>
 
@@ -1338,6 +1486,7 @@ escapeHtml(error.message);
 
 };
 
+
 /* UPDATE ORDER STATUS + NOTIFICATION */
 
 window.updateStatus =
@@ -1397,6 +1546,7 @@ throw new Error("Order not found.");
 
 }
 
+
 /* DO NOT UPDATE IF STATUS IS ALREADY SAME */
 
 const oldStatus =
@@ -1414,6 +1564,7 @@ return;
 
 }
 
+
 /* UPDATE STATUS */
 
 const {
@@ -1430,10 +1581,16 @@ if(updateError){
 throw updateError;
 }
 
-/* CREATE NOTIFICATION */
+
+/* =====================================================
+   CUSTOMER ID FIND
+   ===================================================== */
 
 const customerUserId =
 await getCustomerUserId(order);
+
+
+/* NOTIFICATION TEXT */
 
 let notificationTitle =
 "📦 Order Status Updated";
@@ -1441,6 +1598,7 @@ let notificationTitle =
 let notificationMessage =
 "Your Order #"+orderId+
 " status has been changed to "+newStatus+".";
+
 
 if(newStatus==="Completed"){
 
@@ -1453,6 +1611,7 @@ notificationMessage =
 
 }
 
+
 if(newStatus==="Processing"){
 
 notificationTitle =
@@ -1463,6 +1622,7 @@ notificationMessage =
 " is now being processed.";
 
 }
+
 
 if(newStatus==="Cancelled"){
 
@@ -1475,12 +1635,16 @@ notificationMessage =
 
 }
 
+
+/* SEND NOTIFICATION */
+
 const notificationResult =
 await createCustomerNotification(
 customerUserId,
 notificationTitle,
 notificationMessage
 );
+
 
 if(notificationResult.success){
 
@@ -1505,6 +1669,7 @@ notificationResult.error
 
 }
 
+
 setTimeout(()=>{
 
 loadOrders();
@@ -1512,6 +1677,7 @@ loadOrders();
 loadDashboardStats();
 
 },1500);
+
 
 }catch(error){
 
@@ -1525,6 +1691,7 @@ error.message;
 }
 
 };
+
 
 /* LOAD PAYMENT REQUESTS */
 
@@ -1566,6 +1733,7 @@ list.innerHTML =
 return;
 
 }
+
 
 /* GET EMAILS FROM PROFILES */
 
@@ -1797,6 +1965,7 @@ escapeHtml(error.message);
 
 };
 
+
 /* APPROVE PAYMENT + NOTIFICATION */
 
 window.approvePayment =
@@ -1832,6 +2001,7 @@ message.className="info";
 message.innerText =
 "⏳ Approving payment...";
 
+
 /* GET PAYMENT BEFORE APPROVAL */
 
 const {
@@ -1852,6 +2022,7 @@ if(!payment){
 throw new Error("Payment request not found.");
 }
 
+
 /* APPROVE PAYMENT */
 
 const {
@@ -1867,6 +2038,7 @@ p_payment_id:paymentId
 if(error){
 throw error;
 }
+
 
 /* CUSTOMER NOTIFICATION */
 
@@ -1925,6 +2097,7 @@ error.message;
 
 };
 
+
 /* REJECT PAYMENT + NOTIFICATION */
 
 window.rejectPayment =
@@ -1960,6 +2133,7 @@ message.className="info";
 message.innerText =
 "⏳ Rejecting payment...";
 
+
 /* GET PAYMENT BEFORE REJECTION */
 
 const {
@@ -1980,6 +2154,7 @@ if(!payment){
 throw new Error("Payment request not found.");
 }
 
+
 /* REJECT PAYMENT */
 
 const {
@@ -1995,6 +2170,7 @@ p_payment_id:paymentId
 if(error){
 throw error;
 }
+
 
 /* CUSTOMER NOTIFICATION */
 
@@ -2053,6 +2229,7 @@ error.message;
 
 };
 
+
 /* LOGOUT */
 
 window.adminLogout =
@@ -2069,6 +2246,7 @@ document
 .classList.remove("hidden");
 
 };
+
 
 /* SECURITY HELPERS */
 
@@ -2090,6 +2268,7 @@ return String(value ?? "")
 .replaceAll("'","%27");
 
 }
+
 
 /* EXISTING SESSION */
 
