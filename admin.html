@@ -327,7 +327,6 @@ hr{
 <p>Admin Panel</p>
 </header>
 
-
 <!-- LOGIN -->
 
 <div id="loginPage" class="container">
@@ -358,11 +357,9 @@ placeholder="Admin Password"
 
 </div>
 
-
 <!-- ADMIN PANEL -->
 
 <div id="adminPanel" class="container hidden">
-
 
 <!-- DASHBOARD -->
 
@@ -442,7 +439,6 @@ placeholder="Admin Password"
 
 </div>
 
-
 <!-- SERVICES & PRICES -->
 
 <div class="box">
@@ -458,7 +454,6 @@ placeholder="Admin Password"
 </div>
 
 </div>
-
 
 <!-- PAYMENT REQUESTS -->
 
@@ -477,7 +472,6 @@ Loading payment requests...
 
 </div>
 
-
 <!-- ORDERS -->
 
 <div class="box">
@@ -492,40 +486,32 @@ Loading orders...
 
 </div>
 
-
 <footer>
 © 2026 Mr SMM Pannels — Admin Panel
 </footer>
-
 
 <script type="module">
 
 import { createClient }
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-
 const SUPABASE_URL =
 "https://lgrdxyjbmzwhhnkfmups.supabase.co";
-
 
 const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
 
-
 const ADMIN_UID =
 "d4053fd1-6277-4a44-98d9-6e087caa74b1";
 
-
 const PAYMENT_PROOF_BUCKET =
 "payment-proofs";
-
 
 const supabase =
 createClient(
 SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
-
 
 /* CHECK ADMIN */
 
@@ -539,15 +525,12 @@ user
 await supabase.auth.getUser();
 
 if(!user){
-
 return false;
-
 }
 
 return user.id === ADMIN_UID;
 
 }
-
 
 /* ADMIN LOGIN */
 
@@ -567,7 +550,6 @@ document
 const message =
 document.getElementById("loginMessage");
 
-
 if(!email || !password){
 
 message.className="error";
@@ -578,7 +560,6 @@ message.innerText =
 return;
 
 }
-
 
 try{
 
@@ -594,13 +575,9 @@ password:password
 
 });
 
-
 if(error){
-
 throw error;
-
 }
-
 
 if(!data.user || data.user.id !== ADMIN_UID){
 
@@ -612,28 +589,20 @@ throw new Error(
 
 }
 
-
 document
 .getElementById("loginPage")
 .classList.add("hidden");
-
 
 document
 .getElementById("adminPanel")
 .classList.remove("hidden");
 
-
 message.innerHTML="";
 
-
 loadDashboardStats();
-
 loadOrders();
-
 loadPaymentRequests();
-
 loadServices();
-
 
 }catch(error){
 
@@ -646,27 +615,21 @@ message.innerText =
 
 };
 
-
 /* DASHBOARD STATISTICS */
 
 window.loadDashboardStats = async function(){
 
 if(!(await checkAdmin())){
-
 return;
-
 }
-
 
 const dashboardMessage =
 document.getElementById("dashboardMessage");
-
 
 dashboardMessage.className="info";
 
 dashboardMessage.innerText =
 "⏳ Loading dashboard statistics...";
-
 
 try{
 
@@ -676,7 +639,6 @@ const customersResult =
 await supabase
 .from("profiles")
 .select("id",{count:"exact",head:true});
-
 
 if(customersResult.error){
 
@@ -694,7 +656,6 @@ customersResult.count || 0;
 
 }
 
-
 /* ORDERS */
 
 const ordersResult =
@@ -702,23 +663,17 @@ await supabase
 .from("orders")
 .select("id,price,status");
 
-
 if(ordersResult.error){
-
 throw ordersResult.error;
-
 }
-
 
 const orders =
 ordersResult.data || [];
-
 
 let pendingCount=0;
 let completedCount=0;
 let cancelledCount=0;
 let revenue=0;
-
 
 orders.forEach(order=>{
 
@@ -726,62 +681,46 @@ const status =
 String(order.status || "")
 .toLowerCase();
 
-
 if(status==="pending"){
-
 pendingCount++;
-
 }
-
 
 if(status==="completed"){
-
 completedCount++;
-
 revenue +=
 Number(order.price || 0);
-
 }
 
-
 if(status==="cancelled"){
-
 cancelledCount++;
-
 }
 
 });
-
 
 document
 .getElementById("totalOrders")
 .innerText =
 orders.length;
 
-
 document
 .getElementById("pendingOrders")
 .innerText =
 pendingCount;
-
 
 document
 .getElementById("completedOrders")
 .innerText =
 completedCount;
 
-
 document
 .getElementById("cancelledOrders")
 .innerText =
 cancelledCount;
 
-
 document
 .getElementById("totalRevenue")
 .innerText =
 "Rs " + revenue.toFixed(2);
-
 
 /* PAYMENTS */
 
@@ -790,21 +729,15 @@ await supabase
 .from("payment_requests")
 .select("id,status");
 
-
 if(paymentsResult.error){
-
 throw paymentsResult.error;
-
 }
-
 
 const payments =
 paymentsResult.data || [];
 
-
 let pendingPaymentsCount=0;
 let approvedPaymentsCount=0;
-
 
 payments.forEach(payment=>{
 
@@ -812,47 +745,36 @@ const status =
 String(payment.status || "")
 .toLowerCase();
 
-
 if(status==="pending"){
-
 pendingPaymentsCount++;
-
 }
 
-
 if(status==="approved"){
-
 approvedPaymentsCount++;
-
 }
 
 });
-
 
 document
 .getElementById("pendingPayments")
 .innerText =
 pendingPaymentsCount;
 
-
 document
 .getElementById("approvedPayments")
 .innerText =
 approvedPaymentsCount;
-
 
 dashboardMessage.className="success";
 
 dashboardMessage.innerText =
 "✅ Dashboard statistics updated successfully!";
 
-
 setTimeout(()=>{
 
 dashboardMessage.innerHTML="";
 
 },2000);
-
 
 }catch(error){
 
@@ -867,25 +789,19 @@ error.message;
 
 };
 
-
 /* LOAD SERVICES */
 
 window.loadServices = async function(){
 
 if(!(await checkAdmin())){
-
 return;
-
 }
-
 
 const list =
 document.getElementById("servicesList");
 
-
 list.innerHTML =
 "⏳ Loading services...";
-
 
 try{
 
@@ -898,13 +814,9 @@ await supabase
 .select("*")
 .order("id",{ascending:true});
 
-
 if(error){
-
 throw error;
-
 }
-
 
 if(!data || data.length===0){
 
@@ -915,15 +827,12 @@ return;
 
 }
 
-
 let html="";
-
 
 data.forEach(service=>{
 
 const active =
 service.active === true;
-
 
 html += `
 
@@ -997,9 +906,7 @@ ${active ? "⛔ Deactivate" : "✅ Activate"}
 
 });
 
-
 list.innerHTML=html;
-
 
 }catch(error){
 
@@ -1011,7 +918,6 @@ escapeHtml(error.message);
 }
 
 };
-
 
 /* UPDATE SERVICE PRICE */
 
@@ -1026,29 +932,22 @@ return;
 
 }
 
-
 const input =
 document.getElementById(
 "price-"+serviceId
 );
-
 
 const message =
 document.getElementById(
 "service-message-"+serviceId
 );
 
-
 if(!input){
-
 return;
-
 }
-
 
 const newPrice =
 Number(input.value);
-
 
 if(!Number.isFinite(newPrice) || newPrice < 0){
 
@@ -1061,14 +960,12 @@ return;
 
 }
 
-
 try{
 
 message.className="info";
 
 message.innerText =
 "⏳ Updating price...";
-
 
 const {
 error
@@ -1080,26 +977,20 @@ price_per_1000:newPrice
 })
 .eq("id",serviceId);
 
-
 if(error){
-
 throw error;
-
 }
-
 
 message.className="success";
 
 message.innerText =
 "✅ Price updated successfully!";
 
-
 setTimeout(()=>{
 
 loadServices();
 
 },800);
-
 
 }catch(error){
 
@@ -1114,7 +1005,6 @@ error.message;
 
 };
 
-
 /* ACTIVATE / DEACTIVATE SERVICE */
 
 window.toggleService =
@@ -1128,10 +1018,8 @@ return;
 
 }
 
-
 const newStatus =
 !currentStatus;
-
 
 try{
 
@@ -1145,16 +1033,11 @@ active:newStatus
 })
 .eq("id",serviceId);
 
-
 if(error){
-
 throw error;
-
 }
 
-
 loadServices();
-
 
 }catch(error){
 
@@ -1168,17 +1051,13 @@ error.message
 
 };
 
-
 /* GET CUSTOMER USER ID FOR NOTIFICATION */
 
 async function getCustomerUserId(order){
 
 if(order.user_id){
-
 return order.user_id;
-
 }
-
 
 if(order.user_email){
 
@@ -1193,20 +1072,15 @@ await supabase
 .limit(1)
 .maybeSingle();
 
-
 if(!error && data){
-
 return data.id;
-
 }
 
 }
-
 
 return null;
 
 }
-
 
 /* CREATE CUSTOMER NOTIFICATION */
 
@@ -1225,19 +1099,16 @@ error:"Customer user ID not found."
 
 }
 
+console.log(
+"Sending notification...",
+{
+userId:userId,
+title:title,
+message:message
+}
+);
 
-/*
- IMPORTANT:
- notifications table has only:
- id
- user_id
- title
- message
- is_read
- created_at
-
-So NO p_type is sent here.
-*/
+try{
 
 const {
 data,
@@ -1252,8 +1123,12 @@ p_message:message
 }
 );
 
-
 if(error){
+
+console.error(
+"NOTIFICATION RPC ERROR:",
+error
+);
 
 return {
 success:false,
@@ -1262,33 +1137,45 @@ error:error.message
 
 }
 
+console.log(
+"NOTIFICATION SENT:",
+data
+);
 
 return {
 success:true,
 data:data
 };
 
+}catch(error){
+
+console.error(
+"NOTIFICATION EXCEPTION:",
+error
+);
+
+return {
+success:false,
+error:error.message
+};
+
 }
 
+}
 
 /* LOAD ORDERS */
 
 window.loadOrders = async function(){
 
 if(!(await checkAdmin())){
-
 return;
-
 }
-
 
 const list =
 document.getElementById("ordersList");
 
-
 list.innerHTML =
 "⏳ Loading orders...";
-
 
 try{
 
@@ -1301,13 +1188,9 @@ await supabase
 .select("*")
 .order("id",{ascending:false});
 
-
 if(error){
-
 throw error;
-
 }
-
 
 if(!data || data.length===0){
 
@@ -1318,9 +1201,7 @@ return;
 
 }
 
-
 let html="";
-
 
 data.forEach(order=>{
 
@@ -1332,7 +1213,6 @@ order.created_at
 ).toLocaleString()
 :
 "N/A";
-
 
 html += `
 
@@ -1445,9 +1325,7 @@ ${date}
 
 });
 
-
 list.innerHTML=html;
-
 
 }catch(error){
 
@@ -1459,7 +1337,6 @@ escapeHtml(error.message);
 }
 
 };
-
 
 /* UPDATE ORDER STATUS + NOTIFICATION */
 
@@ -1474,29 +1351,22 @@ return;
 
 }
 
-
 const select =
 document.getElementById(
 "status-"+orderId
 );
 
-
 if(!select){
-
 return;
-
 }
-
 
 const newStatus =
 select.value;
-
 
 const message =
 document.getElementById(
 "message-"+orderId
 );
-
 
 try{
 
@@ -1504,7 +1374,6 @@ message.className="info";
 
 message.innerText =
 "⏳ Updating order status...";
-
 
 /* GET ORDER */
 
@@ -1518,13 +1387,9 @@ await supabase
 .eq("id",orderId)
 .maybeSingle();
 
-
 if(orderError){
-
 throw orderError;
-
 }
-
 
 if(!order){
 
@@ -1532,13 +1397,11 @@ throw new Error("Order not found.");
 
 }
 
-
 /* DO NOT UPDATE IF STATUS IS ALREADY SAME */
 
 const oldStatus =
 String(order.status || "")
 .trim();
-
 
 if(oldStatus === newStatus){
 
@@ -1550,7 +1413,6 @@ message.innerText =
 return;
 
 }
-
 
 /* UPDATE STATUS */
 
@@ -1564,28 +1426,21 @@ status:newStatus
 })
 .eq("id",orderId);
 
-
 if(updateError){
-
 throw updateError;
-
 }
-
 
 /* CREATE NOTIFICATION */
 
 const customerUserId =
 await getCustomerUserId(order);
 
-
 let notificationTitle =
 "📦 Order Status Updated";
-
 
 let notificationMessage =
 "Your Order #"+orderId+
 " status has been changed to "+newStatus+".";
-
 
 if(newStatus==="Completed"){
 
@@ -1598,7 +1453,6 @@ notificationMessage =
 
 }
 
-
 if(newStatus==="Processing"){
 
 notificationTitle =
@@ -1609,7 +1463,6 @@ notificationMessage =
 " is now being processed.";
 
 }
-
 
 if(newStatus==="Cancelled"){
 
@@ -1622,7 +1475,6 @@ notificationMessage =
 
 }
 
-
 const notificationResult =
 await createCustomerNotification(
 customerUserId,
@@ -1630,27 +1482,28 @@ notificationTitle,
 notificationMessage
 );
 
+if(notificationResult.success){
 
 message.className="success";
-
-
-if(notificationResult.success){
 
 message.innerText =
 "✅ Status updated and customer notification sent!";
 
 }else{
 
-message.innerText =
-"✅ Status updated, but notification could not be sent.";
+message.className="error";
 
-console.log(
+message.innerText =
+"⚠️ Status updated, but notification could not be sent: "
++
+notificationResult.error;
+
+console.error(
 "Notification error:",
 notificationResult.error
 );
 
 }
-
 
 setTimeout(()=>{
 
@@ -1658,8 +1511,7 @@ loadOrders();
 
 loadDashboardStats();
 
-},1000);
-
+},1500);
 
 }catch(error){
 
@@ -1674,28 +1526,22 @@ error.message;
 
 };
 
-
 /* LOAD PAYMENT REQUESTS */
 
 window.loadPaymentRequests =
 async function(){
 
 if(!(await checkAdmin())){
-
 return;
-
 }
-
 
 const list =
 document.getElementById(
 "paymentRequestsList"
 );
 
-
 list.innerHTML =
 "⏳ Loading payment requests...";
-
 
 try{
 
@@ -1708,13 +1554,9 @@ await supabase
 .select("*")
 .order("created_at",{ascending:false});
 
-
 if(error){
-
 throw error;
-
 }
-
 
 if(!data || data.length===0){
 
@@ -1725,11 +1567,9 @@ return;
 
 }
 
-
 /* GET EMAILS FROM PROFILES */
 
 let profileMap = {};
-
 
 const userIds =
 [
@@ -1739,7 +1579,6 @@ data
 .filter(Boolean)
 )
 ];
-
 
 if(userIds.length > 0){
 
@@ -1753,7 +1592,6 @@ await supabase
 .from("profiles")
 .select("id,email")
 .in("id",userIds);
-
 
 if(!profileError && profiles){
 
@@ -1777,9 +1615,7 @@ profileError.message
 
 }
 
-
 let html="";
-
 
 data.forEach(payment=>{
 
@@ -1792,14 +1628,12 @@ payment.created_at
 :
 "N/A";
 
-
 const customerEmail =
 payment.user_email
 ||
 profileMap[payment.user_id]
 ||
 "Email not saved";
-
 
 const proofUrl =
 payment.proof
@@ -1812,10 +1646,8 @@ supabase
 :
 "";
 
-
 let statusClass =
 "status-pending";
-
 
 if(payment.status === "Approved"){
 
@@ -1824,7 +1656,6 @@ statusClass =
 
 }
 
-
 if(payment.status === "Rejected"){
 
 statusClass =
@@ -1832,10 +1663,10 @@ statusClass =
 
 }
 
-
 const proofHtml =
 proofUrl
 ?
+
 `
 
 <a
@@ -1848,12 +1679,12 @@ rel="noopener noreferrer"
 </a>
 
 `
+
 :
+
 "No proof available";
 
-
 let actionHtml="";
-
 
 if(payment.status === "Pending"){
 
@@ -1880,7 +1711,6 @@ onclick="rejectPayment(${payment.id})"
 `;
 
 }
-
 
 html += `
 
@@ -1954,9 +1784,7 @@ ${actionHtml}
 
 });
 
-
 list.innerHTML=html;
-
 
 }catch(error){
 
@@ -1968,7 +1796,6 @@ escapeHtml(error.message);
 }
 
 };
-
 
 /* APPROVE PAYMENT + NOTIFICATION */
 
@@ -1983,12 +1810,10 @@ return;
 
 }
 
-
 const message =
 document.getElementById(
 "payment-message-"+paymentId
 );
-
 
 if(
 !confirm(
@@ -2000,14 +1825,12 @@ return;
 
 }
 
-
 try{
 
 message.className="info";
 
 message.innerText =
 "⏳ Approving payment...";
-
 
 /* GET PAYMENT BEFORE APPROVAL */
 
@@ -2021,20 +1844,13 @@ await supabase
 .eq("id",paymentId)
 .maybeSingle();
 
-
 if(paymentFetchError){
-
 throw paymentFetchError;
-
 }
-
 
 if(!payment){
-
 throw new Error("Payment request not found.");
-
 }
-
 
 /* APPROVE PAYMENT */
 
@@ -2048,19 +1864,14 @@ p_payment_id:paymentId
 }
 );
 
-
 if(error){
-
 throw error;
-
 }
-
 
 /* CUSTOMER NOTIFICATION */
 
 const amount =
 Number(payment.amount || 0).toFixed(2);
-
 
 const notificationResult =
 await createCustomerNotification(
@@ -2071,9 +1882,7 @@ amount+
 " has been approved and added to your balance."
 );
 
-
 message.className="success";
-
 
 if(notificationResult.success){
 
@@ -2082,25 +1891,26 @@ message.innerText =
 
 }else{
 
-message.innerText =
-"✅ Payment approved and balance updated, but notification could not be sent.";
+message.className="error";
 
-console.log(
+message.innerText =
+"⚠️ Payment approved and balance updated, but notification could not be sent: "
++
+notificationResult.error;
+
+console.error(
 "Notification error:",
 notificationResult.error
 );
 
 }
 
-
 setTimeout(()=>{
 
 loadPaymentRequests();
-
 loadDashboardStats();
 
-},1000);
-
+},1500);
 
 }catch(error){
 
@@ -2115,7 +1925,6 @@ error.message;
 
 };
 
-
 /* REJECT PAYMENT + NOTIFICATION */
 
 window.rejectPayment =
@@ -2129,12 +1938,10 @@ return;
 
 }
 
-
 const message =
 document.getElementById(
 "payment-message-"+paymentId
 );
-
 
 if(
 !confirm(
@@ -2146,14 +1953,12 @@ return;
 
 }
 
-
 try{
 
 message.className="info";
 
 message.innerText =
 "⏳ Rejecting payment...";
-
 
 /* GET PAYMENT BEFORE REJECTION */
 
@@ -2167,20 +1972,13 @@ await supabase
 .eq("id",paymentId)
 .maybeSingle();
 
-
 if(paymentFetchError){
-
 throw paymentFetchError;
-
 }
-
 
 if(!payment){
-
 throw new Error("Payment request not found.");
-
 }
-
 
 /* REJECT PAYMENT */
 
@@ -2194,19 +1992,14 @@ p_payment_id:paymentId
 }
 );
 
-
 if(error){
-
 throw error;
-
 }
-
 
 /* CUSTOMER NOTIFICATION */
 
 const amount =
 Number(payment.amount || 0).toFixed(2);
-
 
 const notificationResult =
 await createCustomerNotification(
@@ -2217,9 +2010,7 @@ amount+
 " has been rejected. Please check your payment details and try again."
 );
 
-
 message.className="success";
-
 
 if(notificationResult.success){
 
@@ -2228,25 +2019,26 @@ message.innerText =
 
 }else{
 
-message.innerText =
-"✅ Payment rejected, but notification could not be sent.";
+message.className="error";
 
-console.log(
+message.innerText =
+"⚠️ Payment rejected, but notification could not be sent: "
++
+notificationResult.error;
+
+console.error(
 "Notification error:",
 notificationResult.error
 );
 
 }
 
-
 setTimeout(()=>{
 
 loadPaymentRequests();
-
 loadDashboardStats();
 
-},1000);
-
+},1500);
 
 }catch(error){
 
@@ -2261,7 +2053,6 @@ error.message;
 
 };
 
-
 /* LOGOUT */
 
 window.adminLogout =
@@ -2269,18 +2060,15 @@ async function(){
 
 await supabase.auth.signOut();
 
-
 document
 .getElementById("adminPanel")
 .classList.add("hidden");
-
 
 document
 .getElementById("loginPage")
 .classList.remove("hidden");
 
 };
-
 
 /* SECURITY HELPERS */
 
@@ -2295,7 +2083,6 @@ return String(value ?? "")
 
 }
 
-
 function escapeAttribute(value){
 
 return String(value ?? "")
@@ -2303,7 +2090,6 @@ return String(value ?? "")
 .replaceAll("'","%27");
 
 }
-
 
 /* EXISTING SESSION */
 
@@ -2314,7 +2100,6 @@ session
 } =
 await supabase.auth.getSession();
 
-
 if(session){
 
 if(session.user.id === ADMIN_UID){
@@ -2323,20 +2108,14 @@ document
 .getElementById("loginPage")
 .classList.add("hidden");
 
-
 document
 .getElementById("adminPanel")
 .classList.remove("hidden");
 
-
 loadDashboardStats();
-
 loadOrders();
-
 loadPaymentRequests();
-
 loadServices();
-
 
 }else{
 
