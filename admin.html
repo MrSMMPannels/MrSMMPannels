@@ -1226,6 +1226,19 @@ error:"Customer user ID not found."
 }
 
 
+/*
+ IMPORTANT:
+ notifications table has only:
+ id
+ user_id
+ title
+ message
+ is_read
+ created_at
+
+So NO p_type is sent here.
+*/
+
 const {
 data,
 error
@@ -1235,8 +1248,7 @@ await supabase.rpc(
 {
 p_user_id:userId,
 p_title:title,
-p_message:message,
-p_type:"info"
+p_message:message
 }
 );
 
