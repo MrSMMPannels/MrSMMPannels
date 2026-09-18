@@ -1803,14 +1803,24 @@ profileMap[payment.user_id]
 ||
 "Email not saved";
 
+/* =====================================================
+   FIXED PAYMENT PROOF URL
+   Agar proof already full URL hai to usi ko use karo.
+   Agar sirf storage path hai to getPublicUrl() use karo.
+   ===================================================== */
+
 const proofUrl =
 payment.proof
 ?
-supabase
-.storage
-.from(PAYMENT_PROOF_BUCKET)
-.getPublicUrl(payment.proof)
-.data.publicUrl
+(
+  String(payment.proof).startsWith("http")
+    ? String(payment.proof)
+    : supabase
+        .storage
+        .from(PAYMENT_PROOF_BUCKET)
+        .getPublicUrl(payment.proof)
+        .data.publicUrl
+)
 :
 "";
 
