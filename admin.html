@@ -65,15 +65,21 @@ hr{border:0;border-top:1px solid #ddd;margin:15px 0}
 
 /* CUSTOMER MANAGEMENT */
 .customer-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-.customer-search{max-width:420px;margin:0;flex:1;min-width:220px}
+.customer-search{max-width:520px;margin:0;flex:1;min-width:220px}
 .customer-card{background:#f8f9ff;padding:18px;border-radius:12px;margin-bottom:15px;border-left:5px solid #168321}
 .customer-card p{margin:8px 0;word-break:break-word}
 .customer-balance{font-size:22px;font-weight:bold;color:#168321}
 .balance-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.balance-input{width:160px;margin:0}
+.balance-input{width:180px;margin:0}
 .small-btn{padding:9px 12px}
 .danger-btn{background:#d32f2f}
-@media(max-width:600px){.customer-toolbar{display:block}.customer-search{max-width:none}.balance-input{width:100%}.balance-actions button{width:100%;margin:0}}
+.customer-id{font-size:12px;color:#666;word-break:break-all}
+@media(max-width:600px){
+  .customer-toolbar{display:block}
+  .customer-search{max-width:none}
+  .balance-input{width:100%}
+  .balance-actions button{width:100%;margin:0}
+}
 
 @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){
@@ -122,8 +128,32 @@ hr{border:0;border-top:1px solid #ddd;margin:15px 0}
 <button onclick="loadOrders()">🔄 Refresh Orders</button>
 <button onclick="loadPaymentRequests()">💳 Refresh Payments</button>
 <button onclick="loadServices()">🛠️ Refresh Services</button>
+<button onclick="loadCustomers()">👥 Refresh Customers</button>
 <button class="logout" onclick="adminLogout()">🚪 Logout</button>
 <div id="dashboardMessage"></div>
+</div>
+
+<div class="box">
+<h2>👥 Customer Management</h2>
+<div class="info">
+💡 Customer ka Gmail/email ya User ID search karein. Yahan se customer ka balance add ya deduct bhi kar sakte hain.
+</div>
+
+<div class="customer-toolbar">
+<input
+  id="customerSearch"
+  class="customer-search"
+  type="text"
+  placeholder="🔎 Search customer Gmail or User ID..."
+  onkeydown="if(event.key==='Enter') loadCustomers()"
+>
+<button onclick="loadCustomers()">🔎 Search</button>
+<button onclick="clearCustomerSearch()">✖ Clear</button>
+<button onclick="loadCustomers()">🔄 Refresh Customers</button>
+</div>
+
+<div id="customerMessage"></div>
+<div id="customersList">⏳ Loading customers...</div>
 </div>
 
 <div class="box">
@@ -191,6 +221,7 @@ window.adminLogin = async function(){
     loadOrders();
     loadPaymentRequests();
     loadServices();
+    loadCustomers();
   }catch(error){
     message.className="error";
     message.innerText="❌ Login failed: "+error.message;
@@ -256,6 +287,136 @@ window.loadDashboardStats = async function(){
   }catch(error){
     dashboardMessage.className="error";
     dashboardMessage.innerText="❌ Could not load dashboard statistics: "+error.message;
+  }
+};
+
+/* =========================
+   CUSTOMER MANAGEMENT
+   ========================= */
+
+window.clearCustomerSearch = function(){
+  document.getElementById("customerSearch").value="";
+  loadCustomers();
+};
+
+window.loadCustomers = async function(){
+  if(!(await checkAdmin())) return;
+
+  const list=document.getElementById("customersList");
+  const message=document.getElementById("customerMessage");
+  const search=document.getElementById("customerSearch").value.trim();
+
+  list.innerHTML="⏳ Loading customers...";
+  message.innerHTML="";
+
+  try{
+    let query=supabase
+      .from("profiles")
+      .select("id,email,balance,created_at")
+      .order("created_at",{ascending:false});
+
+    if(search){
+      const escaped=search.replace(/[%_]/g, "\$&");
+      query=query.or(`email.ilike.%${escaped}%,id.eq.${search}`);
+    }
+
+    const {data,error}=await query;
+    if(error) throw error;
+
+    if(!data || data.length===0){
+      list.innerHTML=search
+        ? "🔎 No customer found for: "+escapeHtml(search)
+        : "📋 No customers found.";
+      return;
+    }
+
+    let html="";
+    data.forEach(customer=>{
+      const balance=Number(customer.balance || 0);
+      const created=customer.created_at
+        ? new Date(customer.created_at).toLocaleString()
+        : "N/A";
+
+      html += `
+<div class="customer-card">
+<p><b>📧 Gmail / Email:</b> ${escapeHtml(customer.email || "N/A")}</p>
+<p><b>🆔 User ID:</b><br><span class="customer-id">${escapeHtml(customer.id)}</span></p>
+<p><b>💰 Current Balance:</b> <span class="customer-balance">Rs ${balance.toFixed(2)}</span></p>
+<p><b>🕒 Created:</b> ${escapeHtml(created)}</p>
+<hr>
+<label><b>💵 Amount:</b></label>
+<input
+  class="balance-input"
+  type="number"
+  min="0.01"
+  step="0.01"
+  id="balance-${escapeAttribute(customer.id)}"
+  placeholder="Enter amount"
+>
+<div class="balance-actions">
+<button class="small-btn" onclick="adjustCustomerBalance('${escapeAttribute(customer.id)}','add')">➕ Add Balance</button>
+<button class="small-btn danger-btn" onclick="adjustCustomerBalance('${escapeAttribute(customer.id)}','deduct')">➖ Deduct Balance</button>
+</div>
+<div id="customer-message-${escapeAttribute(customer.id)}"></div>
+</div>`;
+    });
+
+    list.innerHTML=html;
+  }catch(error){
+    list.innerHTML="❌ Could not load customers: "+escapeHtml(error.message);
+  }
+};
+
+window.adjustCustomerBalance = async function(userId, action){
+  if(!(await checkAdmin())){
+    alert("Unauthorized.");
+    return;
+  }
+
+  const input=document.getElementById("balance-"+userId);
+  const message=document.getElementById("customer-message-"+userId);
+
+  if(!input || !message) return;
+
+  const amount=Number(input.value);
+
+  if(!Number.isFinite(amount) || amount <= 0){
+    message.className="error";
+    message.innerText="⚠️ Please enter a valid amount greater than 0.";
+    return;
+  }
+
+  const actionText=action==="add" ? "ADD" : "DEDUCT";
+
+  if(!confirm("Are you sure you want to "+actionText+" Rs "+amount.toFixed(2)+" "+(action==="add" ? "to" : "from")+" this customer's balance?")){
+    return;
+  }
+
+  try{
+    message.className="info";
+    message.innerText="⏳ Updating customer balance...";
+
+    const {data,error}=await supabase.rpc("admin_adjust_customer_balance",{
+      p_user_id:userId,
+      p_amount:amount,
+      p_action:action
+    });
+
+    if(error) throw error;
+
+    message.className="success";
+    message.innerText="✅ Balance updated successfully!";
+
+    input.value="";
+
+    setTimeout(()=>{
+      loadCustomers();
+      loadDashboardStats();
+    },800);
+
+  }catch(error){
+    message.className="error";
+    message.innerText="❌ Balance could not be updated: "+error.message;
   }
 };
 
@@ -435,7 +596,6 @@ window.updateStatus=async function(orderId){
     if(orderError) throw orderError;
     if(!order) throw new Error("Order not found.");
 
-    // Do not send a duplicate notification when the status has not changed.
     if(String(order.status || "") === newStatus){
       message.className="info";
       message.innerText="ℹ️ Order status is already "+newStatus+".";
@@ -565,7 +725,9 @@ window.approvePayment=async function(paymentId){
 
   const message=document.getElementById("payment-message-"+paymentId);
 
-  if(!confirm("Are you sure you want to APPROVE this payment?\n\nThe customer's balance will be increased.")) return;
+  if(!confirm("Are you sure you want to APPROVE this payment?
+
+The customer's balance will be increased.")) return;
 
   try{
     message.className="info";
@@ -671,6 +833,7 @@ if(session){
     loadOrders();
     loadPaymentRequests();
     loadServices();
+    loadCustomers();
   }else{
     await supabase.auth.signOut();
   }
