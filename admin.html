@@ -13,2308 +13,668 @@
   font-family:Arial,sans-serif
 }
 
-body{
-  background:#f3f6fb;
-  color:#222
-}
+body{background:#f3f6fb;color:#222}
+header{background:linear-gradient(135deg,#6c2cff,#9b4dff);color:white;padding:25px;text-align:center}
+header h1{font-size:28px;margin-bottom:6px}
+.container{max-width:1100px;margin:25px auto;padding:0 15px}
+.box{background:white;padding:25px;margin-bottom:20px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+h2{color:#6c2cff;margin-bottom:20px}
+input{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:9px;font-size:15px}
+button{padding:12px 16px;background:#6c2cff;color:white;border:0;border-radius:9px;font-weight:bold;cursor:pointer}
+button:hover{background:#5520d8}
+.logout{background:#d32f2f;width:100%;margin-top:15px}
+.order{background:#f8f9ff;padding:18px;border-radius:12px;margin-bottom:15px;border-left:5px solid #6c2cff}
+.order p{margin:8px 0;word-break:break-word}
+.payment-card{background:#f8f9ff;padding:20px;border-radius:12px;margin-bottom:15px;border-left:5px solid #f0a000}
+.payment-card p{margin:8px 0;word-break:break-word}
+select{padding:10px;border:1px solid #ddd;border-radius:8px;margin-top:8px}
+.update{margin-left:8px;background:#168321}
+.approve{background:#168321;margin-top:12px;margin-right:6px}
+.reject{background:#d32f2f;margin-top:12px}
+.proof-link{display:inline-block;margin-top:8px;padding:9px 13px;background:#6c2cff;color:white;text-decoration:none;border-radius:7px;font-size:13px}
+.proof-link:hover{background:#5520d8}
+.status-pending{color:#f0a000;font-weight:bold}
+.status-approved{color:#168321;font-weight:bold}
+.status-rejected{color:#d32f2f;font-weight:bold}
+.success{background:#e8f7e8;color:#168321;padding:10px;border-radius:8px;margin-top:10px}
+.error{background:#ffecec;color:#c62828;padding:10px;border-radius:8px;margin-top:10px}
+.info{background:#eef3ff;color:#4b45a8;padding:12px;border-radius:8px;margin-bottom:15px}
+.hidden{display:none}
+footer{text-align:center;padding:25px;color:#777}
+hr{border:0;border-top:1px solid #ddd;margin:15px 0}
 
-header{
-  background:linear-gradient(135deg,#6c2cff,#9b4dff);
-  color:white;
-  padding:25px;
-  text-align:center
-}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:20px}
+.stat-card{background:#f8f9ff;padding:20px;border-radius:12px;border-left:5px solid #6c2cff}
+.stat-card h3{font-size:15px;color:#666;margin-bottom:10px}
+.stat-number{font-size:27px;font-weight:bold;color:#6c2cff}
+.stat-green{border-left-color:#168321}
+.stat-green .stat-number{color:#168321}
+.stat-orange{border-left-color:#f0a000}
+.stat-orange .stat-number{color:#f0a000}
+.stat-red{border-left-color:#d32f2f}
+.stat-red .stat-number{color:#d32f2f}
+.refresh-stats{margin-top:18px}
 
-header h1{
-  font-size:28px;
-  margin-bottom:6px
-}
+.service-card{background:#f8f9ff;padding:18px;border-radius:12px;margin-bottom:15px;border-left:5px solid #6c2cff}
+.service-card p{margin:8px 0}
+.service-price{width:180px;display:inline-block;margin:8px 8px 8px 0}
+.service-update{background:#168321}
+.service-active{color:#168321;font-weight:bold}
+.service-inactive{color:#d32f2f;font-weight:bold}
+.toggle-btn{background:#6c2cff;margin-left:6px}
 
-.container{
-  max-width:1100px;
-  margin:25px auto;
-  padding:0 15px
-}
+/* CUSTOMER MANAGEMENT */
+.customer-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.customer-search{max-width:420px;margin:0;flex:1;min-width:220px}
+.customer-card{background:#f8f9ff;padding:18px;border-radius:12px;margin-bottom:15px;border-left:5px solid #168321}
+.customer-card p{margin:8px 0;word-break:break-word}
+.customer-balance{font-size:22px;font-weight:bold;color:#168321}
+.balance-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.balance-input{width:160px;margin:0}
+.small-btn{padding:9px 12px}
+.danger-btn{background:#d32f2f}
+@media(max-width:600px){.customer-toolbar{display:block}.customer-search{max-width:none}.balance-input{width:100%}.balance-actions button{width:100%;margin:0}}
 
-.box{
-  background:white;
-  padding:25px;
-  margin-bottom:20px;
-  border-radius:15px;
-  box-shadow:0 4px 15px rgba(0,0,0,.08)
-}
-
-h2{
-  color:#6c2cff;
-  margin-bottom:20px
-}
-
-input{
-  width:100%;
-  padding:13px;
-  margin:8px 0 15px;
-  border:1px solid #ddd;
-  border-radius:9px;
-  font-size:15px
-}
-
-button{
-  padding:12px 16px;
-  background:#6c2cff;
-  color:white;
-  border:0;
-  border-radius:9px;
-  font-weight:bold;
-  cursor:pointer
-}
-
-button:hover{
-  background:#5520d8
-}
-
-.logout{
-  background:#d32f2f;
-  width:100%;
-  margin-top:15px
-}
-
-.order{
-  background:#f8f9ff;
-  padding:18px;
-  border-radius:12px;
-  margin-bottom:15px;
-  border-left:5px solid #6c2cff
-}
-
-.order p{
-  margin:8px 0;
-  word-break:break-word
-}
-
-.payment-card{
-  background:#f8f9ff;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:15px;
-  border-left:5px solid #f0a000
-}
-
-.payment-card p{
-  margin:8px 0;
-  word-break:break-word
-}
-
-select{
-  padding:10px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  margin-top:8px
-}
-
-.update{
-  margin-left:8px;
-  background:#168321
-}
-
-.approve{
-  background:#168321;
-  margin-top:12px;
-  margin-right:6px
-}
-
-.reject{
-  background:#d32f2f;
-  margin-top:12px
-}
-
-.proof-link{
-  display:inline-block;
-  margin-top:8px;
-  padding:9px 13px;
-  background:#6c2cff;
-  color:white;
-  text-decoration:none;
-  border-radius:7px;
-  font-size:13px
-}
-
-.proof-link:hover{
-  background:#5520d8
-}
-
-.status-pending{
-  color:#f0a000;
-  font-weight:bold
-}
-
-.status-approved{
-  color:#168321;
-  font-weight:bold
-}
-
-.status-rejected{
-  color:#d32f2f;
-  font-weight:bold
-}
-
-.success{
-  background:#e8f7e8;
-  color:#168321;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px
-}
-
-.error{
-  background:#ffecec;
-  color:#c62828;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px
-}
-
-.info{
-  background:#eef3ff;
-  color:#4b45a8;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:15px
-}
-
-.hidden{
-  display:none
-}
-
-footer{
-  text-align:center;
-  padding:25px;
-  color:#777
-}
-
-hr{
-  border:0;
-  border-top:1px solid #ddd;
-  margin:15px 0
-}
-
-/* DASHBOARD STATS */
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-top:20px
-}
-
-.stat-card{
-  background:#f8f9ff;
-  padding:20px;
-  border-radius:12px;
-  border-left:5px solid #6c2cff
-}
-
-.stat-card h3{
-  font-size:15px;
-  color:#666;
-  margin-bottom:10px
-}
-
-.stat-number{
-  font-size:27px;
-  font-weight:bold;
-  color:#6c2cff
-}
-
-.stat-green{
-  border-left-color:#168321
-}
-
-.stat-green .stat-number{
-  color:#168321
-}
-
-.stat-orange{
-  border-left-color:#f0a000
-}
-
-.stat-orange .stat-number{
-  color:#f0a000
-}
-
-.stat-red{
-  border-left-color:#d32f2f
-}
-
-.stat-red .stat-number{
-  color:#d32f2f
-}
-
-.refresh-stats{
-  margin-top:18px
-}
-
-/* SERVICES */
-
-.service-card{
-  background:#f8f9ff;
-  padding:18px;
-  border-radius:12px;
-  margin-bottom:15px;
-  border-left:5px solid #6c2cff
-}
-
-.service-card p{
-  margin:8px 0
-}
-
-.service-price{
-  width:180px;
-  display:inline-block;
-  margin:8px 8px 8px 0;
-}
-
-.service-update{
-  background:#168321;
-}
-
-.service-active{
-  color:#168321;
-  font-weight:bold;
-}
-
-.service-inactive{
-  color:#d32f2f;
-  font-weight:bold;
-}
-
-.toggle-btn{
-  background:#6c2cff;
-  margin-left:6px;
-}
-
-@media(max-width:900px){
-
-  .stats-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-}
-
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){
-
-  .stats-grid{
-    grid-template-columns:1fr;
-  }
-
-  .update{
-    margin-left:0;
-    margin-top:8px;
-  }
-
-  .toggle-btn{
-    margin-left:0;
-    margin-top:8px;
-  }
-
+  .stats-grid{grid-template-columns:1fr}
+  .update{margin-left:0;margin-top:8px}
+  .toggle-btn{margin-left:0;margin-top:8px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
 <h1>🚀 Mr SMM Pannels</h1>
 <p>Admin Panel</p>
 </header>
 
-<!-- LOGIN -->
-
 <div id="loginPage" class="container">
-
 <div class="box">
-
 <h2>🔐 Admin Login</h2>
-
-<input
-type="email"
-id="adminEmail"
-placeholder="Admin Email"
->
-
-<input
-type="password"
-id="adminPassword"
-placeholder="Admin Password"
->
-
-<button onclick="adminLogin()">
-🔐 Login as Admin
-</button>
-
+<input type="email" id="adminEmail" placeholder="Admin Email">
+<input type="password" id="adminPassword" placeholder="Admin Password">
+<button onclick="adminLogin()">🔐 Login as Admin</button>
 <div id="loginMessage"></div>
-
 </div>
-
 </div>
-
-<!-- ADMIN PANEL -->
 
 <div id="adminPanel" class="container hidden">
 
-<!-- DASHBOARD -->
-
 <div class="box">
-
 <h2>📊 Admin Dashboard</h2>
-
 <p>Welcome to Mr SMM Pannels Admin Panel.</p>
 
 <div class="stats-grid">
-
-<div class="stat-card">
-<h3>👥 Total Customers</h3>
-<div id="totalCustomers" class="stat-number">0</div>
+<div class="stat-card"><h3>👥 Total Customers</h3><div id="totalCustomers" class="stat-number">0</div></div>
+<div class="stat-card"><h3>📦 Total Orders</h3><div id="totalOrders" class="stat-number">0</div></div>
+<div class="stat-card stat-orange"><h3>⏳ Pending Orders</h3><div id="pendingOrders" class="stat-number">0</div></div>
+<div class="stat-card stat-green"><h3>✅ Completed Orders</h3><div id="completedOrders" class="stat-number">0</div></div>
+<div class="stat-card stat-green"><h3>💰 Total Revenue</h3><div id="totalRevenue" class="stat-number">Rs 0.00</div></div>
+<div class="stat-card stat-orange"><h3>💳 Pending Payments</h3><div id="pendingPayments" class="stat-number">0</div></div>
+<div class="stat-card stat-green"><h3>💵 Approved Payments</h3><div id="approvedPayments" class="stat-number">0</div></div>
+<div class="stat-card stat-red"><h3>❌ Cancelled Orders</h3><div id="cancelledOrders" class="stat-number">0</div></div>
 </div>
 
-<div class="stat-card">
-<h3>📦 Total Orders</h3>
-<div id="totalOrders" class="stat-number">0</div>
-</div>
-
-<div class="stat-card stat-orange">
-<h3>⏳ Pending Orders</h3>
-<div id="pendingOrders" class="stat-number">0</div>
-</div>
-
-<div class="stat-card stat-green">
-<h3>✅ Completed Orders</h3>
-<div id="completedOrders" class="stat-number">0</div>
-</div>
-
-<div class="stat-card stat-green">
-<h3>💰 Total Revenue</h3>
-<div id="totalRevenue" class="stat-number">Rs 0.00</div>
-</div>
-
-<div class="stat-card stat-orange">
-<h3>💳 Pending Payments</h3>
-<div id="pendingPayments" class="stat-number">0</div>
-</div>
-
-<div class="stat-card stat-green">
-<h3>💵 Approved Payments</h3>
-<div id="approvedPayments" class="stat-number">0</div>
-</div>
-
-<div class="stat-card stat-red">
-<h3>❌ Cancelled Orders</h3>
-<div id="cancelledOrders" class="stat-number">0</div>
-</div>
-
-</div>
-
-<button class="refresh-stats" onclick="loadDashboardStats()">
-🔄 Refresh Statistics
-</button>
-
+<button class="refresh-stats" onclick="loadDashboardStats()">🔄 Refresh Statistics</button>
 <hr>
-
-<button onclick="loadOrders()">
-🔄 Refresh Orders
-</button>
-
-<button onclick="loadPaymentRequests()">
-💳 Refresh Payments
-</button>
-
-<button onclick="loadServices()">
-🛠️ Refresh Services
-</button>
-
-<button class="logout" onclick="adminLogout()">
-🚪 Logout
-</button>
-
+<button onclick="loadOrders()">🔄 Refresh Orders</button>
+<button onclick="loadPaymentRequests()">💳 Refresh Payments</button>
+<button onclick="loadServices()">🛠️ Refresh Services</button>
+<button class="logout" onclick="adminLogout()">🚪 Logout</button>
 <div id="dashboardMessage"></div>
-
 </div>
 
-<!-- SERVICES & PRICES -->
-
 <div class="box">
-
 <h2>🛠️ Services & Prices</h2>
-
-<div class="info">
-💡 Yahan se aap services ki price aur Active/Inactive status manage kar sakte hain.
+<div class="info">💡 Yahan se aap services ki price aur Active/Inactive status manage kar sakte hain.</div>
+<div id="servicesList">⏳ Loading services...</div>
 </div>
-
-<div id="servicesList">
-⏳ Loading services...
-</div>
-
-</div>
-
-<!-- PAYMENT REQUESTS -->
 
 <div class="box">
-
 <h2>💳 Customer Payment Requests</h2>
-
-<div class="info">
-💡 Yahan customers ki payment requests nazar aayengi.
-Admin payment screenshot verify karke Approve ya Reject kar sakta hai.
+<div class="info">💡 Yahan customers ki payment requests nazar aayengi.<br>Admin payment screenshot verify karke Approve ya Reject kar sakta hai.</div>
+<div id="paymentRequestsList">Loading payment requests...</div>
 </div>
-
-<div id="paymentRequestsList">
-Loading payment requests...
-</div>
-
-</div>
-
-<!-- ORDERS -->
 
 <div class="box">
-
 <h2>📋 All Orders</h2>
-
-<div id="ordersList">
-Loading orders...
+<div id="ordersList">Loading orders...</div>
 </div>
 
 </div>
 
-</div>
-
-<footer>
-© 2026 Mr SMM Pannels — Admin Panel
-</footer>
+<footer>© 2026 Mr SMM Pannels — Admin Panel</footer>
 
 <script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-import { createClient }
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+const SUPABASE_URL = "https://lgrdxyjbmzwhhnkfmups.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
+const ADMIN_UID = "d4053fd1-6277-4a44-98d9-6e087caa74b1";
+const PAYMENT_PROOF_BUCKET = "payment-proofs";
 
-const SUPABASE_URL =
-"https://lgrdxyjbmzwhhnkfmups.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_hKR1W0fX1e_3rAeGYJwDgg_yl9rtpmP";
-
-const ADMIN_UID =
-"d4053fd1-6277-4a44-98d9-6e087caa74b1";
-
-const PAYMENT_PROOF_BUCKET =
-"payment-proofs";
-
-const supabase =
-createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
-);
-
-/* CHECK ADMIN */
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 async function checkAdmin(){
-
-const {
-data:{
-user
+  const {data:{user}} = await supabase.auth.getUser();
+  if(!user) return false;
+  return user.id === ADMIN_UID;
 }
-} =
-await supabase.auth.getUser();
-
-if(!user){
-return false;
-}
-
-return user.id === ADMIN_UID;
-
-}
-
-/* ADMIN LOGIN */
 
 window.adminLogin = async function(){
+  const email = document.getElementById("adminEmail").value.trim();
+  const password = document.getElementById("adminPassword").value;
+  const message = document.getElementById("loginMessage");
 
-const email =
-document
-.getElementById("adminEmail")
-.value
-.trim();
+  if(!email || !password){
+    message.className="error";
+    message.innerText="⚠️ Please enter email and password.";
+    return;
+  }
 
-const password =
-document
-.getElementById("adminPassword")
-.value;
+  try{
+    const {data,error} = await supabase.auth.signInWithPassword({email,password});
+    if(error) throw error;
 
-const message =
-document.getElementById("loginMessage");
+    if(!data.user || data.user.id !== ADMIN_UID){
+      await supabase.auth.signOut();
+      throw new Error("This account is not authorized as Admin.");
+    }
 
-if(!email || !password){
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("adminPanel").classList.remove("hidden");
+    message.innerHTML="";
 
-message.className="error";
-
-message.innerText =
-"⚠️ Please enter email and password.";
-
-return;
-
-}
-
-try{
-
-const {
-data,
-error
-} =
-await supabase.auth.signInWithPassword({
-
-email:email,
-
-password:password
-
-});
-
-if(error){
-throw error;
-}
-
-if(!data.user || data.user.id !== ADMIN_UID){
-
-await supabase.auth.signOut();
-
-throw new Error(
-"This account is not authorized as Admin."
-);
-
-}
-
-document
-.getElementById("loginPage")
-.classList.add("hidden");
-
-document
-.getElementById("adminPanel")
-.classList.remove("hidden");
-
-message.innerHTML="";
-
-loadDashboardStats();
-loadOrders();
-loadPaymentRequests();
-loadServices();
-
-}catch(error){
-
-message.className="error";
-
-message.innerText =
-"❌ Login failed: "+error.message;
-
-}
-
+    loadDashboardStats();
+    loadOrders();
+    loadPaymentRequests();
+    loadServices();
+  }catch(error){
+    message.className="error";
+    message.innerText="❌ Login failed: "+error.message;
+  }
 };
-
-/* DASHBOARD STATISTICS */
 
 window.loadDashboardStats = async function(){
+  if(!(await checkAdmin())) return;
 
-if(!(await checkAdmin())){
-return;
-}
+  const dashboardMessage = document.getElementById("dashboardMessage");
+  dashboardMessage.className="info";
+  dashboardMessage.innerText="⏳ Loading dashboard statistics...";
 
-const dashboardMessage =
-document.getElementById("dashboardMessage");
+  try{
+    const customersResult = await supabase.from("profiles").select("id",{count:"exact",head:true});
+    if(customersResult.error){
+      console.log("Customer count error:",customersResult.error.message);
+    }else{
+      document.getElementById("totalCustomers").innerText=customersResult.count || 0;
+    }
 
-dashboardMessage.className="info";
+    const ordersResult = await supabase.from("orders").select("id,price,status");
+    if(ordersResult.error) throw ordersResult.error;
 
-dashboardMessage.innerText =
-"⏳ Loading dashboard statistics...";
+    const orders=ordersResult.data || [];
+    let pendingCount=0, completedCount=0, cancelledCount=0, revenue=0;
 
-try{
+    orders.forEach(order=>{
+      const status=String(order.status || "").toLowerCase();
+      if(status==="pending") pendingCount++;
+      if(status==="completed"){
+        completedCount++;
+        revenue += Number(order.price || 0);
+      }
+      if(status==="cancelled") cancelledCount++;
+    });
 
-/* TOTAL CUSTOMERS */
+    document.getElementById("totalOrders").innerText=orders.length;
+    document.getElementById("pendingOrders").innerText=pendingCount;
+    document.getElementById("completedOrders").innerText=completedCount;
+    document.getElementById("cancelledOrders").innerText=cancelledCount;
+    document.getElementById("totalRevenue").innerText="Rs "+revenue.toFixed(2);
 
-const customersResult =
-await supabase
-.from("profiles")
-.select("id",{count:"exact",head:true});
+    const paymentsResult=await supabase.from("payment_requests").select("id,status");
+    if(paymentsResult.error) throw paymentsResult.error;
 
-if(customersResult.error){
+    const payments=paymentsResult.data || [];
+    let pendingPaymentsCount=0, approvedPaymentsCount=0;
 
-console.log(
-"Customer count error:",
-customersResult.error.message
-);
+    payments.forEach(payment=>{
+      const status=String(payment.status || "").toLowerCase();
+      if(status==="pending") pendingPaymentsCount++;
+      if(status==="approved") approvedPaymentsCount++;
+    });
 
-}else{
+    document.getElementById("pendingPayments").innerText=pendingPaymentsCount;
+    document.getElementById("approvedPayments").innerText=approvedPaymentsCount;
 
-document
-.getElementById("totalCustomers")
-.innerText =
-customersResult.count || 0;
+    dashboardMessage.className="success";
+    dashboardMessage.innerText="✅ Dashboard statistics updated successfully!";
 
-}
-
-/* ORDERS */
-
-const ordersResult =
-await supabase
-.from("orders")
-.select("id,price,status");
-
-if(ordersResult.error){
-throw ordersResult.error;
-}
-
-const orders =
-ordersResult.data || [];
-
-let pendingCount=0;
-let completedCount=0;
-let cancelledCount=0;
-let revenue=0;
-
-orders.forEach(order=>{
-
-const status =
-String(order.status || "")
-.toLowerCase();
-
-if(status==="pending"){
-pendingCount++;
-}
-
-if(status==="completed"){
-completedCount++;
-revenue +=
-Number(order.price || 0);
-}
-
-if(status==="cancelled"){
-cancelledCount++;
-}
-
-});
-
-document
-.getElementById("totalOrders")
-.innerText =
-orders.length;
-
-document
-.getElementById("pendingOrders")
-.innerText =
-pendingCount;
-
-document
-.getElementById("completedOrders")
-.innerText =
-completedCount;
-
-document
-.getElementById("cancelledOrders")
-.innerText =
-cancelledCount;
-
-document
-.getElementById("totalRevenue")
-.innerText =
-"Rs " + revenue.toFixed(2);
-
-/* PAYMENTS */
-
-const paymentsResult =
-await supabase
-.from("payment_requests")
-.select("id,status");
-
-if(paymentsResult.error){
-throw paymentsResult.error;
-}
-
-const payments =
-paymentsResult.data || [];
-
-let pendingPaymentsCount=0;
-let approvedPaymentsCount=0;
-
-payments.forEach(payment=>{
-
-const status =
-String(payment.status || "")
-.toLowerCase();
-
-if(status==="pending"){
-pendingPaymentsCount++;
-}
-
-if(status==="approved"){
-approvedPaymentsCount++;
-}
-
-});
-
-document
-.getElementById("pendingPayments")
-.innerText =
-pendingPaymentsCount;
-
-document
-.getElementById("approvedPayments")
-.innerText =
-approvedPaymentsCount;
-
-dashboardMessage.className="success";
-
-dashboardMessage.innerText =
-"✅ Dashboard statistics updated successfully!";
-
-setTimeout(()=>{
-
-dashboardMessage.innerHTML="";
-
-},2000);
-
-}catch(error){
-
-dashboardMessage.className="error";
-
-dashboardMessage.innerText =
-"❌ Could not load dashboard statistics: "
-+
-error.message;
-
-}
-
+    setTimeout(()=>{dashboardMessage.innerHTML="";},2000);
+  }catch(error){
+    dashboardMessage.className="error";
+    dashboardMessage.innerText="❌ Could not load dashboard statistics: "+error.message;
+  }
 };
-
-/* LOAD SERVICES */
 
 window.loadServices = async function(){
+  if(!(await checkAdmin())) return;
 
-if(!(await checkAdmin())){
-return;
-}
+  const list=document.getElementById("servicesList");
+  list.innerHTML="⏳ Loading services...";
 
-const list =
-document.getElementById("servicesList");
+  try{
+    const {data,error}=await supabase.from("services").select("*").order("id",{ascending:true});
+    if(error) throw error;
 
-list.innerHTML =
-"⏳ Loading services...";
+    if(!data || data.length===0){
+      list.innerHTML="📋 No services found.";
+      return;
+    }
 
-try{
-
-const {
-data,
-error
-} =
-await supabase
-.from("services")
-.select("*")
-.order("id",{ascending:true});
-
-if(error){
-throw error;
-}
-
-if(!data || data.length===0){
-
-list.innerHTML =
-"📋 No services found.";
-
-return;
-
-}
-
-let html="";
-
-data.forEach(service=>{
-
-const active =
-service.active === true;
-
-html += `
-
+    let html="";
+    data.forEach(service=>{
+      const active=service.active === true;
+      html += `
 <div class="service-card">
-
-<p>
-<b>🆔 Service ID:</b>
-${escapeHtml(service.id)}
-</p>
-
-<p>
-<b>📱 Service:</b>
-${escapeHtml(service.name)}
-</p>
-
-<p>
-<b>📂 Category:</b>
-${escapeHtml(service.category)}
-</p>
-
-<p>
-<b>💰 Current Price:</b>
-Rs ${Number(service.price_per_1000 || 0).toFixed(2)} / 1000
-</p>
-
-<p>
-<b>📌 Status:</b>
-
-<span class="${active ? "service-active" : "service-inactive"}">
-${active ? "Active" : "Inactive"}
-</span>
-
-</p>
-
+<p><b>🆔 Service ID:</b> ${escapeHtml(service.id)}</p>
+<p><b>📱 Service:</b> ${escapeHtml(service.name)}</p>
+<p><b>📂 Category:</b> ${escapeHtml(service.category)}</p>
+<p><b>💰 Current Price:</b> Rs ${Number(service.price_per_1000 || 0).toFixed(2)} / 1000</p>
+<p><b>📌 Status:</b> <span class="${active ? "service-active" : "service-inactive"}">${active ? "Active" : "Inactive"}</span></p>
 <hr>
-
-<label>
-<b>💵 New Price per 1000:</b>
-</label>
-
-<br>
-
-<input
-class="service-price"
-type="number"
-min="0"
-step="0.01"
-id="price-${service.id}"
-value="${Number(service.price_per_1000 || 0).toFixed(2)}"
->
-
-<button
-class="service-update"
-onclick="updateServicePrice(${service.id})"
->
-💾 Update Price
-</button>
-
-<button
-class="toggle-btn"
-onclick="toggleService(${service.id}, ${active})"
->
-${active ? "⛔ Deactivate" : "✅ Activate"}
-</button>
-
+<label><b>💵 New Price per 1000:</b></label><br>
+<input class="service-price" type="number" min="0" step="0.01" id="price-${service.id}" value="${Number(service.price_per_1000 || 0).toFixed(2)}">
+<button class="service-update" onclick="updateServicePrice(${service.id})">💾 Update Price</button>
+<button class="toggle-btn" onclick="toggleService(${service.id}, ${active})">${active ? "⛔ Deactivate" : "✅ Activate"}</button>
 <div id="service-message-${service.id}"></div>
+</div>`;
+    });
 
-</div>
-
-`;
-
-});
-
-list.innerHTML=html;
-
-}catch(error){
-
-list.innerHTML =
-"❌ Could not load services: "
-+
-escapeHtml(error.message);
-
-}
-
+    list.innerHTML=html;
+  }catch(error){
+    list.innerHTML="❌ Could not load services: "+escapeHtml(error.message);
+  }
 };
 
-/* UPDATE SERVICE PRICE */
+window.updateServicePrice=async function(serviceId){
+  if(!(await checkAdmin())){alert("Unauthorized.");return;}
 
-window.updateServicePrice =
-async function(serviceId){
+  const input=document.getElementById("price-"+serviceId);
+  const message=document.getElementById("service-message-"+serviceId);
+  if(!input) return;
 
-if(!(await checkAdmin())){
+  const newPrice=Number(input.value);
+  if(!Number.isFinite(newPrice) || newPrice < 0){
+    message.className="error";
+    message.innerText="⚠️ Please enter a valid price.";
+    return;
+  }
 
-alert("Unauthorized.");
+  try{
+    message.className="info";
+    message.innerText="⏳ Updating price...";
 
-return;
+    const {error}=await supabase.from("services").update({price_per_1000:newPrice}).eq("id",serviceId);
+    if(error) throw error;
 
-}
-
-const input =
-document.getElementById(
-"price-"+serviceId
-);
-
-const message =
-document.getElementById(
-"service-message-"+serviceId
-);
-
-if(!input){
-return;
-}
-
-const newPrice =
-Number(input.value);
-
-if(!Number.isFinite(newPrice) || newPrice < 0){
-
-message.className="error";
-
-message.innerText =
-"⚠️ Please enter a valid price.";
-
-return;
-
-}
-
-try{
-
-message.className="info";
-
-message.innerText =
-"⏳ Updating price...";
-
-const {
-error
-} =
-await supabase
-.from("services")
-.update({
-price_per_1000:newPrice
-})
-.eq("id",serviceId);
-
-if(error){
-throw error;
-}
-
-message.className="success";
-
-message.innerText =
-"✅ Price updated successfully!";
-
-setTimeout(()=>{
-
-loadServices();
-
-},800);
-
-}catch(error){
-
-message.className="error";
-
-message.innerText =
-"❌ Could not update price: "
-+
-error.message;
-
-}
-
+    message.className="success";
+    message.innerText="✅ Price updated successfully!";
+    setTimeout(()=>{loadServices();},800);
+  }catch(error){
+    message.className="error";
+    message.innerText="❌ Could not update price: "+error.message;
+  }
 };
 
-/* ACTIVATE / DEACTIVATE SERVICE */
+window.toggleService=async function(serviceId,currentStatus){
+  if(!(await checkAdmin())){alert("Unauthorized.");return;}
 
-window.toggleService =
-async function(serviceId,currentStatus){
-
-if(!(await checkAdmin())){
-
-alert("Unauthorized.");
-
-return;
-
-}
-
-const newStatus =
-!currentStatus;
-
-try{
-
-const {
-error
-} =
-await supabase
-.from("services")
-.update({
-active:newStatus
-})
-.eq("id",serviceId);
-
-if(error){
-throw error;
-}
-
-loadServices();
-
-}catch(error){
-
-alert(
-"❌ Could not change service status: "
-+
-error.message
-);
-
-}
-
+  const newStatus=!currentStatus;
+  try{
+    const {error}=await supabase.from("services").update({active:newStatus}).eq("id",serviceId);
+    if(error) throw error;
+    loadServices();
+  }catch(error){
+    alert("❌ Could not change service status: "+error.message);
+  }
 };
-
-
-/* =========================================================
-   FIXED CUSTOMER USER ID FOR ORDER NOTIFICATION
-   ========================================================= */
 
 async function getCustomerUserId(order){
+  if(order.user_id) return order.user_id;
 
-  /*
-    Step 1:
-    Agar order mein direct user_id mojood hai
-    to isi ko use karo.
-  */
-
-  const directUserId =
-    order?.user_id ||
-    order?.customer_id ||
-    order?.userId ||
-    order?.customerId;
-
-  if(directUserId){
-
-    console.log(
-      "Customer ID found directly from order:",
-      directUserId
-    );
-
-    return String(directUserId).trim();
-
+  if(order.user_email){
+    const {data,error}=await supabase.from("profiles").select("id").eq("email",order.user_email).limit(1).maybeSingle();
+    if(!error && data) return data.id;
   }
-
-
-  /*
-    Step 2:
-    Agar direct ID nahi mili to customer email nikalo.
-  */
-
-  const customerEmail =
-    String(
-      order?.user_email ||
-      order?.customer_email ||
-      order?.email ||
-      ""
-    ).trim();
-
-
-  if(!customerEmail){
-
-    console.error(
-      "Customer email is also missing from order:",
-      order
-    );
-
-    return null;
-
-  }
-
-
-  /*
-    Step 3:
-    Profiles table mein exact email search.
-  */
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-    await supabase
-      .from("profiles")
-      .select("id,email")
-      .eq("email",customerEmail)
-      .limit(1);
-
-    if(error){
-
-      console.error(
-        "Exact customer email lookup failed:",
-        error
-      );
-
-    }else if(data && data.length > 0){
-
-      console.log(
-        "Customer ID found by exact email:",
-        data[0].id
-      );
-
-      return data[0].id;
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Exact email lookup exception:",
-      error
-    );
-
-  }
-
-
-  /*
-    Step 4:
-    Agar exact email match nahi mila,
-    to lowercase/case-insensitive search karo.
-  */
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-    await supabase
-      .from("profiles")
-      .select("id,email")
-      .ilike("email",customerEmail)
-      .limit(1);
-
-    if(error){
-
-      console.error(
-        "Case-insensitive customer lookup failed:",
-        error
-      );
-
-    }else if(data && data.length > 0){
-
-      console.log(
-        "Customer ID found by case-insensitive email:",
-        data[0].id
-      );
-
-      return data[0].id;
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Case-insensitive email lookup exception:",
-      error
-    );
-
-  }
-
-
-  /*
-    Step 5:
-    Customer nahi mila.
-  */
-
-  console.error(
-    "Customer user ID could not be found.",
-    {
-      orderId:order?.id,
-      user_id:order?.user_id,
-      user_email:order?.user_email,
-      customer_email:order?.customer_email
-    }
-  );
 
   return null;
-
 }
 
-
-/* CREATE CUSTOMER NOTIFICATION */
-
-async function createCustomerNotification(
-  userId,
-  title,
-  message
-){
-
+async function createCustomerNotification(userId,title,message){
   if(!userId){
-
-    return {
-      success:false,
-      error:"Customer user ID not found."
-    };
-
+    return {success:false,error:"Customer user ID not found."};
   }
 
-  console.log(
-    "Sending notification...",
-    {
-      userId:userId,
-      title:title,
-      message:message
-    }
-  );
+  const {data,error}=await supabase.rpc("create_notification",{
+    p_user_id:userId,
+    p_title:title,
+    p_message:message
+  });
+
+  if(error) return {success:false,error:error.message};
+
+  return {success:true,data:data};
+}
+
+window.loadOrders=async function(){
+  if(!(await checkAdmin())) return;
+
+  const list=document.getElementById("ordersList");
+  list.innerHTML="⏳ Loading orders...";
 
   try{
+    const {data,error}=await supabase.from("orders").select("*").order("id",{ascending:false});
+    if(error) throw error;
 
-    const {
-      data,
-      error
-    } =
-    await supabase.rpc(
-      "create_notification",
-      {
-        p_user_id:userId,
-        p_title:title,
-        p_message:message
-      }
-    );
-
-    if(error){
-
-      console.error(
-        "NOTIFICATION RPC ERROR:",
-        error
-      );
-
-      return {
-        success:false,
-        error:error.message
-      };
-
+    if(!data || data.length===0){
+      list.innerHTML="📋 No orders found.";
+      return;
     }
 
-    console.log(
-      "NOTIFICATION SENT:",
-      data
-    );
+    let html="";
+    data.forEach(order=>{
+      const date=order.created_at ? new Date(order.created_at).toLocaleString() : "N/A";
 
-    return {
-      success:true,
-      data:data
-    };
-
-  }catch(error){
-
-    console.error(
-      "NOTIFICATION EXCEPTION:",
-      error
-    );
-
-    return {
-      success:false,
-      error:error.message
-    };
-
-  }
-
-}
-
-
-/* LOAD ORDERS */
-
-window.loadOrders = async function(){
-
-if(!(await checkAdmin())){
-return;
-}
-
-const list =
-document.getElementById("ordersList");
-
-list.innerHTML =
-"⏳ Loading orders...";
-
-try{
-
-const {
-data,
-error
-} =
-await supabase
-.from("orders")
-.select("*")
-.order("id",{ascending:false});
-
-if(error){
-throw error;
-}
-
-if(!data || data.length===0){
-
-list.innerHTML =
-"📋 No orders found.";
-
-return;
-
-}
-
-let html="";
-
-data.forEach(order=>{
-
-const date =
-order.created_at
-?
-new Date(
-order.created_at
-).toLocaleString()
-:
-"N/A";
-
-html += `
-
+      html += `
 <div class="order">
-
-<p>
-<b>🆔 Order ID:</b>
-${escapeHtml(order.id)}
-</p>
-
-<p>
-<b>📧 Customer:</b>
-${escapeHtml(
-order.user_email ||
-order.customer_email ||
-order.user_id ||
-"N/A"
-)}
-</p>
-
-<p>
-<b>👤 Customer User ID:</b>
-${escapeHtml(
-order.user_id ||
-order.customer_id ||
-"Not saved in order"
-)}
-</p>
-
-<p>
-<b>📱 Service:</b>
-${escapeHtml(
-order.service || "N/A"
-)}
-</p>
-
-<p>
-<b>🔗 Link:</b>
-
-<a
-href="${escapeAttribute(order.link || "#")}"
-target="_blank"
-rel="noopener noreferrer"
->
-${escapeHtml(order.link || "N/A")}
-</a>
-
-</p>
-
-<p>
-<b>📊 Quantity:</b>
-${escapeHtml(order.quantity || 0)}
-</p>
-
-<p>
-<b>💵 Price:</b>
-Rs ${Number(order.price || 0).toFixed(2)}
-</p>
-
-<p>
-<b>📌 Current Status:</b>
-
-<strong>
-${escapeHtml(order.status || "Pending")}
-</strong>
-
-</p>
-
+<p><b>🆔 Order ID:</b> ${escapeHtml(order.id)}</p>
+<p><b>📧 Customer:</b> ${escapeHtml(order.user_email || order.user_id || "N/A")}</p>
+<p><b>📱 Service:</b> ${escapeHtml(order.service || "N/A")}</p>
+<p><b>🔗 Link:</b> <a href="${escapeAttribute(order.link || "#")}" target="_blank" rel="noopener noreferrer">${escapeHtml(order.link || "N/A")}</a></p>
+<p><b>📊 Quantity:</b> ${escapeHtml(order.quantity || 0)}</p>
+<p><b>💵 Price:</b> Rs ${Number(order.price || 0).toFixed(2)}</p>
+<p><b>📌 Current Status:</b> <strong>${escapeHtml(order.status || "Pending")}</strong></p>
 <div>
-
-<label>
-<b>Change Status:</b>
-</label>
-
-<br>
-
+<label><b>Change Status:</b></label><br>
 <select id="status-${order.id}">
-
-<option value="Pending"
-${order.status==="Pending" ? "selected" : ""}>
-Pending
-</option>
-
-<option value="Processing"
-${order.status==="Processing" ? "selected" : ""}>
-Processing
-</option>
-
-<option value="Completed"
-${order.status==="Completed" ? "selected" : ""}>
-Completed
-</option>
-
-<option value="Cancelled"
-${order.status==="Cancelled" ? "selected" : ""}>
-Cancelled
-</option>
-
+<option value="Pending" ${order.status==="Pending" ? "selected" : ""}>Pending</option>
+<option value="Processing" ${order.status==="Processing" ? "selected" : ""}>Processing</option>
+<option value="Completed" ${order.status==="Completed" ? "selected" : ""}>Completed</option>
+<option value="Cancelled" ${order.status==="Cancelled" ? "selected" : ""}>Cancelled</option>
 </select>
-
-<button
-class="update"
-onclick="updateStatus(${order.id})"
->
-💾 Update Status
-</button>
-
+<button class="update" onclick="updateStatus(${order.id})">💾 Update Status</button>
 </div>
-
 <div id="message-${order.id}"></div>
+<p><b>🕒 Date:</b> ${date}</p>
+</div>`;
+    });
 
-<p>
-<b>🕒 Date:</b>
-${date}
-</p>
-
-</div>
-
-`;
-
-});
-
-list.innerHTML=html;
-
-}catch(error){
-
-list.innerHTML =
-"❌ Could not load orders: "
-+
-escapeHtml(error.message);
-
-}
-
+    list.innerHTML=html;
+  }catch(error){
+    list.innerHTML="❌ Could not load orders: "+escapeHtml(error.message);
+  }
 };
 
-
-/* UPDATE ORDER STATUS + NOTIFICATION */
-
-window.updateStatus =
-async function(orderId){
-
-if(!(await checkAdmin())){
-
-alert("Unauthorized.");
-
-return;
-
-}
-
-const select =
-document.getElementById(
-"status-"+orderId
-);
-
-if(!select){
-return;
-}
-
-const newStatus =
-select.value;
-
-const message =
-document.getElementById(
-"message-"+orderId
-);
-
-try{
-
-message.className="info";
-
-message.innerText =
-"⏳ Updating order status...";
-
-/* GET ORDER */
-
-const {
-data:order,
-error:orderError
-} =
-await supabase
-.from("orders")
-.select("*")
-.eq("id",orderId)
-.maybeSingle();
-
-if(orderError){
-throw orderError;
-}
-
-if(!order){
-
-throw new Error("Order not found.");
-
-}
-
-
-/* DO NOT UPDATE IF STATUS IS ALREADY SAME */
-
-const oldStatus =
-String(order.status || "")
-.trim();
-
-if(oldStatus === newStatus){
-
-message.className="info";
-
-message.innerText =
-"ℹ️ Order status is already "+newStatus+".";
-
-return;
-
-}
-
-
-/* UPDATE STATUS */
-
-const {
-error:updateError
-} =
-await supabase
-.from("orders")
-.update({
-status:newStatus
-})
-.eq("id",orderId);
-
-if(updateError){
-throw updateError;
-}
-
-
-/* =====================================================
-   CUSTOMER ID FIND
-   ===================================================== */
-
-const customerUserId =
-await getCustomerUserId(order);
-
-
-/* NOTIFICATION TEXT */
-
-let notificationTitle =
-"📦 Order Status Updated";
-
-let notificationMessage =
-"Your Order #"+orderId+
-" status has been changed to "+newStatus+".";
-
-
-if(newStatus==="Completed"){
-
-notificationTitle =
-"✅ Order Completed";
-
-notificationMessage =
-"Your Order #"+orderId+
-" has been completed successfully.";
-
-}
-
-
-if(newStatus==="Processing"){
-
-notificationTitle =
-"⚙️ Order Processing";
-
-notificationMessage =
-"Your Order #"+orderId+
-" is now being processed.";
-
-}
-
-
-if(newStatus==="Cancelled"){
-
-notificationTitle =
-"❌ Order Cancelled";
-
-notificationMessage =
-"Your Order #"+orderId+
-" has been cancelled.";
-
-}
-
-
-/* SEND NOTIFICATION */
-
-const notificationResult =
-await createCustomerNotification(
-customerUserId,
-notificationTitle,
-notificationMessage
-);
-
-
-if(notificationResult.success){
-
-message.className="success";
-
-message.innerText =
-"✅ Status updated and customer notification sent!";
-
-}else{
-
-message.className="error";
-
-message.innerText =
-"⚠️ Status updated, but notification could not be sent: "
-+
-notificationResult.error;
-
-console.error(
-"Notification error:",
-notificationResult.error
-);
-
-}
-
-
-setTimeout(()=>{
-
-loadOrders();
-
-loadDashboardStats();
-
-},1500);
-
-
-}catch(error){
-
-message.className="error";
-
-message.innerText =
-"❌ Could not update order: "
-+
-error.message;
-
-}
-
+window.updateStatus=async function(orderId){
+  if(!(await checkAdmin())){alert("Unauthorized.");return;}
+
+  const select=document.getElementById("status-"+orderId);
+  if(!select) return;
+
+  const newStatus=select.value;
+  const message=document.getElementById("message-"+orderId);
+
+  try{
+    message.className="info";
+    message.innerText="⏳ Updating order status...";
+
+    const {data:order,error:orderError}=await supabase.from("orders").select("*").eq("id",orderId).maybeSingle();
+    if(orderError) throw orderError;
+    if(!order) throw new Error("Order not found.");
+
+    // Do not send a duplicate notification when the status has not changed.
+    if(String(order.status || "") === newStatus){
+      message.className="info";
+      message.innerText="ℹ️ Order status is already "+newStatus+".";
+      return;
+    }
+
+    const {error:updateError}=await supabase.from("orders").update({status:newStatus}).eq("id",orderId);
+    if(updateError) throw updateError;
+
+    const customerUserId=await getCustomerUserId(order);
+
+    let notificationTitle="📦 Order Status Updated";
+    let notificationMessage="Your Order #"+orderId+" status has been changed to "+newStatus+".";
+
+    if(newStatus==="Completed"){
+      notificationTitle="✅ Order Completed";
+      notificationMessage="Your Order #"+orderId+" has been completed successfully.";
+    }
+
+    if(newStatus==="Processing"){
+      notificationTitle="⚙️ Order Processing";
+      notificationMessage="Your Order #"+orderId+" is now being processed.";
+    }
+
+    if(newStatus==="Cancelled"){
+      notificationTitle="❌ Order Cancelled";
+      notificationMessage="Your Order #"+orderId+" has been cancelled.";
+    }
+
+    const notificationResult=await createCustomerNotification(customerUserId,notificationTitle,notificationMessage);
+
+    message.className="success";
+    if(notificationResult.success){
+      message.innerText="✅ Status updated and customer notification sent!";
+    }else{
+      message.innerText="✅ Status updated, but notification could not be sent.";
+      console.log("Notification error:",notificationResult.error);
+    }
+
+    setTimeout(()=>{loadOrders();loadDashboardStats();},1000);
+  }catch(error){
+    message.className="error";
+    message.innerText="❌ Could not update order: "+error.message;
+  }
 };
 
+window.loadPaymentRequests=async function(){
+  if(!(await checkAdmin())) return;
 
-/* LOAD PAYMENT REQUESTS */
+  const list=document.getElementById("paymentRequestsList");
+  list.innerHTML="⏳ Loading payment requests...";
 
-window.loadPaymentRequests =
-async function(){
+  try{
+    const {data,error}=await supabase.from("payment_requests").select("*").order("created_at",{ascending:false});
+    if(error) throw error;
 
-if(!(await checkAdmin())){
-return;
-}
+    if(!data || data.length===0){
+      list.innerHTML="📋 No payment requests found.";
+      return;
+    }
 
-const list =
-document.getElementById(
-"paymentRequestsList"
-);
+    let profileMap={};
+    const userIds=[...new Set(data.map(payment=>payment.user_id).filter(Boolean))];
 
-list.innerHTML =
-"⏳ Loading payment requests...";
+    if(userIds.length>0){
+      try{
+        const {data:profiles,error:profileError}=await supabase.from("profiles").select("id,email").in("id",userIds);
+        if(!profileError && profiles){
+          profiles.forEach(profile=>{profileMap[profile.id]=profile.email || "";});
+        }
+      }catch(profileError){
+        console.log("Could not load profiles:",profileError.message);
+      }
+    }
 
-try{
+    let html="";
+    data.forEach(payment=>{
+      const date=payment.created_at ? new Date(payment.created_at).toLocaleString() : "N/A";
+      const customerEmail=payment.user_email || profileMap[payment.user_id] || "Email not saved";
 
-const {
-data,
-error
-} =
-await supabase
-.from("payment_requests")
-.select("*")
-.order("created_at",{ascending:false});
+      const proofUrl=payment.proof
+        ? (String(payment.proof).startsWith("http")
+            ? String(payment.proof)
+            : supabase.storage.from(PAYMENT_PROOF_BUCKET).getPublicUrl(payment.proof).data.publicUrl)
+        : "";
 
-if(error){
-throw error;
-}
+      let statusClass="status-pending";
+      if(payment.status==="Approved") statusClass="status-approved";
+      if(payment.status==="Rejected") statusClass="status-rejected";
 
-if(!data || data.length===0){
+      const proofHtml=proofUrl ? `
+<a class="proof-link" href="${escapeAttribute(proofUrl)}" target="_blank" rel="noopener noreferrer">🖼️ View Payment Screenshot</a>
+` : "No proof available";
 
-list.innerHTML =
-"📋 No payment requests found.";
-
-return;
-
-}
-
-
-/* GET EMAILS FROM PROFILES */
-
-let profileMap = {};
-
-const userIds =
-[
-...new Set(
-data
-.map(payment=>payment.user_id)
-.filter(Boolean)
-)
-];
-
-if(userIds.length > 0){
-
-try{
-
-const {
-data:profiles,
-error:profileError
-} =
-await supabase
-.from("profiles")
-.select("id,email")
-.in("id",userIds);
-
-if(!profileError && profiles){
-
-profiles.forEach(profile=>{
-
-profileMap[profile.id] =
-profile.email || "";
-
-});
-
-}
-
-}catch(profileError){
-
-console.log(
-"Could not load profiles:",
-profileError.message
-);
-
-}
-
-}
-
-let html="";
-
-data.forEach(payment=>{
-
-const date =
-payment.created_at
-?
-new Date(
-payment.created_at
-).toLocaleString()
-:
-"N/A";
-
-const customerEmail =
-payment.user_email
-||
-profileMap[payment.user_id]
-||
-"Email not saved";
-
-/* =====================================================
-   FIXED PAYMENT PROOF URL
-   Agar proof already full URL hai to usi ko use karo.
-   Agar sirf storage path hai to getPublicUrl() use karo.
-   ===================================================== */
-
-const proofUrl =
-payment.proof
-?
-(
-  String(payment.proof).startsWith("http")
-    ? String(payment.proof)
-    : supabase
-        .storage
-        .from(PAYMENT_PROOF_BUCKET)
-        .getPublicUrl(payment.proof)
-        .data.publicUrl
-)
-:
-"";
-
-let statusClass =
-"status-pending";
-
-if(payment.status === "Approved"){
-
-statusClass =
-"status-approved";
-
-}
-
-if(payment.status === "Rejected"){
-
-statusClass =
-"status-rejected";
-
-}
-
-const proofHtml =
-proofUrl
-?
-
-`
-
-<a
-class="proof-link"
-href="${escapeAttribute(proofUrl)}"
-target="_blank"
-rel="noopener noreferrer"
->
-🖼️ View Payment Screenshot
-</a>
-
-`
-
-:
-
-"No proof available";
-
-let actionHtml="";
-
-if(payment.status === "Pending"){
-
-actionHtml = `
-
+      let actionHtml="";
+      if(payment.status==="Pending"){
+        actionHtml=`
 <hr>
+<button class="approve" onclick="approvePayment(${payment.id})">✅ Approve Payment</button>
+<button class="reject" onclick="rejectPayment(${payment.id})">❌ Reject Payment</button>
+<div id="payment-message-${payment.id}"></div>`;
+      }
 
-<button
-class="approve"
-onclick="approvePayment(${payment.id})"
->
-✅ Approve Payment
-</button>
-
-<button
-class="reject"
-onclick="rejectPayment(${payment.id})"
->
-❌ Reject Payment
-</button>
-
-<div id="payment-message-${payment.id}"></div>
-
-`;
-
-}
-
-html += `
-
+      html += `
 <div class="payment-card">
-
-<p>
-<b>🆔 Payment Request ID:</b>
-${escapeHtml(payment.id)}
-</p>
-
-<p>
-<b>👤 Customer User ID:</b>
-${escapeHtml(
-payment.user_id || "N/A"
-)}
-</p>
-
-<p>
-<b>📧 Customer Email:</b>
-${escapeHtml(customerEmail)}
-</p>
-
-<p>
-<b>💵 Amount:</b>
-Rs ${Number(
-payment.amount || 0
-).toFixed(2)}
-</p>
-
-<p>
-<b>💳 Method:</b>
-${escapeHtml(
-payment.method || "N/A"
-)}
-</p>
-
-<p>
-<b>🔢 Transaction ID:</b>
-${escapeHtml(
-payment.transaction_id || "N/A"
-)}
-</p>
-
-<p>
-<b>🧾 Proof:</b>
-<br>
-${proofHtml}
-</p>
-
-<p>
-<b>📌 Status:</b>
-
-<span class="${statusClass}">
-${escapeHtml(
-payment.status || "Pending"
-)}
-</span>
-
-</p>
-
-<p>
-<b>🕒 Date:</b>
-${date}
-</p>
-
+<p><b>🆔 Payment Request ID:</b> ${escapeHtml(payment.id)}</p>
+<p><b>👤 Customer User ID:</b> ${escapeHtml(payment.user_id || "N/A")}</p>
+<p><b>📧 Customer Email:</b> ${escapeHtml(customerEmail)}</p>
+<p><b>💵 Amount:</b> Rs ${Number(payment.amount || 0).toFixed(2)}</p>
+<p><b>💳 Method:</b> ${escapeHtml(payment.method || "N/A")}</p>
+<p><b>🔢 Transaction ID:</b> ${escapeHtml(payment.transaction_id || "N/A")}</p>
+<p><b>🧾 Proof:</b><br>${proofHtml}</p>
+<p><b>📌 Status:</b> <span class="${statusClass}">${escapeHtml(payment.status || "Pending")}</span></p>
+<p><b>🕒 Date:</b> ${date}</p>
 ${actionHtml}
+</div>`;
+    });
 
-</div>
-
-`;
-
-});
-
-list.innerHTML=html;
-
-}catch(error){
-
-list.innerHTML =
-"❌ Could not load payment requests: "
-+
-escapeHtml(error.message);
-
-}
-
+    list.innerHTML=html;
+  }catch(error){
+    list.innerHTML="❌ Could not load payment requests: "+escapeHtml(error.message);
+  }
 };
 
+window.approvePayment=async function(paymentId){
+  if(!(await checkAdmin())){alert("Unauthorized.");return;}
 
-/* APPROVE PAYMENT + NOTIFICATION */
+  const message=document.getElementById("payment-message-"+paymentId);
 
-window.approvePayment =
-async function(paymentId){
+  if(!confirm("Are you sure you want to APPROVE this payment?\n\nThe customer's balance will be increased.")) return;
 
-if(!(await checkAdmin())){
+  try{
+    message.className="info";
+    message.innerText="⏳ Approving payment...";
 
-alert("Unauthorized.");
+    const {data:payment,error:paymentFetchError}=await supabase.from("payment_requests").select("*").eq("id",paymentId).maybeSingle();
+    if(paymentFetchError) throw paymentFetchError;
+    if(!payment) throw new Error("Payment request not found.");
 
-return;
+    const {error}=await supabase.rpc("approve_payment_request",{p_payment_id:paymentId});
+    if(error) throw error;
 
-}
+    const amount=Number(payment.amount || 0).toFixed(2);
+    const notificationResult=await createCustomerNotification(
+      payment.user_id,
+      "💰 Payment Approved",
+      "Your payment of Rs "+amount+" has been approved and added to your balance."
+    );
 
-const message =
-document.getElementById(
-"payment-message-"+paymentId
-);
+    message.className="success";
+    if(notificationResult.success){
+      message.innerText="✅ Payment approved, balance updated and notification sent!";
+    }else{
+      message.innerText="✅ Payment approved and balance updated, but notification could not be sent.";
+      console.log("Notification error:",notificationResult.error);
+    }
 
-if(
-!confirm(
-"Are you sure you want to APPROVE this payment?\n\nThe customer's balance will be increased."
-)
-){
-
-return;
-
-}
-
-try{
-
-message.className="info";
-
-message.innerText =
-"⏳ Approving payment...";
-
-
-/* GET PAYMENT BEFORE APPROVAL */
-
-const {
-data:payment,
-error:paymentFetchError
-} =
-await supabase
-.from("payment_requests")
-.select("*")
-.eq("id",paymentId)
-.maybeSingle();
-
-if(paymentFetchError){
-throw paymentFetchError;
-}
-
-if(!payment){
-throw new Error("Payment request not found.");
-}
-
-
-/* APPROVE PAYMENT */
-
-const {
-error
-} =
-await supabase.rpc(
-"approve_payment_request",
-{
-p_payment_id:paymentId
-}
-);
-
-if(error){
-throw error;
-}
-
-
-/* CUSTOMER NOTIFICATION */
-
-const amount =
-Number(payment.amount || 0).toFixed(2);
-
-const notificationResult =
-await createCustomerNotification(
-payment.user_id,
-"💰 Payment Approved",
-"Your payment of Rs "+
-amount+
-" has been approved and added to your balance."
-);
-
-message.className="success";
-
-if(notificationResult.success){
-
-message.innerText =
-"✅ Payment approved, balance updated and notification sent!";
-
-}else{
-
-message.className="error";
-
-message.innerText =
-"⚠️ Payment approved and balance updated, but notification could not be sent: "
-+
-notificationResult.error;
-
-console.error(
-"Notification error:",
-notificationResult.error
-);
-
-}
-
-setTimeout(()=>{
-
-loadPaymentRequests();
-loadDashboardStats();
-
-},1500);
-
-}catch(error){
-
-message.className="error";
-
-message.innerText =
-"❌ Payment could not be approved: "
-+
-error.message;
-
-}
-
+    setTimeout(()=>{loadPaymentRequests();loadDashboardStats();},1000);
+  }catch(error){
+    message.className="error";
+    message.innerText="❌ Payment could not be approved: "+error.message;
+  }
 };
 
+window.rejectPayment=async function(paymentId){
+  if(!(await checkAdmin())){alert("Unauthorized.");return;}
 
-/* REJECT PAYMENT + NOTIFICATION */
+  const message=document.getElementById("payment-message-"+paymentId);
 
-window.rejectPayment =
-async function(paymentId){
+  if(!confirm("Are you sure you want to REJECT this payment?")) return;
 
-if(!(await checkAdmin())){
+  try{
+    message.className="info";
+    message.innerText="⏳ Rejecting payment...";
 
-alert("Unauthorized.");
+    const {data:payment,error:paymentFetchError}=await supabase.from("payment_requests").select("*").eq("id",paymentId).maybeSingle();
+    if(paymentFetchError) throw paymentFetchError;
+    if(!payment) throw new Error("Payment request not found.");
 
-return;
+    const {error}=await supabase.rpc("reject_payment_request",{p_payment_id:paymentId});
+    if(error) throw error;
 
-}
+    const amount=Number(payment.amount || 0).toFixed(2);
+    const notificationResult=await createCustomerNotification(
+      payment.user_id,
+      "❌ Payment Rejected",
+      "Your payment request of Rs "+amount+" has been rejected. Please check your payment details and try again."
+    );
 
-const message =
-document.getElementById(
-"payment-message-"+paymentId
-);
+    message.className="success";
+    if(notificationResult.success){
+      message.innerText="✅ Payment rejected and customer notification sent!";
+    }else{
+      message.innerText="✅ Payment rejected, but notification could not be sent.";
+      console.log("Notification error:",notificationResult.error);
+    }
 
-if(
-!confirm(
-"Are you sure you want to REJECT this payment?"
-)
-){
-
-return;
-
-}
-
-try{
-
-message.className="info";
-
-message.innerText =
-"⏳ Rejecting payment...";
-
-
-/* GET PAYMENT BEFORE REJECTION */
-
-const {
-data:payment,
-error:paymentFetchError
-} =
-await supabase
-.from("payment_requests")
-.select("*")
-.eq("id",paymentId)
-.maybeSingle();
-
-if(paymentFetchError){
-throw paymentFetchError;
-}
-
-if(!payment){
-throw new Error("Payment request not found.");
-}
-
-
-/* REJECT PAYMENT */
-
-const {
-error
-} =
-await supabase.rpc(
-"reject_payment_request",
-{
-p_payment_id:paymentId
-}
-);
-
-if(error){
-throw error;
-}
-
-
-/* CUSTOMER NOTIFICATION */
-
-const amount =
-Number(payment.amount || 0).toFixed(2);
-
-const notificationResult =
-await createCustomerNotification(
-payment.user_id,
-"❌ Payment Rejected",
-"Your payment request of Rs "+
-amount+
-" has been rejected. Please check your payment details and try again."
-);
-
-message.className="success";
-
-if(notificationResult.success){
-
-message.innerText =
-"✅ Payment rejected and customer notification sent!";
-
-}else{
-
-message.className="error";
-
-message.innerText =
-"⚠️ Payment rejected, but notification could not be sent: "
-+
-notificationResult.error;
-
-console.error(
-"Notification error:",
-notificationResult.error
-);
-
-}
-
-setTimeout(()=>{
-
-loadPaymentRequests();
-loadDashboardStats();
-
-},1500);
-
-}catch(error){
-
-message.className="error";
-
-message.innerText =
-"❌ Payment could not be rejected: "
-+
-error.message;
-
-}
-
+    setTimeout(()=>{loadPaymentRequests();loadDashboardStats();},1000);
+  }catch(error){
+    message.className="error";
+    message.innerText="❌ Payment could not be rejected: "+error.message;
+  }
 };
 
-
-/* LOGOUT */
-
-window.adminLogout =
-async function(){
-
-await supabase.auth.signOut();
-
-document
-.getElementById("adminPanel")
-.classList.add("hidden");
-
-document
-.getElementById("loginPage")
-.classList.remove("hidden");
-
+window.adminLogout=async function(){
+  await supabase.auth.signOut();
+  document.getElementById("adminPanel").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
 };
-
-
-/* SECURITY HELPERS */
 
 function escapeHtml(value){
-
-return String(value ?? "")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
 function escapeAttribute(value){
-
-return String(value ?? "")
-.replaceAll('"',"%22")
-.replaceAll("'","%27");
-
+  return String(value ?? "")
+    .replaceAll('"',"%22")
+    .replaceAll("'","%27");
 }
 
-
-/* EXISTING SESSION */
-
-const {
-data:{
-session
-}
-} =
-await supabase.auth.getSession();
+const {data:{session}}=await supabase.auth.getSession();
 
 if(session){
-
-if(session.user.id === ADMIN_UID){
-
-document
-.getElementById("loginPage")
-.classList.add("hidden");
-
-document
-.getElementById("adminPanel")
-.classList.remove("hidden");
-
-loadDashboardStats();
-loadOrders();
-loadPaymentRequests();
-loadServices();
-
-}else{
-
-await supabase.auth.signOut();
-
+  if(session.user.id === ADMIN_UID){
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("adminPanel").classList.remove("hidden");
+    loadDashboardStats();
+    loadOrders();
+    loadPaymentRequests();
+    loadServices();
+  }else{
+    await supabase.auth.signOut();
+  }
 }
-
-}
-
 </script>
-
 </body>
 </html>
