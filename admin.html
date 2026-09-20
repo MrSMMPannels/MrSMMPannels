@@ -316,8 +316,14 @@ window.loadCustomers = async function(){
       .order("created_at",{ascending:false});
 
     if(search){
-      const escaped=search.replace(/[%_]/g, "\$&");
-      query=query.or(`email.ilike.%${escaped}%,id.eq.${search}`);
+      const escaped=search.replace(/[\%_]/g, "\\$&");
+      const uuidPattern=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+      if(uuidPattern.test(search)){
+        query=query.eq("id",search);
+      }else{
+        query=query.ilike("email",`%${escaped}%`);
+      }
     }
 
     const {data,error}=await query;
