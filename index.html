@@ -441,6 +441,50 @@
       margin-bottom: 10px;
     }
 
+
+    .toolbar-grid {
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr;
+      gap:10px;
+      margin-bottom:15px;
+    }
+    .small-btn {
+      border:none;
+      background:#eee8ff;
+      color:#5b20d6;
+      padding:9px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+    .small-btn:hover { background:#6c2cff; color:white; }
+    .profile-grid, .activity-list, .support-list { display:grid; gap:12px; }
+    .profile-row {
+      padding:13px;
+      background:#f8f7ff;
+      border-radius:9px;
+      border:1px solid #eee;
+    }
+    .profile-row strong { display:block; margin-bottom:4px; color:#5b20d6; }
+    .activity-item, .support-item, .cancel-box {
+      padding:15px;
+      border:1px solid #eee;
+      border-radius:10px;
+      background:#fff;
+      box-shadow:0 2px 8px rgba(0,0,0,.05);
+    }
+    .activity-credit { border-left:5px solid #198754; }
+    .activity-debit { border-left:5px solid #dc3545; }
+    .activity-neutral { border-left:5px solid #6c2cff; }
+    .ticket-status {
+      display:inline-block; padding:4px 9px; border-radius:15px;
+      font-size:12px; font-weight:bold; background:#eee8ff; color:#5b20d6;
+    }
+    .ticket-status.Open { background:#fff3cd; color:#856404; }
+    .ticket-status.Replied, .ticket-status.Closed { background:#d4edda; color:#155724; }
+    .cancel-status { font-size:12px; font-weight:bold; color:#6c2cff; }
+    @media (max-width: 700px) { .toolbar-grid { grid-template-columns:1fr; } }
+
     @media (max-width: 600px) {
       header h1 {
         font-size: 23px;
@@ -591,6 +635,12 @@
         <span id="notificationBadge" class="notification-badge">0</span>
       </button>
 
+      <button onclick="showSection('profile')">👤 Profile</button>
+
+      <button onclick="showSection('activity')">📊 Activity</button>
+
+      <button onclick="showSection('support')">🎧 Support</button>
+
       <button onclick="logout()">
         🚪 Logout
       </button>
@@ -703,6 +753,21 @@
 
           <h2>📦 My Orders</h2>
 
+          <div class="toolbar-grid">
+            <input id="orderSearch" type="text" placeholder="Search order, service or link" oninput="renderOrders()">
+            <select id="orderStatusFilter" onchange="renderOrders()">
+              <option value="">All Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Processing">Processing</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <select id="orderSort" onchange="renderOrders()">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
+
           <div id="ordersList">
             <div class="loading">
               ⏳ Loading orders...
@@ -814,6 +879,61 @@
       </section>
 
 
+      <!-- PROFILE -->
+      <section id="profile" class="section">
+        <div class="card">
+          <h2>👤 My Profile</h2>
+          <div class="profile-grid">
+            <div class="profile-row"><strong>Full Name</strong><span id="profileName">-</span></div>
+            <div class="profile-row"><strong>Email</strong><span id="profileEmail">-</span></div>
+            <div class="profile-row"><strong>User ID</strong><span id="profileUserId">-</span></div>
+            <div class="profile-row"><strong>Current Balance</strong><span id="profileBalance">Rs 0.00</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>✏️ Update Name</h2>
+          <label>Full Name</label>
+          <input id="profileNameInput" type="text" placeholder="Enter your full name">
+          <button class="primary" onclick="updateProfileName()">💾 Save Name</button>
+          <div id="profileMessage"></div>
+        </div>
+        <div class="card">
+          <h2>🔐 Change Password</h2>
+          <label>New Password</label>
+          <input id="newPassword" type="password" placeholder="Minimum 6 characters">
+          <label>Confirm New Password</label>
+          <input id="confirmPassword" type="password" placeholder="Repeat new password">
+          <button class="primary" onclick="changePassword()">🔑 Change Password</button>
+          <div id="passwordMessage"></div>
+        </div>
+      </section>
+
+      <!-- ACTIVITY -->
+      <section id="activity" class="section">
+        <div class="card">
+          <h2>📊 Balance & Activity History</h2>
+          <p style="color:#666;margin-bottom:15px;">Your approved payments and orders are shown here.</p>
+          <div id="activityList" class="activity-list"><div class="loading">⏳ Loading activity...</div></div>
+        </div>
+      </section>
+
+      <!-- SUPPORT -->
+      <section id="support" class="section">
+        <div class="card">
+          <h2>🎧 Customer Support</h2>
+          <label>Subject</label>
+          <input id="supportSubject" type="text" placeholder="e.g. Order issue / Payment issue">
+          <label>Message</label>
+          <textarea id="supportMessage" rows="5" placeholder="Write your problem here..."></textarea>
+          <button class="primary" onclick="createSupportTicket()">📨 Submit Support Ticket</button>
+          <div id="supportFormMessage"></div>
+        </div>
+        <div class="card">
+          <h2>📋 My Support Tickets</h2>
+          <div id="supportList" class="support-list"><div class="loading">⏳ Loading tickets...</div></div>
+        </div>
+      </section>
+
       <!-- NOTIFICATIONS -->
       <section id="notifications" class="section">
 
@@ -886,6 +1006,12 @@
     let servicesData = [];
 
     let notificationsData = [];
+
+    let ordersData = [];
+
+    let cancellationData = [];
+
+    let supportData = [];
 
 
     /* =========================
@@ -1173,6 +1299,12 @@
       await loadOrders();
 
       await loadNotifications();
+
+      await loadProfile();
+
+      await loadActivity();
+
+      await loadSupportTickets();
 
     }
 
@@ -1879,153 +2011,87 @@
     ========================= */
 
     async function loadOrders() {
-
       if (!currentUser) return;
-
-
-      const container =
-        document
-          .getElementById(
-            "ordersList"
-          );
-
-
+      const container = document.getElementById("ordersList");
       if (!container) return;
+      container.innerHTML = `<div class="loading">⏳ Loading orders...</div>`;
 
-
-      container.innerHTML =
-        `<div class="loading">
-          ⏳ Loading orders...
-        </div>`;
-
-
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from("orders")
-          .select("*")
-          .eq(
-            "user_email",
-            currentUser.email
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
+      const { data, error } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending:false });
 
       if (error) {
-
-        container.innerHTML =
-          `<div class="error-message">
-            ❌ ${escapeHtml(error.message)}
-          </div>`;
-
+        container.innerHTML = `<div class="error-message">❌ ${escapeHtml(error.message)}</div>`;
         return;
-
       }
+      ordersData = data || [];
 
-
-      if (
-        !data ||
-        data.length === 0
-      ) {
-
-        container.innerHTML =
-          `<div class="card">
-            📋 No orders found.
-          </div>`;
-
-        return;
-
-      }
-
-
-      container.innerHTML = "";
-
-
-      data.forEach(
-        order => {
-
-          const item =
-            document.createElement(
-              "div"
-            );
-
-
-          item.className =
-            "order-item";
-
-
-          const date =
-            order.created_at
-              ? new Date(
-                  order.created_at
-                ).toLocaleString()
-              : "";
-
-
-          const status =
-            order.status ||
-            "Pending";
-
-
-          item.innerHTML = `
-
-            <strong>
-              Order #${escapeHtml(order.id)}
-            </strong>
-
-            <br><br>
-
-            <strong>Service:</strong>
-            ${escapeHtml(order.service)}
-
-            <br>
-
-            <strong>Quantity:</strong>
-            ${escapeHtml(order.quantity)}
-
-            <br>
-
-            <strong>Price:</strong>
-            Rs ${Number(
-              order.price || 0
-            ).toFixed(2)}
-
-            <br>
-
-            <strong>Link:</strong>
-            ${escapeHtml(order.link)}
-
-            <br>
-
-            <span class="status ${escapeHtml(status)}">
-              ${escapeHtml(status)}
-            </span>
-
-            <br><br>
-
-            <small>
-              📅 ${escapeHtml(date)}
-            </small>
-
-          `;
-
-
-          container.appendChild(
-            item
-          );
-
-        }
-      );
-
+      const { data: cancellations } = await supabase
+        .from("order_cancellation_requests")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending:false });
+      cancellationData = cancellations || [];
+      renderOrders();
     }
 
+    window.renderOrders = function() {
+      const container = document.getElementById("ordersList");
+      if (!container) return;
+      let list = [...ordersData];
+      const search = (document.getElementById("orderSearch")?.value || "").trim().toLowerCase();
+      const filter = document.getElementById("orderStatusFilter")?.value || "";
+      const sort = document.getElementById("orderSort")?.value || "newest";
+      if (search) list = list.filter(o => String(o.id).includes(search) || String(o.service||"").toLowerCase().includes(search) || String(o.link||"").toLowerCase().includes(search));
+      if (filter) list = list.filter(o => (o.status || "Pending") === filter);
+      list.sort((a,b) => {
+        const av = new Date(a.created_at||0).getTime(), bv = new Date(b.created_at||0).getTime();
+        return sort === "oldest" ? av-bv : bv-av;
+      });
+      if (!list.length) {
+        container.innerHTML = `<div class="card">📋 No matching orders found.</div>`;
+        return;
+      }
+      container.innerHTML = "";
+      list.forEach(order => {
+        const item = document.createElement("div");
+        item.className = "order-item";
+        const status = order.status || "Pending";
+        const date = order.created_at ? new Date(order.created_at).toLocaleString() : "";
+        const cancellation = cancellationData.find(c => Number(c.order_id) === Number(order.id));
+        const canCancel = !cancellation && ["Pending","Processing"].includes(status);
+        item.innerHTML = `
+          <strong>Order #${escapeHtml(order.id)}</strong><br><br>
+          <strong>Service:</strong> ${escapeHtml(order.service)}<br>
+          <strong>Quantity:</strong> ${escapeHtml(order.quantity)}<br>
+          <strong>Price:</strong> Rs ${Number(order.price||0).toFixed(2)}<br>
+          <strong>Link:</strong> ${escapeHtml(order.link)}<br>
+          <span class="status ${escapeHtml(status)}">${escapeHtml(status)}</span><br><br>
+          <small>📅 ${escapeHtml(date)}</small>
+          ${cancellation ? `<div class="cancel-box" style="margin-top:12px;"><strong>Cancellation Request:</strong> <span class="cancel-status">${escapeHtml(cancellation.status)}</span>${cancellation.admin_note ? `<br><small>${escapeHtml(cancellation.admin_note)}</small>` : ""}</div>` : ""}
+          ${canCancel ? `<button class="small-btn" style="margin-top:12px;" onclick="requestCancellation(${Number(order.id)})">🛑 Request Cancellation</button>` : ""}
+        `;
+        container.appendChild(item);
+      });
+    };
+
+    window.requestCancellation = async function(orderId) {
+      const existing = cancellationData.find(c => Number(c.order_id) === Number(orderId));
+      if (existing) { alert("A cancellation request already exists for this order."); return; }
+      const reason = prompt("Please enter the reason for cancellation:");
+      if (reason === null) return;
+      if (!reason.trim()) { alert("Please enter a cancellation reason."); return; }
+      const { error } = await supabase.from("order_cancellation_requests").insert({
+        order_id: orderId, user_id: currentUser.id, user_email: currentUser.email,
+        reason: reason.trim(), status: "Pending"
+      });
+      if (error) { alert("Cancellation request failed: " + error.message); return; }
+      alert("Cancellation request submitted successfully.");
+      await loadOrders();
+      await loadNotifications();
+    };
 
     /* =========================
        PAYMENT REQUEST
@@ -2297,6 +2363,97 @@
 
       };
 
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    async function loadProfile() {
+      if (!currentUser) return;
+      const fullName = currentUser.user_metadata?.full_name || "Not set";
+      document.getElementById("profileName").textContent = fullName;
+      document.getElementById("profileEmail").textContent = currentUser.email || "-";
+      document.getElementById("profileUserId").textContent = currentUser.id || "-";
+      document.getElementById("profileNameInput").value = currentUser.user_metadata?.full_name || "";
+      const { data } = await supabase.from("profiles").select("balance").eq("id", currentUser.id).single();
+      document.getElementById("profileBalance").textContent = "Rs " + Number(data?.balance||0).toFixed(2);
+    }
+
+    window.updateProfileName = async function() {
+      const name = document.getElementById("profileNameInput").value.trim();
+      if (!name) { showMessage("profileMessage","Please enter your name.","error"); return; }
+      const { error } = await supabase.auth.updateUser({ data:{ full_name:name } });
+      if (error) { showMessage("profileMessage",error.message,"error"); return; }
+      currentUser.user_metadata = { ...(currentUser.user_metadata||{}), full_name:name };
+      await loadProfile();
+      showMessage("profileMessage","Profile name updated successfully.","success");
+    };
+
+    window.changePassword = async function() {
+      const password = document.getElementById("newPassword").value;
+      const confirm = document.getElementById("confirmPassword").value;
+      if (password.length < 6) { showMessage("passwordMessage","Password must be at least 6 characters.","error"); return; }
+      if (password !== confirm) { showMessage("passwordMessage","Passwords do not match.","error"); return; }
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) { showMessage("passwordMessage",error.message,"error"); return; }
+      document.getElementById("newPassword").value = "";
+      document.getElementById("confirmPassword").value = "";
+      showMessage("passwordMessage","Password changed successfully.","success");
+    };
+
+    /* =========================
+       ACTIVITY HISTORY
+    ========================= */
+
+    async function loadActivity() {
+      if (!currentUser) return;
+      const container = document.getElementById("activityList");
+      container.innerHTML = `<div class="loading">⏳ Loading activity...</div>`;
+      const [{data:payments,error:paymentError},{data:orders,error:orderError}] = await Promise.all([
+        supabase.from("payment_requests").select("amount,method,transaction_id,status,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}),
+        supabase.from("orders").select("id,service,quantity,price,status,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false})
+      ]);
+      if (paymentError || orderError) {
+        container.innerHTML = `<div class="error-message">❌ Could not load activity history.</div>`; return;
+      }
+      const events = [];
+      (payments||[]).forEach(p => events.push({date:p.created_at,type:"credit",title:`Payment ${p.status}`,text:`${p.method} • Rs ${Number(p.amount||0).toFixed(2)} • Transaction ${p.transaction_id||"-"}`,status:p.status}));
+      (orders||[]).forEach(o => events.push({date:o.created_at,type:"debit",title:`Order #${o.id}`,text:`${o.service} • Qty ${o.quantity} • Rs ${Number(o.price||0).toFixed(2)} • ${o.status||"Pending"}`,status:o.status}));
+      events.sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+      if (!events.length) { container.innerHTML=`<div class="activity-item">📋 No activity yet.</div>`; return; }
+      container.innerHTML = events.map(e=>`<div class="activity-item activity-${e.type}"><strong>${escapeHtml(e.title)}</strong><br><span>${escapeHtml(e.text)}</span><br><small>📅 ${escapeHtml(new Date(e.date).toLocaleString())}</small></div>`).join("");
+    }
+
+    /* =========================
+       SUPPORT
+    ========================= */
+
+    async function loadSupportTickets() {
+      if (!currentUser) return;
+      const container = document.getElementById("supportList");
+      container.innerHTML = `<div class="loading">⏳ Loading tickets...</div>`;
+      const {data,error} = await supabase.from("support_tickets").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false});
+      if (error) { container.innerHTML=`<div class="error-message">❌ ${escapeHtml(error.message)}</div>`; return; }
+      supportData=data||[];
+      if (!supportData.length) { container.innerHTML=`<div class="support-item">📋 No support tickets yet.</div>`; return; }
+      container.innerHTML="";
+      supportData.forEach(t=>{
+        const item=document.createElement("div"); item.className="support-item";
+        item.innerHTML=`<strong>#${escapeHtml(t.id)} — ${escapeHtml(t.subject)}</strong> <span class="ticket-status ${escapeHtml(t.status||"Open")}">${escapeHtml(t.status||"Open")}</span><p style="margin-top:10px;white-space:pre-wrap;">${escapeHtml(t.message)}</p>${t.admin_reply?`<div style="margin-top:10px;padding:10px;background:#f6f1ff;border-radius:8px;"><strong>Admin Reply:</strong><br>${escapeHtml(t.admin_reply)}</div>`:""}<small style="display:block;margin-top:10px;color:#888;">📅 ${escapeHtml(t.created_at?new Date(t.created_at).toLocaleString():"")}</small>`;
+        container.appendChild(item);
+      });
+    }
+
+    window.createSupportTicket = async function() {
+      const subject=document.getElementById("supportSubject").value.trim();
+      const message=document.getElementById("supportMessage").value.trim();
+      if (!subject || !message) { showMessage("supportFormMessage","Please enter subject and message.","error"); return; }
+      const {error}=await supabase.from("support_tickets").insert({user_id:currentUser.id,user_email:currentUser.email,subject,message,status:"Open"});
+      if(error){showMessage("supportFormMessage",error.message,"error");return;}
+      document.getElementById("supportSubject").value=""; document.getElementById("supportMessage").value="";
+      showMessage("supportFormMessage","Support ticket submitted successfully.","success");
+      await loadSupportTickets();
+    };
 
     /* =========================
        LOAD NOTIFICATIONS
@@ -2770,9 +2927,19 @@
           section ===
           "notifications"
         ) {
-
           loadNotifications();
+        }
 
+        if (section === "profile") {
+          loadProfile();
+        }
+
+        if (section === "activity") {
+          loadActivity();
+        }
+
+        if (section === "support") {
+          loadSupportTickets();
         }
 
       };
@@ -2869,6 +3036,12 @@
           await loadOrders();
 
           await loadNotifications();
+
+          await loadProfile();
+
+          await loadActivity();
+
+          await loadSupportTickets();
 
         }
 
